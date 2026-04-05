@@ -1,0 +1,224 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getPostBySlug, listPosts } from '../../lib/wp';
+
+const { slug } = Astro.params;
+
+if (!slug) {
+	return Astro.redirect('/blog');
+}
+
+// Sample blog posts for fallback when WordPress is not available
+const samplePosts: Record<string, any> = {
+	'global-gap-certification-guide-2024': {
+		title: { rendered: 'The Complete Guide to GlobalG.A.P. Certification for Ethiopian Exporters' },
+		date: '2024-01-15',
+		content: { 
+			rendered: `
+				<p>GlobalG.A.P. certification has become a critical requirement for Ethiopian agricultural exporters seeking to access European and international markets. This comprehensive guide walks you through everything you need to know about achieving and maintaining this important certification.</p>
+				<h2>What is GlobalG.A.P.?</h2>
+				<p>GlobalG.A.P. (Good Agricultural Practice) is an internationally recognized standard for agricultural production that ensures food safety, environmental sustainability, and worker welfare. For Ethiopian exporters, this certification opens doors to premium markets that demand the highest standards of quality and safety.</p>
+				<h2>Why GlobalG.A.P. Matters for Ethiopian Exporters</h2>
+				<p>The European Union, which represents a significant market for Ethiopian agricultural products, increasingly requires GlobalG.A.P. certification for imported fresh produce. This standard ensures that products meet strict requirements for food safety and traceability, environmental sustainability, worker health and safety, and responsible use of water and plant protection products.</p>
+				<h2>The Certification Process</h2>
+				<p>Achieving GlobalG.A.P. certification involves several key steps including preparation and self-assessment, selecting a certification body, initial audit, and implementing corrective actions if needed.</p>
+				<h2>Maintaining Your Certification</h2>
+				<p>GlobalG.A.P. certification requires annual surveillance audits to ensure ongoing compliance. Continuous improvement and commitment to the standards are essential for maintaining your certified status.</p>
+			`
+		},
+		category: 'Certification',
+		icon: '🌱',
+		readTime: '8 min read'
+	},
+	'sustainable-farming-practices-2024': {
+		title: { rendered: '5 Sustainable Farming Practices Transforming Ethiopian Agriculture' },
+		date: '2024-01-10',
+		content: { 
+			rendered: `
+				<p>Sustainable agriculture is not just an environmental imperative—it is a pathway to long-term profitability and resilience for Ethiopian farmers. Here are five transformative practices reshaping agriculture across the country.</p>
+				<h2>1. Integrated Pest Management (IPM)</h2>
+				<p>IPM combines biological, cultural, and chemical methods to control pests while minimizing environmental impact. This approach reduces pesticide use by up to 60% while maintaining crop yields and improving soil health.</p>
+				<h2>2. Water Conservation and Efficient Irrigation</h2>
+				<p>With changing climate patterns, water efficiency has become critical. Modern irrigation techniques like drip irrigation and mulching can reduce water usage by 40-60% while maintaining or even improving crop yields.</p>
+				<h2>3. Soil Health Management</h2>
+				<p>Healthy soil is the foundation of sustainable agriculture. Practices like cover cropping, crop rotation, and reduced tillage are helping Ethiopian farmers rebuild soil organic matter and improve long-term productivity.</p>
+				<h2>4. Agroforestry Integration</h2>
+				<p>Integrating trees with crops and livestock creates diverse, resilient farming systems that provide multiple income streams while improving biodiversity and soil conservation.</p>
+				<h2>5. Climate-Smart Agriculture</h2>
+				<p>Adapting farming practices to changing climate conditions includes selecting appropriate crop varieties, adjusting planting dates, and implementing soil and water conservation measures.</p>
+			`
+		},
+		category: 'Sustainability',
+		icon: '🌍',
+		readTime: '6 min read'
+	},
+	'eu-export-compliance-2024': {
+		title: { rendered: 'EU Export Compliance: New Regulations Ethiopian Agribusinesses Must Know' },
+		date: '2024-01-05',
+		content: { 
+			rendered: `
+				<p>The European Union has implemented new regulations that significantly impact Ethiopian agribusinesses exporting to European markets. Understanding these changes is crucial for maintaining market access and avoiding costly compliance issues.</p>
+				<h2>The New EU Due Diligence Regulation</h2>
+				<p>The EU's new regulation on deforestation-free products requires companies to prove that their supply chains do not contribute to deforestation or forest degradation. This applies to several key Ethiopian exports including coffee.</p>
+				<h2>Enhanced Food Safety Standards</h2>
+				<p>The EU has tightened maximum residue levels (MRLs) for pesticides and introduced stricter requirements for food safety documentation. Exporters must ensure their products meet these enhanced standards.</p>
+				<h2>Traceability Requirements</h2>
+				<p>New regulations mandate comprehensive traceability systems that track products from farm to fork. Ethiopian exporters must implement robust documentation and tracking systems to comply with these requirements.</p>
+				<h2>Preparing for Compliance</h2>
+				<p>Ethiopian agribusinesses can take several steps to prepare for these new requirements including assessing current systems, investing in technology, and training personnel on compliance standards.</p>
+			`
+		},
+		category: 'Compliance',
+		icon: '📊',
+		readTime: '10 min read'
+	}
+};
+
+// Try to get post from WordPress, fallback to sample posts
+let post = samplePosts[slug];
+let isSample = true;
+
+if (!post) {
+	try {
+		const wpPost = await getPostBySlug(slug);
+		if (wpPost) {
+			post = wpPost;
+			isSample = false;
+		}
+	} catch (err) {
+		// WordPress not available, use sample posts
+	}
+}
+
+if (!post) {
+	return new Response('Not found', { status: 404 });
+}
+
+const { posts: relatedPosts } = await listPosts({ perPage: 3 }).catch(() => ({ posts: [] }));
+const filteredRelated = relatedPosts.filter((p) => p.slug !== slug).slice(0, 2);
+
+function formatDate(dateStr: string) {
+	return new Date(dateStr).toLocaleDateString('en-US', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric'
+	});
+}
+
+function stripHtml(html: string) {
+	return html.replace(/<[^>]*>/g, '').substring(0, 120) + '...';
+}
+---
+
+<Layout title={`${post.title.rendered.replace(/<[^>]*>/g, '')} | Mekan Insights`}>
+	{/* Article Header */}
+	<section class="bg-[hsl(var(--brand))] py-20 md:py-24 text-[hsl(var(--brand-foreground))]">
+		<div class="container max-w-4xl">
+			<div class="flex items-center gap-2 text-sm text-[hsl(var(--brand-foreground))]/70 mb-6" data-aos="fade-up">
+				<a href="/blog" class="hover:text-[hsl(var(--brand-foreground))] transition-colors">Blog</a>
+				<span>/</span>
+				<span>{post.category || 'Insights'}</span>
+			</div>
+			
+			{isSample && (
+				<div class="flex items-center gap-4 mb-6" data-aos="fade-up" data-aos-delay="100">
+					<div class="w-16 h-16 rounded-2xl bg-[hsl(var(--brand-foreground))]/10 flex items-center justify-center text-4xl">
+						{post.icon}
+					</div>
+					<div>
+						<span class="px-3 py-1 rounded-full bg-[hsl(var(--brand-foreground))]/10 text-sm font-medium">
+							{post.category}
+						</span>
+					</div>
+				</div>
+			)}
+
+			<h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight leading-tight" data-aos="fade-up" data-aos-delay="200">
+				{isSample ? post.title.rendered : <span set:html={post.title?.rendered ?? ''} />}
+			</h1>
+			
+			<div class="mt-6 flex flex-wrap items-center gap-6 text-sm text-[hsl(var(--brand-foreground))]/70" data-aos="fade-up" data-aos-delay="300">
+				<div class="flex items-center gap-2">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+					</svg>
+					<span>{formatDate(post.date)}</span>
+				</div>
+				{isSample && (
+					<div class="flex items-center gap-2">
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+						</svg>
+						<span>{post.readTime}</span>
+					</div>
+				)}
+			</div>
+		</div>
+	</section>
+
+	{/* Article Content */}
+	<section class="section bg-[hsl(var(--background))]">
+		<div class="container max-w-3xl">
+			<article class="prose prose-lg max-w-none prose-headings:text-[hsl(var(--foreground))] prose-p:text-[hsl(var(--muted-foreground))] prose-li:text-[hsl(var(--muted-foreground))] prose-strong:text-[hsl(var(--foreground))]" data-aos="fade-up">
+				{isSample ? (
+					<div set:html={post.content.rendered} />
+				) : (
+					<div class="card p-8 md:p-12">
+						<div class="prose prose-neutral max-w-none dark:prose-invert" set:html={post.content?.rendered ?? ''} />
+					</div>
+				)}
+			</article>
+
+			{/* Share and Navigation */}
+			<div class="mt-16 pt-8 border-t border-[hsl(var(--border))]" data-aos="fade-up">
+				<div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+					<div class="flex items-center gap-4">
+						<span class="text-sm text-[hsl(var(--muted-foreground))]">Share this article:</span>
+						<div class="flex gap-3">
+							<button class="w-10 h-10 rounded-full bg-[hsl(var(--muted))] hover:bg-[hsl(var(--brand))] hover:text-[hsl(var(--brand-foreground))] flex items-center justify-center transition-all" aria-label="Share on Twitter">
+								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+							</button>
+							<button class="w-10 h-10 rounded-full bg-[hsl(var(--muted))] hover:bg-[hsl(var(--brand))] hover:text-[hsl(var(--brand-foreground))] flex items-center justify-center transition-all" aria-label="Share on LinkedIn">
+								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+							</button>
+							<button class="w-10 h-10 rounded-full bg-[hsl(var(--muted))] hover:bg-[hsl(var(--brand))] hover:text-[hsl(var(--brand-foreground))] flex items-center justify-center transition-all" aria-label="Share via Email">
+								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+								</svg>
+							</button>
+						</div>
+					</div>
+					<a href="/blog" class="btn btn-secondary">
+						← Back to all articles
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{filteredRelated.length > 0 && (
+		<section class="section bg-[hsl(var(--muted))]">
+			<div class="container">
+				<h2 class="text-2xl font-semibold tracking-tight mb-8">Related insights</h2>
+				<div class="grid gap-6 md:grid-cols-2">
+					{filteredRelated.map((relatedPost) => (
+						<article class="card bg-[hsl(var(--background))] p-6 transition-all hover:shadow-md">
+							<p class="text-xs text-[hsl(var(--muted-foreground))] uppercase tracking-wide">
+								{formatDate(relatedPost.date)}
+							</p>
+							<h3 class="mt-2 text-lg font-semibold">
+								<a href={`/blog/${relatedPost.slug}`} class="hover:text-[hsl(var(--brand))] transition-colors" set:html={relatedPost.title?.rendered ?? ''} />
+							</h3>
+							<p class="mt-2 text-sm text-[hsl(var(--muted-foreground))]">
+								{stripHtml(relatedPost.excerpt?.rendered ?? '')}
+							</p>
+							<a href={`/blog/${relatedPost.slug}`} class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-[hsl(var(--brand))] hover:underline">
+								Read more →
+							</a>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+	)}
+</Layout>

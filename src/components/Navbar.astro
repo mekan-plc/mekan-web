@@ -1,0 +1,98 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+	overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
+
+const links = [
+	{ href: '/#home', label: 'Home' },
+	{ href: '/#about', label: 'About' },
+	{ href: '/#services', label: 'Services' },
+	{ href: '/#projects', label: 'Projects' },
+	{ href: '/#testimonials', label: 'Testimonials' },
+	{ href: '/#blog', label: 'Blogs' },
+	{ href: '/#contact', label: 'Contact us' }
+];
+---
+
+<header
+	id="site-header"
+	data-overlay={overlay ? 'true' : 'false'}
+	class={
+		overlay
+			? 'group fixed inset-x-0 top-0 z-50 border-b border-transparent bg-transparent text-[hsl(var(--brand-foreground))] transition-all duration-300 data-[scrolled=true]:border-[hsl(var(--border))] data-[scrolled=true]:bg-[hsl(var(--background))]/95 data-[scrolled=true]:backdrop-blur-md data-[scrolled=true]:shadow-sm data-[scrolled=true]:text-[hsl(var(--foreground))]'
+			: 'group sticky top-0 z-50 border-b border-[hsl(var(--border))] bg-[hsl(var(--background))]/80 text-[hsl(var(--foreground))] backdrop-blur'
+	}
+>
+	<div class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
+		<a href="/" class="flex items-center gap-2 text-sm font-medium">
+			<span
+				class={
+					overlay
+						? 'inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[hsl(var(--brand-border))] bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))] group-data-[scrolled=true]:border-[hsl(var(--border))] group-data-[scrolled=true]:bg-[hsl(var(--muted))] group-data-[scrolled=true]:text-[hsl(var(--foreground))]'
+						: 'inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))] text-[hsl(var(--foreground))]'
+				}
+			>
+				<span class="text-sm">M</span>
+			</span>
+			<span
+				class={
+					overlay
+						? 'hidden md:inline text-[hsl(var(--brand-foreground))] group-data-[scrolled=true]:text-[hsl(var(--foreground))]'
+						: 'hidden md:inline'
+				}
+			>
+				Mekan
+			</span>
+		</a>
+
+		<nav class="hidden items-center gap-6 text-sm font-semibold md:flex">
+			{links.map((l) => (
+				<a
+					href={l.href}
+					class={
+						overlay
+							? 'text-[hsl(var(--brand-foreground))] opacity-80 hover:opacity-100 group-data-[scrolled=true]:text-[hsl(var(--foreground))] group-data-[scrolled=true]:opacity-80 group-data-[scrolled=true]:hover:opacity-100'
+							: 'text-[hsl(var(--foreground))] opacity-80 hover:opacity-100'
+					}
+				>
+					{l.label}
+				</a>
+			))}
+		</nav>
+
+		<div class="flex items-center gap-3">
+			<a
+				href="/#contact"
+				class={
+					overlay
+						? 'hidden rounded-md border border-[hsl(var(--brand-border))] bg-[hsl(var(--brand))]/30 px-3 py-2 text-sm font-semibold text-[hsl(var(--brand-foreground))] group-data-[scrolled=true]:border-[hsl(var(--border))] group-data-[scrolled=true]:bg-[hsl(var(--primary))] group-data-[scrolled=true]:text-[hsl(var(--primary-foreground))] md:inline-flex'
+						: 'hidden rounded-md bg-[hsl(var(--primary))] px-3 py-2 text-sm font-semibold text-[hsl(var(--primary-foreground))] md:inline-flex'
+				}
+			>
+				Get in touch
+			</a>
+			<ThemeToggle />
+		</div>
+	</div>
+</header>
+
+<script is:inline>
+	(() => {
+		const header = document.getElementById('site-header');
+		if (!header) return;
+
+		const isOverlay = header.dataset.overlay === 'true';
+
+		const apply = () => {
+			const scrolled = window.scrollY > 8;
+			header.dataset.scrolled = scrolled ? 'true' : 'false';
+		};
+
+		apply();
+		window.addEventListener('scroll', apply, { passive: true });
+	})();
+</script>

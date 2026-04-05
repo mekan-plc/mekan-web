@@ -1,0 +1,178 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const projects = [
+	{
+		id: 1,
+		title: 'Ethiopian Coffee Export Compliance Program',
+		client: 'Regional Cooperative Union',
+		location: 'Sidama, Ethiopia',
+		duration: '2022-2024',
+		description: 'Comprehensive certification support enabling 2,000+ smallholder coffee farmers to achieve GlobalG.A.P. and organic certifications, opening access to premium European markets.',
+		results: [
+			'2,000+ farmers certified',
+			'40% increase in export prices',
+			'15 new EU market connections',
+			'Zero major non-conformities in audits'
+		],
+		services: ['Quality Assurance', 'Certification Support', 'Capacity Building'],
+		image: null
+	},
+	{
+		id: 2,
+		title: 'EU Market Entry Strategy & Implementation',
+		client: 'Agro-Processing SME',
+		location: 'Addis Ababa, Ethiopia',
+		duration: '2023',
+		description: 'End-to-end compliance framework development and implementation, enabling a local agro-processor to achieve first-ever exports to European markets.',
+		results: [
+			'First EU export completed in 8 months',
+			'BRCGS certification achieved',
+			'€500K+ annual export revenue',
+			'Zero rejection rate at EU border'
+		],
+		services: ['Agribusiness Development', 'Quality Assurance', 'Certification Support'],
+		image: null
+	},
+	{
+		id: 3,
+		title: 'Climate Resilience & Food Systems Program',
+		client: 'International NGO',
+		location: 'Multiple Regions, Ethiopia',
+		duration: '2021-2023',
+		description: 'Large-scale food systems diagnostics and climate resilience training program implemented across 15 districts, benefiting over 50,000 farming households.',
+		results: [
+			'50,000+ households trained',
+			'30% improvement in climate adaptation',
+			'12 district-level policies influenced',
+			'25% reduction in post-harvest losses'
+		],
+		services: ['Food Systems', 'Capacity Building', 'Climate Resilience'],
+		image: null
+	},
+	{
+		id: 4,
+		title: 'Horticultural Value Chain Development',
+		client: 'Export Association',
+		location: 'Oromia, Ethiopia',
+		duration: '2022-2023',
+		description: 'Strategic value chain optimization project improving quality, traceability, and market access for horticultural exporters targeting Middle Eastern and European markets.',
+		results: [
+			'Export volume increased by 60%',
+			'Traceability system implemented',
+			'15 new buyer relationships',
+			'Average quality score improved by 35%'
+		],
+		services: ['Agribusiness Development', 'Quality Assurance', 'GAP Implementation'],
+		image: null
+	},
+	{
+		id: 5,
+		title: 'Integrated Farm Management System Rollout',
+		client: 'Commercial Farm Group',
+		location: 'Amhara Region, Ethiopia',
+		duration: '2023',
+		description: 'Design and implementation of comprehensive IFM systems across 5 commercial farms, integrating sustainability, productivity, and compliance into unified operations.',
+		results: [
+			'25% reduction in input costs',
+			'IFS certification achieved',
+			'Water usage optimized by 40%',
+			'Employee safety incidents reduced by 80%'
+		],
+		services: ['Agricultural Productivity', 'Sustainability', 'Certification Support'],
+		image: null
+	},
+	{
+		id: 6,
+		title: 'Emergency Food Safety Response',
+		client: 'Government Agency',
+		location: 'Nationwide, Ethiopia',
+		duration: '2023',
+		description: 'Rapid deployment of food safety assessment and corrective action teams in response to export market alerts, preventing trade disruptions and reputational damage.',
+		results: [
+			'50+ facilities assessed in 30 days',
+			'100% of critical issues resolved',
+			'Zero export suspensions',
+			'Preventive system implemented nationwide'
+		],
+		services: ['Quality Assurance', 'Crisis Management', 'Systems Implementation'],
+		image: null
+	}
+];
+---
+
+<Layout title="Projects | Mekan">
+	<section class="bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))]">
+		<div class="container py-24">
+			<h1 class="text-3xl md:text-4xl font-semibold tracking-tight">Our Projects</h1>
+			<p class="mt-4 text-lg text-[hsl(var(--brand-foreground))]/80 max-w-2xl">
+				Real results for real clients. Explore our portfolio of successful agribusiness consulting projects across Ethiopia and East Africa.
+			</p>
+		</div>
+	</section>
+
+	<section class="section bg-[hsl(var(--background))]">
+		<div class="container">
+			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+				{projects.map((project) => (
+					<div class="card overflow-hidden transition-all hover:shadow-lg group">
+						<div class="h-56 bg-[hsl(var(--muted))] flex items-center justify-center relative overflow-hidden">
+							<div class="text-7xl text-[hsl(var(--muted-foreground))]/20">📁</div>
+							<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+						</div>
+						<div class="p-6">
+							<div class="flex items-center gap-2 text-xs text-[hsl(var(--muted-foreground))]">
+								<span>{project.location}</span>
+								<span>•</span>
+								<span>{project.duration}</span>
+							</div>
+							<h3 class="mt-3 text-xl font-semibold group-hover:text-[hsl(var(--brand))] transition-colors">
+								{project.title}
+							</h3>
+							<p class="mt-2 text-sm text-[hsl(var(--muted-foreground))]">{project.client}</p>
+							<p class="mt-4 text-sm leading-relaxed text-[hsl(var(--foreground))]/80">
+								{project.description}
+							</p>
+							<div class="mt-4 flex flex-wrap gap-2">
+								{project.services.map((service) => (
+									<span class="text-xs px-2 py-1 rounded-full bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))]">
+										{service}
+									</span>
+								))}
+							</div>
+							<div class="mt-6 pt-6 border-t border-[hsl(var(--border))]">
+								<p class="text-xs font-medium text-[hsl(var(--brand))] uppercase tracking-wide mb-3">Key Results</p>
+								<ul class="space-y-2">
+									{project.results.map((result) => (
+										<li class="flex items-start gap-2 text-sm">
+											<span class="text-[hsl(var(--brand))]">✓</span>
+											<span>{result}</span>
+										</li>
+									))}
+								</ul>
+							</div>
+							<a 
+								href={`/projects/${project.id}`}
+								class="mt-6 inline-flex items-center gap-1 text-sm font-medium text-[hsl(var(--brand))] hover:underline"
+							>
+								Read full case study →
+							</a>
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-[hsl(var(--brand))] py-16 text-[hsl(var(--brand-foreground))]">
+		<div class="container text-center">
+			<h2 class="text-2xl font-semibold tracking-tight">Have a project in mind?</h2>
+			<p class="mt-3 text-[hsl(var(--brand-foreground))]/80">
+				Let's discuss how we can help you achieve your agribusiness goals.
+			</p>
+			<a href="/contact" class="btn btn-brand mt-6 inline-block">
+				Start a conversation
+			</a>
+		</div>
+	</section>
+</Layout>

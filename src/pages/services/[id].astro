@@ -1,0 +1,189 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const services = {
+	'quality-assurance': {
+		title: 'Quality Assurance & Regulatory Compliance',
+		description: 'Comprehensive food safety systems and regulatory compliance solutions for agribusinesses targeting global markets.',
+		features: [
+			'GlobalG.A.P. certification preparation and maintenance',
+			'HACCP system implementation and training',
+			'BRCGS and IFS private label standard compliance',
+			'EU market entry readiness assessments',
+			'CSR/ESG compliance and reporting',
+			'OHS and environmental benchmarking',
+			'Third-party audit representation',
+			'Gap analysis and corrective action planning'
+		],
+		benefits: [
+			'Access to premium international markets',
+			'Reduced compliance risks and penalties',
+			'Improved product quality and safety',
+			'Enhanced brand reputation and trust',
+			'Streamlined certification processes'
+		]
+	},
+	'agribusiness-development': {
+		title: 'Agribusiness Development & Strategic Growth',
+		description: 'Strategic consulting to help agribusinesses scale operations, enter new markets, and achieve sustainable growth.',
+		features: [
+			'Scaling strategy development and implementation',
+			'SME business plan development',
+			'Performance monitoring systems',
+			'Executive coaching and advisory',
+			'Management capacity building',
+			'Value chain development and optimization',
+			'Market entry strategy and execution',
+			'Partnership and network facilitation'
+		],
+		benefits: [
+			'Increased operational efficiency',
+			'Sustainable revenue growth',
+			'Stronger market positioning',
+			'Improved stakeholder management',
+			'Access to new business opportunities'
+		]
+	},
+	'agricultural-productivity': {
+		title: 'Agricultural Productivity & Sustainability',
+		description: 'Practical solutions for improving farm productivity while implementing sustainable agricultural practices.',
+		features: [
+			'Good Agricultural Practices (GAP) implementation',
+			'Post-harvest safety and handling protocols',
+			'Integrated Pest Management (IPM) programs',
+			'Safe chemical use and management',
+			'Soil and water conservation strategies',
+			'Integrated Farm Management (IFM) systems',
+			'Sustainable farming technique training',
+			'Environmental impact assessments'
+		],
+		benefits: [
+			'Higher crop yields and quality',
+			'Reduced input costs and waste',
+			'Improved environmental stewardship',
+			'Better resource utilization',
+			'Long-term farm viability'
+		]
+	},
+	'food-systems': {
+		title: 'Food Systems & Climate Resilience',
+		description: 'Strategic approaches to building resilient food systems that can withstand climate challenges and market disruptions.',
+		features: [
+			'Food system diagnostics and assessments',
+			'Policy and strategy development',
+			'Climate risk management frameworks',
+			'Nutrition-sensitive programming',
+			'Supply chain resilience planning',
+			'Adaptation strategy development',
+			'Stakeholder engagement facilitation',
+			'Impact monitoring and evaluation'
+		],
+		benefits: [
+			'Enhanced climate adaptation capacity',
+			'Improved food security outcomes',
+			'Stronger institutional frameworks',
+			'Better donor and investor confidence',
+			'Measurable development impact'
+		]
+	},
+	'capacity-building': {
+		title: 'Capacity Building & Training',
+		description: 'Comprehensive training programs and organizational development services to build internal capabilities.',
+		features: [
+			'Customized training program design',
+			'Field-level skills transfer programs',
+			'Organizational development consulting',
+			'Leadership and management training',
+			'Technical skills development',
+			'Train-the-trainer programs',
+			'Knowledge management systems',
+			'Performance tracking tools'
+		],
+		benefits: [
+			'Skilled and empowered workforce',
+			'Improved organizational performance',
+			'Sustainable internal expertise',
+			'Better employee retention',
+			'Knowledge preservation and transfer'
+		]
+	},
+	'certification-support': {
+		title: 'Certification & Audit Support',
+		description: 'Expert guidance through the certification process from initial assessment to successful audit completion.',
+		features: [
+			'Pre-certification gap analysis',
+			'Certification roadmap development',
+			'Documentation and system setup',
+			'Third-party audit representation',
+			'Corrective action support',
+			'Maintenance audit preparation',
+			'Certification body liaison',
+			'Continuous compliance monitoring'
+		],
+		benefits: [
+			'Faster certification achievement',
+			'First-time audit success',
+			'Reduced certification costs',
+			'Ongoing compliance assurance',
+			'Audit-ready documentation'
+		]
+	}
+};
+
+const { id } = Astro.params;
+const service = id && services[id as keyof typeof services];
+
+if (!service) {
+	return Astro.redirect('/services');
+}
+---
+
+<Layout title={`${service.title} | Mekan`}>
+	<section class="bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))]">
+		<div class="container py-24">
+			<a href="/services" class="text-sm text-[hsl(var(--brand-foreground))]/70 hover:text-[hsl(var(--brand-foreground))] transition-colors">
+				← Back to services
+			</a>
+			<h1 class="mt-6 text-3xl md:text-4xl font-semibold tracking-tight max-w-3xl">
+				{service.title}
+			</h1>
+			<p class="mt-4 text-lg text-[hsl(var(--brand-foreground))]/80 max-w-2xl">
+				{service.description}
+			</p>
+		</div>
+	</section>
+
+	<section class="section bg-[hsl(var(--background))]">
+		<div class="container">
+			<div class="grid gap-12 lg:grid-cols-3">
+				<div class="lg:col-span-2">
+					<h2 class="text-2xl font-semibold tracking-tight">What we offer</h2>
+					<div class="mt-6 grid gap-4 sm:grid-cols-2">
+						{service.features.map((feature) => (
+							<div class="flex items-start gap-3 p-4 rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--muted))]">
+								<div class="w-6 h-6 rounded-full bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))] flex items-center justify-center text-sm flex-shrink-0">✓</div>
+								<span class="text-sm">{feature}</span>
+							</div>
+						))}
+					</div>
+				</div>
+				<div>
+					<div class="card p-6 sticky top-24">
+						<h3 class="text-lg font-semibold">Key Benefits</h3>
+						<ul class="mt-4 space-y-3">
+							{service.benefits.map((benefit) => (
+								<li class="flex items-start gap-2 text-sm text-[hsl(var(--muted-foreground))]">
+									<span class="text-[hsl(var(--brand))]">→</span>
+									<span>{benefit}</span>
+								</li>
+							))}
+						</ul>
+						<a href="/contact" class="btn btn-primary w-full mt-6 text-center">
+							Get started
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>
