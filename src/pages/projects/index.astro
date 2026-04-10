@@ -101,17 +101,35 @@ const projects = [
 ];
 ---
 
-<Layout title="Projects | Mekan">
-	<section class="bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))]">
-		<div class="container py-24">
+<Layout title="Projects | Mekan" overlayNav>
+	<section class="relative text-white overflow-hidden">
+		{/* Background image - logo */}
+		<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/logo.png');"></div>
+		{/* Navy overlay with transparency */}
+		<div class="absolute inset-0 bg-[#0F2C59]/90"></div>
+		{/* Content */}
+		<div class="relative container pt-32 pb-28">
+			{/* Breadcrumb */}
+			<nav class="flex items-center gap-2 text-sm text-white/70 mb-6">
+				<a href="/" class="hover:text-white transition-colors flex items-center gap-1">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+					</svg>
+					Home
+				</a>
+				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+				</svg>
+				<span class="text-white font-medium">Projects</span>
+			</nav>
 			<h1 class="text-3xl md:text-4xl font-semibold tracking-tight">Our Projects</h1>
-			<p class="mt-4 text-lg text-[hsl(var(--brand-foreground))]/80 max-w-2xl">
+			<p class="mt-4 text-lg text-white/80 max-w-2xl">
 				Real results for real clients. Explore our portfolio of successful agribusiness consulting projects across Ethiopia and East Africa.
 			</p>
 		</div>
 	</section>
 
-	<section class="section bg-[hsl(var(--background))]">
+	<section class="section bg-[hsl(var(--background))] border-t border-white/10">
 		<div class="container">
 			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 				{projects.map((project) => (
@@ -151,12 +169,6 @@ const projects = [
 									))}
 								</ul>
 							</div>
-							<a 
-								href={`/projects/${project.id}`}
-								class="mt-6 inline-flex items-center gap-1 text-sm font-medium text-[hsl(var(--brand))] hover:underline"
-							>
-								Read full case study →
-							</a>
 						</div>
 					</div>
 				))}
@@ -164,15 +176,4 @@ const projects = [
 		</div>
 	</section>
 
-	<section class="bg-[hsl(var(--brand))] py-16 text-[hsl(var(--brand-foreground))]">
-		<div class="container text-center">
-			<h2 class="text-2xl font-semibold tracking-tight">Have a project in mind?</h2>
-			<p class="mt-3 text-[hsl(var(--brand-foreground))]/80">
-				Let's discuss how we can help you achieve your agribusiness goals.
-			</p>
-			<a href="/contact" class="btn btn-brand mt-6 inline-block">
-				Start a conversation
-			</a>
-		</div>
-	</section>
 </Layout>

@@ -2,6 +2,16 @@
 import Layout from '../../layouts/Layout.astro';
 import { getPostBySlug, listPosts } from '../../lib/wp';
 
+export function getStaticPaths() {
+	// Static blog post slugs for pre-rendering
+	const slugs = [
+		'global-gap-certification-guide-2024',
+		'sustainable-farming-practices-2024',
+		'eu-export-compliance-2024'
+	];
+	return slugs.map(slug => ({ params: { slug } }));
+}
+
 const { slug } = Astro.params;
 
 if (!slug) {
@@ -110,34 +120,48 @@ function stripHtml(html: string) {
 }
 ---
 
-<Layout title={`${post.title.rendered.replace(/<[^>]*>/g, '')} | Mekan Insights`}>
+<Layout title={`${post.title.rendered.replace(/<[^>]*>/g, '')} | Mekan Insights`} overlayNav>
 	{/* Article Header */}
-	<section class="bg-[hsl(var(--brand))] py-20 md:py-24 text-[hsl(var(--brand-foreground))]">
-		<div class="container max-w-4xl">
-			<div class="flex items-center gap-2 text-sm text-[hsl(var(--brand-foreground))]/70 mb-6" data-aos="fade-up">
-				<a href="/blog" class="hover:text-[hsl(var(--brand-foreground))] transition-colors">Blog</a>
-				<span>/</span>
-				<span>{post.category || 'Insights'}</span>
-			</div>
+	<section class="relative text-white overflow-hidden">
+		<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/logo.png');"></div>
+		<div class="absolute inset-0 bg-[#0F2C59]/90"></div>
+		<div class="relative container max-w-4xl pt-32 pb-24">
+			{/* Breadcrumb */}
+			<nav class="flex items-center gap-2 text-sm text-white/70 mb-6" data-aos="fade-up">
+				<a href="/" class="hover:text-white transition-colors flex items-center gap-1">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+					</svg>
+					Home
+				</a>
+				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+				</svg>
+				<a href="/blog" class="hover:text-white transition-colors">Insights</a>
+				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+				</svg>
+				<span class="text-white font-medium">{post.category || 'Article'}</span>
+			</nav>
 			
 			{isSample && (
 				<div class="flex items-center gap-4 mb-6" data-aos="fade-up" data-aos-delay="100">
-					<div class="w-16 h-16 rounded-2xl bg-[hsl(var(--brand-foreground))]/10 flex items-center justify-center text-4xl">
+					<div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-4xl">
 						{post.icon}
 					</div>
 					<div>
-						<span class="px-3 py-1 rounded-full bg-[hsl(var(--brand-foreground))]/10 text-sm font-medium">
+						<span class="px-3 py-1 rounded-full bg-white/10 text-sm font-medium text-white">
 							{post.category}
 						</span>
 					</div>
 				</div>
 			)}
 
-			<h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight leading-tight" data-aos="fade-up" data-aos-delay="200">
+			<h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight leading-tight text-white" data-aos="fade-up" data-aos-delay="200">
 				{isSample ? post.title.rendered : <span set:html={post.title?.rendered ?? ''} />}
 			</h1>
 			
-			<div class="mt-6 flex flex-wrap items-center gap-6 text-sm text-[hsl(var(--brand-foreground))]/70" data-aos="fade-up" data-aos-delay="300">
+			<div class="mt-6 flex flex-wrap items-center gap-6 text-sm text-white/70" data-aos="fade-up" data-aos-delay="300">
 				<div class="flex items-center gap-2">
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -157,41 +181,97 @@ function stripHtml(html: string) {
 	</section>
 
 	{/* Article Content */}
-	<section class="section bg-[hsl(var(--background))]">
+	<section class="section bg-[hsl(var(--background))] border-t border-white/10">
 		<div class="container max-w-3xl">
-			<article class="prose prose-lg max-w-none prose-headings:text-[hsl(var(--foreground))] prose-p:text-[hsl(var(--muted-foreground))] prose-li:text-[hsl(var(--muted-foreground))] prose-strong:text-[hsl(var(--foreground))]" data-aos="fade-up">
+			{/* Intro Card */}
+			<div class="relative rounded-2xl bg-slate-100 dark:bg-[#1F2937] p-8 md:p-10 mb-10 overflow-hidden border-l-4 border-[#0F2C59] dark:border-[#7EA2CE]" data-aos="fade-up">
+				<div class="absolute left-0 top-0 bottom-0 w-1 bg-[#0F2C59] dark:bg-[#7EA2CE]"></div>
+				<div class="relative">
+					<div class="flex items-center gap-3 mb-4">
+						<div class="w-10 h-10 rounded-full bg-[#0F2C59] dark:bg-[#7EA2CE] text-white flex items-center justify-center">
+							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+							</svg>
+						</div>
+						<span class="text-sm font-medium text-[#0F2C59] dark:text-[#7EA2CE] uppercase tracking-wide">Overview</span>
+					</div>
+					<p class="text-lg leading-relaxed text-slate-700 dark:text-white/90">
+						{isSample 
+							? stripHtml(post.content.rendered).substring(0, 200) + '...'
+							: stripHtml(post.excerpt?.rendered ?? post.content?.rendered ?? '').substring(0, 200) + '...'
+						}
+					</p>
+				</div>
+			</div>
+
+			{/* Main Content */}
+			<article class="prose prose-lg max-w-none prose-headings:text-[hsl(var(--foreground))] prose-p:text-[hsl(var(--muted-foreground))] prose-li:text-[hsl(var(--muted-foreground))] prose-strong:text-[hsl(var(--foreground))] prose-a:text-[hsl(var(--brand))]" data-aos="fade-up" data-aos-delay="100">
 				{isSample ? (
 					<div set:html={post.content.rendered} />
 				) : (
-					<div class="card p-8 md:p-12">
-						<div class="prose prose-neutral max-w-none dark:prose-invert" set:html={post.content?.rendered ?? ''} />
-					</div>
+					<div set:html={post.content?.rendered ?? ''} />
 				)}
 			</article>
 
-			{/* Share and Navigation */}
-			<div class="mt-16 pt-8 border-t border-[hsl(var(--border))]" data-aos="fade-up">
-				<div class="flex flex-col sm:flex-row items-center justify-between gap-6">
-					<div class="flex items-center gap-4">
-						<span class="text-sm text-[hsl(var(--muted-foreground))]">Share this article:</span>
-						<div class="flex gap-3">
-							<button class="w-10 h-10 rounded-full bg-[hsl(var(--muted))] hover:bg-[hsl(var(--brand))] hover:text-[hsl(var(--brand-foreground))] flex items-center justify-center transition-all" aria-label="Share on Twitter">
+			{/* Share Section */}
+			<div class="mt-16" data-aos="fade-up">
+				<div class="relative rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-[#1F2937] dark:to-[#0F172A] p-8 overflow-hidden">
+					{/* Decorative elements */}
+					<div class="absolute top-0 right-0 w-32 h-32 bg-[#0F2C59]/5 dark:bg-[#7EA2CE]/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+					<div class="absolute bottom-0 left-0 w-24 h-24 bg-[#0F2C59]/5 dark:bg-[#7EA2CE]/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+					
+					<div class="relative text-center">
+						<div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#0F2C59] dark:bg-[#7EA2CE] text-white mb-4">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold text-[hsl(var(--foreground))] mb-2">Share this article</h3>
+						<p class="text-sm text-[hsl(var(--muted-foreground))] mb-6">Found this helpful? Share it with your network.</p>
+						
+						<div class="flex items-center justify-center gap-4 flex-wrap">
+							<a 
+								href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title.rendered.replace(/<[^>]*>/g, ''))}&url=${encodeURIComponent(`https://mekanplc.com/blog/${slug}`)}`}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="group flex items-center gap-3 px-6 py-3 rounded-xl bg-[#1DA1F2] hover:bg-[#1a8cd8] text-white transition-all hover:scale-105 hover:shadow-lg"
+							>
 								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-							</button>
-							<button class="w-10 h-10 rounded-full bg-[hsl(var(--muted))] hover:bg-[hsl(var(--brand))] hover:text-[hsl(var(--brand-foreground))] flex items-center justify-center transition-all" aria-label="Share on LinkedIn">
+								<span class="font-medium">Twitter</span>
+							</a>
+							
+							<a 
+								href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://mekanplc.com/blog/${slug}`)}`}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="group flex items-center gap-3 px-6 py-3 rounded-xl bg-[#0A66C2] hover:bg-[#0958a8] text-white transition-all hover:scale-105 hover:shadow-lg"
+							>
 								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-							</button>
-							<button class="w-10 h-10 rounded-full bg-[hsl(var(--muted))] hover:bg-[hsl(var(--brand))] hover:text-[hsl(var(--brand-foreground))] flex items-center justify-center transition-all" aria-label="Share via Email">
+								<span class="font-medium">LinkedIn</span>
+							</a>
+							
+							<a 
+								href={`mailto:?subject=${encodeURIComponent(post.title.rendered.replace(/<[^>]*>/g, ''))}&body=${encodeURIComponent(`Check out this article: https://mekanplc.com/blog/${slug}`)}`}
+								class="group flex items-center gap-3 px-6 py-3 rounded-xl bg-slate-600 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white transition-all hover:scale-105 hover:shadow-lg"
+							>
 								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
 								</svg>
-							</button>
+								<span class="font-medium">Email</span>
+							</a>
 						</div>
 					</div>
-					<a href="/blog" class="btn btn-secondary">
-						← Back to all articles
-					</a>
 				</div>
+			</div>
+
+			{/* Back to articles */}
+			<div class="mt-8 text-center" data-aos="fade-up">
+				<a href="/blog" class="inline-flex items-center gap-2 text-sm font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--brand))] transition-colors">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+					</svg>
+					← Back to all articles
+				</a>
 			</div>
 		</div>
 	</section>

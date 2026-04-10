@@ -1,0 +1,349 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// Sample resources data - can be replaced with CMS data later
+const resources = [
+	{
+		id: 1,
+		title: 'GlobalG.A.P. Certification Checklist',
+		description: 'A comprehensive step-by-step checklist to help Ethiopian agricultural exporters achieve GlobalG.A.P. certification. Includes document requirements, audit preparation tips, and compliance tracking.',
+		category: 'Certification',
+		icon: '🌱',
+		fileSize: '2.4 MB',
+		fileType: 'PDF',
+		downloadUrl: '/resources/global-gap-checklist.pdf',
+		features: [
+			'Pre-audit preparation guide',
+			'Documentation templates',
+			'Compliance tracking sheets',
+			'Common pitfalls to avoid'
+		]
+	},
+	{
+		id: 2,
+		title: 'EU Export Compliance Guide 2024',
+		description: 'Complete guide to new EU regulations for Ethiopian agribusinesses. Stay compliant with the latest deforestation-free product regulations and enhanced food safety standards.',
+		category: 'Compliance',
+		icon: '📋',
+		fileSize: '3.1 MB',
+		fileType: 'PDF',
+		downloadUrl: '/resources/eu-compliance-guide-2024.pdf',
+		features: [
+			'New EU due diligence requirements',
+			'MRL updates for pesticides',
+			'Traceability system guidelines',
+			'Deforestation-free compliance'
+		]
+	},
+	{
+		id: 3,
+		title: 'Sustainable Farming Handbook',
+		description: 'Practical handbook for implementing sustainable farming practices in Ethiopian agriculture. Covers water conservation, soil health, and integrated pest management.',
+		category: 'Sustainability',
+		icon: '🌍',
+		fileSize: '4.8 MB',
+		fileType: 'PDF',
+		downloadUrl: '/resources/sustainable-farming-handbook.pdf',
+		features: [
+			'IPM implementation guide',
+			'Water conservation techniques',
+			'Soil health assessment tools',
+			'Climate adaptation strategies'
+		]
+	},
+	{
+		id: 4,
+		title: 'Market Access Roadmap',
+		description: 'Strategic roadmap for accessing premium international markets. Includes market analysis, entry strategies, and partnership opportunities for Ethiopian exporters.',
+		category: 'Strategy',
+		icon: '📊',
+		fileSize: '1.9 MB',
+		fileType: 'PDF',
+		downloadUrl: '/resources/market-access-roadmap.pdf',
+		features: [
+			'Market analysis by region',
+			'Entry strategy templates',
+			'Buyer contact frameworks',
+			'Partnership negotiation tips'
+		]
+	},
+	{
+		id: 5,
+		title: 'Coffee Quality Standards Guide',
+		description: 'Detailed guide on international coffee quality standards and grading systems. Essential for Ethiopian coffee exporters seeking premium market access.',
+		category: 'Coffee',
+		icon: '☕',
+		fileSize: '2.7 MB',
+		fileType: 'PDF',
+		downloadUrl: '/resources/coffee-quality-standards.pdf',
+		features: [
+			'SCA grading criteria',
+			'Cupping protocols',
+			'Quality control checklists',
+			'Export preparation guide'
+		]
+	},
+	{
+		id: 6,
+		title: 'Financial Planning Toolkit',
+		description: 'Comprehensive financial planning tools for agribusiness growth. Includes budgeting templates, investment calculators, and cash flow management guides.',
+		category: 'Finance',
+		icon: '💰',
+		fileSize: '1.5 MB',
+		fileType: 'PDF',
+		downloadUrl: '/resources/financial-planning-toolkit.pdf',
+		features: [
+			'Budget planning templates',
+			'ROI calculators',
+			'Cash flow projections',
+			'Investment readiness checklist'
+		]
+	}
+];
+---
+
+<Layout title="Free Resources | Mekan" overlayNav>
+	{/* Hero with logo background */}
+	<section class="relative text-white overflow-hidden">
+		<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/logo.png');"></div>
+		<div class="absolute inset-0 bg-[#0F2C59]/90"></div>
+		<div class="relative container pt-32 pb-28">
+			{/* Breadcrumb */}
+			<nav class="flex items-center gap-2 text-sm text-white/70 mb-6">
+				<a href="/" class="hover:text-white transition-colors flex items-center gap-1">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+					</svg>
+					Home
+				</a>
+				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+				</svg>
+				<span class="text-white font-medium">Resources</span>
+			</nav>
+			<h1 class="text-3xl md:text-4xl font-semibold tracking-tight">Free Resources</h1>
+			<p class="mt-4 text-lg text-white/80 max-w-2xl">
+				Downloadable guides, checklists, and tools to help your agribusiness grow. Expert insights at no cost.
+			</p>
+		</div>
+	</section>
+
+	{/* Resources Grid */}
+	<section class="section bg-[hsl(var(--background))] border-t border-white/10">
+		<div class="container">
+			{/* Filters */}
+			<div class="flex flex-wrap items-center gap-3 mb-10">
+				<span class="text-sm text-[hsl(var(--muted-foreground))]">Filter by category:</span>
+				<div class="flex flex-wrap gap-2" id="category-filters">
+					{['All', 'Certification', 'Compliance', 'Sustainability', 'Strategy', 'Coffee', 'Finance'].map((cat, i) => (
+						<button 
+							class={`category-btn px-4 py-2 rounded-full text-sm font-medium transition-all ${i === 0 ? 'bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))]' : 'bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--brand))] hover:text-[hsl(var(--brand-foreground))]'}`}
+							data-category={cat}
+						>
+							{cat}
+						</button>
+					))}
+				</div>
+			</div>
+
+			{/* Active filter indicator */}
+			<div id="active-filter" class="hidden mb-6 text-sm">
+				<span class="text-[hsl(var(--muted-foreground))]">Showing: </span>
+				<span id="active-filter-name" class="font-medium text-[hsl(var(--brand))]">All</span>
+				<button id="clear-filter" class="ml-2 text-xs text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--brand))] underline">Clear filter</button>
+			</div>
+
+			{/* Resources Cards */}
+			<div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3" id="resources-grid">
+				{resources.map((resource) => (
+					<div
+						class="resource-card group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2"
+						data-category={resource.category}
+					>
+						{/* Glow effect on hover */}
+						<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
+						
+						{/* Resource thumbnail */}
+						<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
+							<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">{resource.icon}</div>
+							<div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-[hsl(var(--brand))]/90 text-[hsl(var(--brand-foreground))] text-xs font-medium">
+								{resource.category}
+							</div>
+							{/* PDF badge */}
+							<div class="absolute top-4 right-4 px-2 py-1 rounded bg-red-500/90 text-white text-xs font-semibold">
+								PDF
+							</div>
+						</div>
+						
+						<div class="relative p-6 flex flex-col flex-grow">
+							<h3 class="text-lg font-semibold text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">
+								{resource.title}
+							</h3>
+							<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">
+								{resource.description}
+							</p>
+							
+							{/* Features list */}
+							<div class="mt-4 pt-4 border-t border-[hsl(var(--border))]">
+								<ul class="space-y-2">
+									{resource.features.map((feature) => (
+										<li class="flex items-start gap-2 text-xs text-[hsl(var(--muted-foreground))]">
+											<svg class="w-4 h-4 text-[hsl(var(--brand))] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+											</svg>
+											<span>{feature}</span>
+										</li>
+										))}
+									</ul>
+								</div>
+							
+							{/* Download button - only PDFs allowed */}
+							<div class="mt-6 flex items-center justify-between">
+								<span class="text-xs text-[hsl(var(--muted-foreground))]">{resource.fileSize}</span>
+								<a 
+									href={resource.downloadUrl}
+									class="download-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))] text-sm font-medium transition-all hover:bg-[hsl(var(--brand))]/90 hover:scale-105 hover:shadow-lg"
+									download
+									data-filename={resource.downloadUrl.split('/').pop()}
+								>
+									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+									</svg>
+									Download PDF
+								</a>
+							</div>
+						</div>
+					</div>
+				))}
+			</div>
+
+			{/* Contact CTA */}
+			<div class="mt-16 relative rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-[#1F2937] dark:to-[#0F172A] p-8 overflow-hidden">
+				{/* Decorative elements */}
+				<div class="absolute top-0 right-0 w-32 h-32 bg-[#0F2C59]/5 dark:bg-[#7EA2CE]/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+				<div class="absolute bottom-0 left-0 w-24 h-24 bg-[#0F2C59]/5 dark:bg-[#7EA2CE]/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+				
+				<div class="relative text-center">
+					<div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#0F2C59] dark:bg-[#7EA2CE] text-white mb-4">
+						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+						</svg>
+					</div>
+					<h3 class="text-xl font-semibold text-[hsl(var(--foreground))] mb-2">Need custom resources?</h3>
+					<p class="text-sm text-[hsl(var(--muted-foreground))] mb-6">Why don't you reach out to us directly? We're here to help.</p>
+					
+					<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+						<a 
+							href="tel:+251911234567"
+							class="group flex items-center gap-3 px-6 py-3 rounded-xl bg-[#0F2C59] hover:bg-[#0a1f3d] dark:bg-[#7EA2CE] dark:hover:bg-[#6b8ab0] text-white transition-all hover:scale-105 hover:shadow-lg"
+						>
+							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+							</svg>
+							<span class="font-medium">Call us</span>
+						</a>
+						
+						<a 
+							href="mailto:info@mekanconsultancy.com"
+							class="group flex items-center gap-3 px-6 py-3 rounded-xl bg-slate-600 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white transition-all hover:scale-105 hover:shadow-lg"
+						>
+							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+							</svg>
+							<span class="font-medium">Email us</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		// Category filtering
+		const filterButtons = document.querySelectorAll('.category-btn');
+		const resourceCards = document.querySelectorAll('.resource-card');
+		const activeFilterDiv = document.getElementById('active-filter');
+		const activeFilterName = document.getElementById('active-filter-name');
+		const clearFilterBtn = document.getElementById('clear-filter');
+
+		function filterResources(category) {
+			// Update button styles
+			filterButtons.forEach(btn => {
+				if (btn.dataset.category === category) {
+					btn.classList.remove('bg-[hsl(var(--muted))]', 'text-[hsl(var(--muted-foreground))]');
+					btn.classList.add('bg-[hsl(var(--brand))]', 'text-[hsl(var(--brand-foreground))]');
+				} else {
+					btn.classList.remove('bg-[hsl(var(--brand))]', 'text-[hsl(var(--brand-foreground))]');
+					btn.classList.add('bg-[hsl(var(--muted))]', 'text-[hsl(var(--muted-foreground))]');
+				}
+			});
+
+			// Filter cards
+			resourceCards.forEach(card => {
+				if (category === 'All' || card.dataset.category === category) {
+					card.style.display = 'flex';
+					card.style.opacity = '1';
+					card.style.transform = 'none';
+					card.style.visibility = 'visible';
+					card.style.animation = 'fadeIn 0.3s ease-out';
+				} else {
+					card.style.display = 'none';
+				}
+			});
+
+			// Show/hide active filter indicator
+			if (category !== 'All') {
+				activeFilterDiv.classList.remove('hidden');
+				activeFilterName.textContent = category;
+			} else {
+				activeFilterDiv.classList.add('hidden');
+			}
+		}
+
+		// Initialize - ensure all cards are visible
+		resourceCards.forEach(card => {
+			card.style.opacity = '1';
+			card.style.transform = 'none';
+			card.style.visibility = 'visible';
+		});
+
+		// Add click handlers to filter buttons
+		filterButtons.forEach(btn => {
+			btn.addEventListener('click', () => {
+				const category = btn.dataset.category;
+				filterResources(category);
+			});
+		});
+
+		// Clear filter button
+		clearFilterBtn?.addEventListener('click', () => {
+			filterResources('All');
+		});
+
+		// PDF download validation
+		document.querySelectorAll('.download-btn').forEach(btn => {
+			btn.addEventListener('click', (e) => {
+				const filename = btn.dataset.filename;
+				if (!filename || !filename.toLowerCase().endsWith('.pdf')) {
+					e.preventDefault();
+					alert('Only PDF files can be downloaded.');
+					return false;
+				}
+			});
+		});
+	</script>
+
+	<style>
+		@keyframes fadeIn {
+			from { opacity: 0; transform: translateY(10px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+		
+		/* Force cards to be visible - override any AOS styles */
+		.resource-card {
+			opacity: 1 !important;
+			transform: none !important;
+			visibility: visible !important;
+		}
+	</style>
+</Layout>

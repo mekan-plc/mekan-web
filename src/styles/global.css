@@ -10,14 +10,14 @@
     --muted: 60 5% 92%;                /* Subtle warm gray */
     --muted-foreground: 220 9% 46%;    /* Warm gray text */
     --border: 60 5% 88%;               /* Soft borders */
-    --ring: 145 45% 18%;               /* Brand focus ring */
-    --primary: 145 45% 18%;            /* Deep forest green #1B4332 */
-    --primary-foreground: 60 7% 96%;   /* Off-white on primary */
+    --ring: 216 71% 20%;               /* Brand focus ring - Deep Navy #0F2C59 */
+    --primary: 216 71% 20%;            /* Deep Navy #0F2C59 */
+    --primary-foreground: 0 0% 100%;   /* White on primary */
     
-    /* Brand Colors - The Hero */
-    --brand: 145 45% 18%;              /* Deep forest green #1B4332 */
-    --brand-foreground: 60 7% 96%;     /* Warm off-white on brand */
-    --brand-border: 145 30% 28%;       /* Muted green border */
+    /* Brand Colors - The Hero - Deep Premium Navy */
+    --brand: 216 71% 20%;              /* Deep Navy #0F2C59 */
+    --brand-foreground: 0 0% 100%;   /* White on brand */
+    --brand-border: 216 50% 30%;       /* Muted navy border */
     
     /* Accent - Golden Amber */
     --accent: 38 92% 50%;              /* Golden amber #D97706 */
@@ -31,14 +31,14 @@
     --muted: 220 8% 14%;              /* Soft dark surface */
     --muted-foreground: 220 8% 64%;    /* Muted gray text */
     --border: 220 8% 20%;             /* Subtle dark borders */
-    --ring: 145 45% 18%;               /* Brand focus ring - same as light */
-    --primary: 145 45% 18%;            /* Deep forest green #1B4332 - same as light */
-    --primary-foreground: 60 7% 96%;   /* Off-white on primary */
+    --ring: 216 71% 20%;               /* Brand focus ring - Deep Navy */
+    --primary: 216 71% 20%;            /* Deep Navy #0F2C59 - same as light */
+    --primary-foreground: 0 0% 100%;   /* White on primary */
     
     /* Brand Colors - Dark Mode - SAME as light for consistency */
-    --brand: 145 45% 18%;              /* Deep forest green #1B4332 */
-    --brand-foreground: 60 7% 96%;       /* Warm off-white */
-    --brand-border: 145 30% 28%;        /* Green border */
+    --brand: 216 71% 20%;              /* Deep Navy #0F2C59 */
+    --brand-foreground: 0 0% 100%;     /* White */
+    --brand-border: 216 50% 30%;       /* Navy border */
     
     /* Accent - Soft Gold */
     --accent: 45 90% 60%;              /* Soft gold #FBBF24 */

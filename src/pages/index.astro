@@ -83,52 +83,101 @@ function stripHtml(html: string) {
 ---
 
 <Layout overlayNav>
-	<!-- Hero: Background image slideshow with Partners -->
-	<section id="home" class="relative bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))] overflow-hidden">
-		{/* Background Image Slideshow */}
-		<div class="absolute inset-0 z-0">
-			{[1, 2, 3, 4, 5].map((num, index) => (
-				<div
-					class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out hero-slide"
-					style={`
-						background-image: url('/hero/${num}.jpg');
-						opacity: ${index === 0 ? '1' : '0'};
-						animation: heroFade ${5 * 8}s infinite;
-						animation-delay: ${index * 8}s;
-					`}
-				/>
-			))}
-			{/* Lighter overlay for more visible images - reduced opacity */}
-			<div class="absolute inset-0 bg-gradient-to-r from-[hsl(var(--brand))]/40 via-[hsl(var(--brand))]/25 to-[hsl(var(--brand))]/15" />
-		</div>
-
-		<div class="container pb-12 pt-32 md:pt-40 relative z-10" data-aos="fade-up" data-aos-duration="800">
-			<div class="max-w-3xl">
-				<p class="text-sm font-medium tracking-wide text-[hsl(var(--brand-foreground))]/70 uppercase">
-					Quality Management & Training PLC
-				</p>
-				<h1 class="mt-6 text-balance text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl">
-					Empowering Sustainable Growth in Global Agribusiness
+	<!-- Hero: World-Class Design -->
+	<section id="home" class="relative w-full min-h-screen overflow-hidden flex">
+		{/* LEFT PANEL - Premium Navy with Depth */}
+		<div
+			class="relative w-full lg:w-[46%] xl:w-[46%] text-[hsl(var(--brand-foreground))] flex flex-col justify-center px-6 sm:px-10 lg:px-14 xl:px-20 pt-24 pb-28 lg:pt-24 lg:pb-32 lg:min-h-screen z-10"
+			style="background: linear-gradient(to right, #0A1628 0%, #0F2C59 25%, rgba(15, 44, 89, 0.9) 40%, rgba(15, 44, 89, 0.7) 55%, rgba(15, 44, 89, 0.4) 70%, rgba(15, 44, 89, 0.15) 85%, rgba(15, 44, 89, 0.05) 95%, transparent 100%);"
+		>
+			{/* Subtle pattern overlay */}
+			<div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+			
+			{/* Glowing accent */}
+			<div class="absolute top-1/4 -left-20 w-40 h-40 bg-[#7EA2CE]/20 rounded-full blur-3xl"></div>
+			<div class="absolute bottom-1/4 -right-10 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+			
+			<div class="relative z-10 max-w-lg">
+				{/* Top accent line + tag */}
+				<div class="flex items-center gap-3 mb-4">
+					<div class="w-8 h-[2px] bg-gradient-to-r from-white/60 to-transparent"></div>
+					<span class="text-[11px] font-medium tracking-[0.15em] text-white/60 uppercase">
+						EST. 2009
+					</span>
+				</div>
+				
+				{/* Main Headline */}
+				<h1 class="text-4xl sm:text-5xl lg:text-[3.75rem] xl:text-6xl font-bold tracking-tight leading-[1.05]">
+					<span class="block text-white">Global Agribusiness</span>
+					<span class="block mt-1 text-[#7EA2CE]">
+						Excellence
+					</span>
 				</h1>
-				<p class="mt-6 max-w-lg text-pretty text-lg leading-relaxed text-[hsl(var(--brand-foreground))]/80">
-					Comprehensive consulting, compliance, and strategic solutions for a resilient future.
+				
+				{/* Subtitle */}
+				<p class="mt-4 text-sm lg:text-base text-white/60 max-w-sm leading-relaxed">
+					Strategic compliance, sustainable practices, and market-ready certification for African agriculture.
 				</p>
-				<div class="mt-10 flex flex-wrap gap-4">
-					<a href="#contact" class="btn btn-brand">Request a consultation</a>
-					<a href="#services" class="btn btn-brand-outline">Explore services</a>
+				
+				{/* CTA Buttons - Professional */}
+				<div class="mt-6 flex flex-wrap gap-3">
+					<a 
+						href="#contact" 
+						class="group inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-[#0F2C59] transition-all hover:shadow-lg hover:scale-[1.02]"
+					>
+						<span>Get Started</span>
+						<svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+						</svg>
+					</a>
+					<a 
+						href="#services" 
+						class="group inline-flex items-center gap-2 rounded-lg border border-white/30 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-white/10"
+					>
+						<span>Our Services</span>
+						<svg class="w-4 h-4 transition-transform group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+						</svg>
+					</a>
 				</div>
 			</div>
 		</div>
 
-		{/* Partners Marquee - now part of hero with same background */}
-		<div class="relative z-10 py-12">
-			<PartnersMarquee />
+		{/* RIGHT PANEL - Clean images with subtle overlay */}
+		<div class="hidden lg:block lg:w-[54%] xl:w-[54%] relative">
+			{[1, 2, 3, 4, 5].map((num, index) => (
+				<div
+					class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1500 ease-in-out hero-slide"
+					style={`
+						background-image: url('/hero/${num}.jpg');
+						opacity: ${index === 0 ? '1' : '0'};
+						animation: heroFade 30s infinite;
+						animation-delay: ${index * 6}s;
+					`}
+				/>
+			))}
+			{/* Left edge darkening overlay - seamless with navy gradient */}
+			<div class="absolute inset-0 bg-gradient-to-r from-[#0F2C59]/60 via-[#0F2C59]/20 to-transparent"></div>
+		</div>
+
+		{/* PARTNERS MARQUEE - Compact with breathing room */}
+		<div class="absolute bottom-0 left-0 right-0 z-30">
+			<div class="bg-gradient-to-t from-black/50 to-transparent pb-5 pt-10">
+				<div class="mx-4 sm:mx-8">
+					<div class="rounded-xl bg-white/10 backdrop-blur-md border border-white/10 py-2 px-4">
+						<div class="text-center mb-2">
+							<span class="text-[9px] uppercase tracking-[0.25em] text-white/50">Trusted By Industry Leaders</span>
+						</div>
+						<PartnersMarquee overlay />
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<style>
 			@keyframes heroFade {
-				0%, 18% { opacity: 1; }
-				20%, 98% { opacity: 0; }
+				0%, 16% { opacity: 1; }
+				20%, 96% { opacity: 0; }
 				100% { opacity: 1; }
 			}
 		</style>
@@ -232,8 +281,7 @@ function stripHtml(html: string) {
 
 			<div class="mt-16 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 				{projects.map((project, index) => (
-					<a 
-						href={`/projects/${project.id}`}
+					<div
 						class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2"
 					>
 						{/* Glow effect on hover */}
@@ -254,14 +302,8 @@ function stripHtml(html: string) {
 							<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">
 								{project.description}
 							</p>
-							<div class="mt-6 flex items-center gap-2 text-sm font-medium text-[hsl(var(--brand))] transition-all duration-300">
-								<span class="transition-transform duration-300 group-hover:translate-x-1">Read case study</span>
-								<svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-								</svg>
-							</div>
 						</div>
-					</a>
+					</div>
 				))}
 			</div>
 		</div>
