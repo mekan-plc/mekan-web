@@ -29,36 +29,48 @@ const values = [
 ];
 
 const stats = [
-	{ number: '15+', label: 'Years of Experience' },
-	{ number: '500+', label: 'Clients Served' },
-	{ number: '50+', label: 'Annual Certifications' },
-	{ number: '15+', label: 'Districts Reached' }
+	{ number: '8+', label: 'Years of Experience (Established 2018 GC)' },
+	{ number: '50+', label: 'Clients Served' },
+	{ number: '50+', label: 'Projects & Certifications Supported' },
+	{ number: '20+', label: 'Freelance Consultants & Trainers' }
 ];
 
 const team = [
 	{
-		name: 'Abebe Kebede',
-		role: 'Managing Director',
-		bio: '20+ years in agricultural quality management and international certifications.',
-		image: '/team/abebe.jpg'
+		name: 'Biniam Amberbir',
+		role: 'Chief Executive Officer',
+		bio: 'Leads Mekan’s quality, compliance, and strategic advisory work across agribusiness and supply chains.',
+		image: '/team/Biniam%20Amberbir.jpg'
 	},
 	{
-		name: 'Meseret Tadesse',
-		role: 'Lead Consultant',
-		bio: 'Expert in GlobalG.A.P. and EU export compliance for horticultural products.',
-		image: '/team/meseret.jpg'
+		name: 'Meron Melaku',
+		role: 'Technical Director',
+		bio: 'Leads technical programs for standards implementation, food safety systems, and capacity building.',
+		image: '/team/Meron%20Melaku.jpg'
 	},
 	{
-		name: 'Dawit Hailu',
-		role: 'Senior Advisor',
-		bio: 'Specializes in climate resilience and sustainable agriculture systems.',
-		image: '/team/dawit.jpg'
+		name: 'Omarsherif Mohamed, PhD',
+		role: 'Training Director',
+		bio: 'Oversees training programs and professional development for agribusiness compliance and performance.',
+		image: '/team/Omarsherif%20mohammed.jpg'
+	},
+	{
+		name: 'Girma Asmamaw, PhD',
+		role: 'Senior Consultant & Trainer',
+		bio: 'Supports clients with practical implementation of standards, training, and continuous improvement programs.',
+		image: '/team/Girma%20Asmamaw.jpg'
+	},
+	{
+		name: 'Moges Mekonen, PhD',
+		role: 'Senior Consultant & Trainer',
+		bio: 'Provides advisory and training support across food safety systems, farm management, and audit readiness.',
+		image: '/team/Moges%20Mekonen.jpg'
 	}
 ];
 ---
 
 
-<Layout title="About | Mekan" overlayNav>
+<Layout title="About" description="Learn about Mekan PLC — a consultancy delivering quality management, compliance support, certification readiness, and training services for agribusiness in Ethiopia." overlayNav>
 	<section class="relative text-white overflow-hidden">
 		{/* Background image - logo */}
 		<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/logo.png');"></div>
@@ -89,7 +101,7 @@ const team = [
 				<div>
 					<h2 class="text-2xl font-semibold tracking-tight">Our Story</h2>
 					<p class="mt-4 text-base leading-relaxed text-[hsl(var(--muted-foreground))]">
-						Founded in 2009, Mekan Quality Management & Training PLC emerged from a vision to transform Ethiopian agribusiness through international quality standards. What started as a small consultancy has grown into a trusted partner for hundreds of farmers, cooperatives, and agro-processors across East Africa.
+						Established in 2018 GC, Mekan Quality Management & Training PLC was founded to help Ethiopian agribusinesses meet international quality and sustainability standards and compete in premium markets.
 					</p>
 					<p class="mt-4 text-base leading-relaxed text-[hsl(var(--muted-foreground))]">
 						Our team combines deep technical expertise in food safety systems, certification standards, and sustainable agriculture with intimate knowledge of local contexts and challenges. This unique blend enables us to deliver solutions that are both internationally credible and locally implementable.
@@ -128,7 +140,7 @@ const team = [
 						</div>
 						<h3 class="text-2xl font-semibold text-[#0F2C59] dark:text-[#7EA2CE] mb-4">Our Mission</h3>
 						<p class="text-slate-700 dark:text-white/80 leading-relaxed">
-							To elevate Ethiopian agribusiness through rigorous quality management, sustainable practices, and market-access expertise—empowering farmers and agro-processors to compete confidently in premium global markets.
+							To support agribusinesses and supply chain actors with practical, high-impact consulting and training—strengthening quality assurance, regulatory compliance, and sustainable growth.
 						</p>
 					</div>
 				</div>
@@ -145,7 +157,7 @@ const team = [
 						</div>
 						<h3 class="text-2xl font-semibold text-[#0F2C59] dark:text-[#7EA2CE] mb-4">Our Vision</h3>
 						<p class="text-slate-700 dark:text-white/80 leading-relaxed">
-							A thriving Ethiopia where world-class agricultural standards are the norm, not the exception. Where every farmer and agro-processor has the knowledge, certification, and partnerships to succeed in global markets—sustainably and profitably.
+							A resilient and competitive agribusiness sector where international standards, responsible practices, and strong value chains enable sustainable prosperity.
 						</p>
 					</div>
 				</div>
@@ -185,9 +197,17 @@ const team = [
 					Experienced professionals dedicated to transforming Ethiopian agribusiness.
 				</p>
 			</div>
-			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-				{team.map((member) => (
-					<div class="relative rounded-2xl bg-slate-100 dark:bg-[#1F2937] overflow-hidden group">
+			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-6">
+				{team.map((member, index) => (
+					<div
+						class={`relative rounded-2xl bg-slate-100 dark:bg-[#1F2937] overflow-hidden group lg:col-span-2 ${
+							team.length % 3 === 2 && index === team.length - 2
+								? 'lg:col-start-2'
+								: team.length % 3 === 2 && index === team.length - 1
+									? 'lg:col-start-4'
+									: ''
+						}`}
+					>
 						<div class="absolute left-0 top-0 bottom-0 w-1 bg-[#0F2C59] dark:bg-[#7EA2CE]"></div>
 						<div class="relative">
 							{/* Rectangular image container - larger */}
@@ -215,6 +235,11 @@ const team = [
 						</div>
 					</div>
 				))}
+			</div>
+			<div class="mt-8 text-center">
+				<p class="text-sm text-[hsl(var(--muted-foreground))]">
+					Plus <span class="font-semibold text-[hsl(var(--brand))]">20+ freelance consultants</span> supporting specialized assignments.
+				</p>
 			</div>
 		</div>
 	</section>

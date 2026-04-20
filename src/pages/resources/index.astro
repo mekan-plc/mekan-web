@@ -1,108 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-
-// Sample resources data - can be replaced with CMS data later
-const resources = [
-	{
-		id: 1,
-		title: 'GlobalG.A.P. Certification Checklist',
-		description: 'A comprehensive step-by-step checklist to help Ethiopian agricultural exporters achieve GlobalG.A.P. certification. Includes document requirements, audit preparation tips, and compliance tracking.',
-		category: 'Certification',
-		icon: '🌱',
-		fileSize: '2.4 MB',
-		fileType: 'PDF',
-		downloadUrl: '/resources/global-gap-checklist.pdf',
-		features: [
-			'Pre-audit preparation guide',
-			'Documentation templates',
-			'Compliance tracking sheets',
-			'Common pitfalls to avoid'
-		]
-	},
-	{
-		id: 2,
-		title: 'EU Export Compliance Guide 2024',
-		description: 'Complete guide to new EU regulations for Ethiopian agribusinesses. Stay compliant with the latest deforestation-free product regulations and enhanced food safety standards.',
-		category: 'Compliance',
-		icon: '📋',
-		fileSize: '3.1 MB',
-		fileType: 'PDF',
-		downloadUrl: '/resources/eu-compliance-guide-2024.pdf',
-		features: [
-			'New EU due diligence requirements',
-			'MRL updates for pesticides',
-			'Traceability system guidelines',
-			'Deforestation-free compliance'
-		]
-	},
-	{
-		id: 3,
-		title: 'Sustainable Farming Handbook',
-		description: 'Practical handbook for implementing sustainable farming practices in Ethiopian agriculture. Covers water conservation, soil health, and integrated pest management.',
-		category: 'Sustainability',
-		icon: '🌍',
-		fileSize: '4.8 MB',
-		fileType: 'PDF',
-		downloadUrl: '/resources/sustainable-farming-handbook.pdf',
-		features: [
-			'IPM implementation guide',
-			'Water conservation techniques',
-			'Soil health assessment tools',
-			'Climate adaptation strategies'
-		]
-	},
-	{
-		id: 4,
-		title: 'Market Access Roadmap',
-		description: 'Strategic roadmap for accessing premium international markets. Includes market analysis, entry strategies, and partnership opportunities for Ethiopian exporters.',
-		category: 'Strategy',
-		icon: '📊',
-		fileSize: '1.9 MB',
-		fileType: 'PDF',
-		downloadUrl: '/resources/market-access-roadmap.pdf',
-		features: [
-			'Market analysis by region',
-			'Entry strategy templates',
-			'Buyer contact frameworks',
-			'Partnership negotiation tips'
-		]
-	},
-	{
-		id: 5,
-		title: 'Coffee Quality Standards Guide',
-		description: 'Detailed guide on international coffee quality standards and grading systems. Essential for Ethiopian coffee exporters seeking premium market access.',
-		category: 'Coffee',
-		icon: '☕',
-		fileSize: '2.7 MB',
-		fileType: 'PDF',
-		downloadUrl: '/resources/coffee-quality-standards.pdf',
-		features: [
-			'SCA grading criteria',
-			'Cupping protocols',
-			'Quality control checklists',
-			'Export preparation guide'
-		]
-	},
-	{
-		id: 6,
-		title: 'Financial Planning Toolkit',
-		description: 'Comprehensive financial planning tools for agribusiness growth. Includes budgeting templates, investment calculators, and cash flow management guides.',
-		category: 'Finance',
-		icon: '💰',
-		fileSize: '1.5 MB',
-		fileType: 'PDF',
-		downloadUrl: '/resources/financial-planning-toolkit.pdf',
-		features: [
-			'Budget planning templates',
-			'ROI calculators',
-			'Cash flow projections',
-			'Investment readiness checklist'
-		]
-	}
-];
 ---
 
-<Layout title="Free Resources | Mekan" overlayNav>
+<Layout title="Resources" description="Free resources from Mekan PLC on quality management systems, compliance, certification readiness, and training for agribusiness in Ethiopia." overlayNav>
 	{/* Hero with logo background */}
 	<section class="relative text-white overflow-hidden">
 		<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/logo.png');"></div>
@@ -132,17 +32,11 @@ const resources = [
 	<section class="section bg-[hsl(var(--background))] border-t border-white/10">
 		<div class="container">
 			{/* Filters */}
+			<p id="resourcesError" class="hidden text-sm text-red-500 mb-6"></p>
+			
 			<div class="flex flex-wrap items-center gap-3 mb-10">
 				<span class="text-sm text-[hsl(var(--muted-foreground))]">Filter by category:</span>
 				<div class="flex flex-wrap gap-2" id="category-filters">
-					{['All', 'Certification', 'Compliance', 'Sustainability', 'Strategy', 'Coffee', 'Finance'].map((cat, i) => (
-						<button 
-							class={`category-btn px-4 py-2 rounded-full text-sm font-medium transition-all ${i === 0 ? 'bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))]' : 'bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--brand))] hover:text-[hsl(var(--brand-foreground))]'}`}
-							data-category={cat}
-						>
-							{cat}
-						</button>
-					))}
 				</div>
 			</div>
 
@@ -155,66 +49,6 @@ const resources = [
 
 			{/* Resources Cards */}
 			<div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3" id="resources-grid">
-				{resources.map((resource) => (
-					<div
-						class="resource-card group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2"
-						data-category={resource.category}
-					>
-						{/* Glow effect on hover */}
-						<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
-						
-						{/* Resource thumbnail */}
-						<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
-							<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">{resource.icon}</div>
-							<div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-[hsl(var(--brand))]/90 text-[hsl(var(--brand-foreground))] text-xs font-medium">
-								{resource.category}
-							</div>
-							{/* PDF badge */}
-							<div class="absolute top-4 right-4 px-2 py-1 rounded bg-red-500/90 text-white text-xs font-semibold">
-								PDF
-							</div>
-						</div>
-						
-						<div class="relative p-6 flex flex-col flex-grow">
-							<h3 class="text-lg font-semibold text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">
-								{resource.title}
-							</h3>
-							<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">
-								{resource.description}
-							</p>
-							
-							{/* Features list */}
-							<div class="mt-4 pt-4 border-t border-[hsl(var(--border))]">
-								<ul class="space-y-2">
-									{resource.features.map((feature) => (
-										<li class="flex items-start gap-2 text-xs text-[hsl(var(--muted-foreground))]">
-											<svg class="w-4 h-4 text-[hsl(var(--brand))] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-											</svg>
-											<span>{feature}</span>
-										</li>
-										))}
-									</ul>
-								</div>
-							
-							{/* Download button - only PDFs allowed */}
-							<div class="mt-6 flex items-center justify-between">
-								<span class="text-xs text-[hsl(var(--muted-foreground))]">{resource.fileSize}</span>
-								<a 
-									href={resource.downloadUrl}
-									class="download-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))] text-sm font-medium transition-all hover:bg-[hsl(var(--brand))]/90 hover:scale-105 hover:shadow-lg"
-									download
-									data-filename={resource.downloadUrl.split('/').pop()}
-								>
-									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-									</svg>
-									Download PDF
-								</a>
-							</div>
-						</div>
-					</div>
-				))}
 			</div>
 
 			{/* Contact CTA */}
@@ -234,7 +68,7 @@ const resources = [
 					
 					<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
 						<a 
-							href="tel:+251911234567"
+							href="tel:+251911454671"
 							class="group flex items-center gap-3 px-6 py-3 rounded-xl bg-[#0F2C59] hover:bg-[#0a1f3d] dark:bg-[#7EA2CE] dark:hover:bg-[#6b8ab0] text-white transition-all hover:scale-105 hover:shadow-lg"
 						>
 							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,7 +78,7 @@ const resources = [
 						</a>
 						
 						<a 
-							href="mailto:info@mekanconsultancy.com"
+							href="mailto:biniam@mekanplc.com"
 							class="group flex items-center gap-3 px-6 py-3 rounded-xl bg-slate-600 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white transition-all hover:scale-105 hover:shadow-lg"
 						>
 							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -259,78 +93,209 @@ const resources = [
 	</section>
 
 	<script>
-		// Category filtering
-		const filterButtons = document.querySelectorAll('.category-btn');
-		const resourceCards = document.querySelectorAll('.resource-card');
+		const CMS_BASE = (import.meta.env.PUBLIC_CMS_BASE_URL || 'http://localhost:8881').replace(/\/$/, '');
+		const filtersWrap = document.getElementById('category-filters');
+		const grid = document.getElementById('resources-grid');
+		const errorEl = document.getElementById('resourcesError');
 		const activeFilterDiv = document.getElementById('active-filter');
 		const activeFilterName = document.getElementById('active-filter-name');
 		const clearFilterBtn = document.getElementById('clear-filter');
+		const CACHE_TTL_MS = 5 * 60 * 1000;
+		const CACHE_PREFIX = 'mekan_cache_v1:';
 
-		function filterResources(category) {
-			// Update button styles
-			filterButtons.forEach(btn => {
-				if (btn.dataset.category === category) {
-					btn.classList.remove('bg-[hsl(var(--muted))]', 'text-[hsl(var(--muted-foreground))]');
-					btn.classList.add('bg-[hsl(var(--brand))]', 'text-[hsl(var(--brand-foreground))]');
-				} else {
-					btn.classList.remove('bg-[hsl(var(--brand))]', 'text-[hsl(var(--brand-foreground))]');
-					btn.classList.add('bg-[hsl(var(--muted))]', 'text-[hsl(var(--muted-foreground))]');
-				}
-			});
-
-			// Filter cards
-			resourceCards.forEach(card => {
-				if (category === 'All' || card.dataset.category === category) {
-					card.style.display = 'flex';
-					card.style.opacity = '1';
-					card.style.transform = 'none';
-					card.style.visibility = 'visible';
-					card.style.animation = 'fadeIn 0.3s ease-out';
-				} else {
-					card.style.display = 'none';
-				}
-			});
-
-			// Show/hide active filter indicator
-			if (category !== 'All') {
-				activeFilterDiv.classList.remove('hidden');
-				activeFilterName.textContent = category;
-			} else {
-				activeFilterDiv.classList.add('hidden');
+		function cacheGet(key) {
+			try {
+				const raw = sessionStorage.getItem(CACHE_PREFIX + key);
+				if (!raw) return null;
+				const parsed = JSON.parse(raw);
+				if (!parsed || typeof parsed !== 'object') return null;
+				if (typeof parsed.ts !== 'number') return null;
+				if (Date.now() - parsed.ts > CACHE_TTL_MS) return null;
+				return parsed.data ?? null;
+			} catch {
+				return null;
 			}
 		}
 
-		// Initialize - ensure all cards are visible
-		resourceCards.forEach(card => {
-			card.style.opacity = '1';
-			card.style.transform = 'none';
-			card.style.visibility = 'visible';
-		});
+		function cacheSet(key, data) {
+			try {
+				sessionStorage.setItem(CACHE_PREFIX + key, JSON.stringify({ ts: Date.now(), data }));
+			} catch {
+				// ignore
+			}
+		}
 
-		// Add click handlers to filter buttons
-		filterButtons.forEach(btn => {
-			btn.addEventListener('click', () => {
-				const category = btn.dataset.category;
-				filterResources(category);
-			});
-		});
+		function escapeHtml(str) {
+			return String(str)
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#039;');
+		}
 
-		// Clear filter button
-		clearFilterBtn?.addEventListener('click', () => {
-			filterResources('All');
-		});
+		function renderSkeleton() {
+			if (!grid) return;
+			grid.innerHTML = Array.from({ length: 6 }).map(() => (
+				`<div class="resource-card group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden">
+					<div class="relative h-48 bg-[hsl(var(--muted))] animate-pulse"></div>
+					<div class="relative p-6 space-y-3">
+						<div class="h-4 w-4/5 bg-[hsl(var(--muted))] rounded animate-pulse"></div>
+						<div class="h-3 w-full bg-[hsl(var(--muted))] rounded animate-pulse"></div>
+						<div class="h-3 w-5/6 bg-[hsl(var(--muted))] rounded animate-pulse"></div>
+					</div>
+				</div>`
+			)).join('');
+		}
 
-		// PDF download validation
-		document.querySelectorAll('.download-btn').forEach(btn => {
-			btn.addEventListener('click', (e) => {
-				const filename = btn.dataset.filename;
-				if (!filename || !filename.toLowerCase().endsWith('.pdf')) {
-					e.preventDefault();
-					alert('Only PDF files can be downloaded.');
-					return false;
+		function renderFilters(categories) {
+			if (!filtersWrap) return;
+			filtersWrap.innerHTML = categories.map((cat, i) => (
+				`<button class="category-btn px-4 py-2 rounded-full text-sm font-medium transition-all ${i === 0 ? 'bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))]' : 'bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--brand))] hover:text-[hsl(var(--brand-foreground))]'}" data-category="${escapeHtml(cat)}">${escapeHtml(cat)}</button>`
+			)).join('');
+		}
+
+		function resourceCard(resource) {
+			const thumb = resource.imageUrl
+				? `<img src="${escapeHtml(resource.imageUrl)}" alt="${escapeHtml(resource.title)}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />`
+				: `<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">${escapeHtml(resource.icon || '📄')}</div>`;
+
+			const features = Array.isArray(resource.features)
+				? resource.features.map((f) => (`<li class="flex items-start gap-2 text-xs text-[hsl(var(--muted-foreground))]"><svg class="w-4 h-4 text-[hsl(var(--brand))] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg><span>${escapeHtml(f)}</span></li>`)).join('')
+				: '';
+
+			const download = resource.downloadUrl
+				? `<a href="${escapeHtml(resource.downloadUrl)}" target="_blank" rel="noopener noreferrer" class="download-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))] text-sm font-medium transition-all hover:bg-[hsl(var(--brand))]/90 hover:scale-105 hover:shadow-lg" download="${escapeHtml(String(resource.title || 'resource').replace(/\s+/g, '_'))}.pdf"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>Download PDF</a>`
+				: `<span class="text-xs text-[hsl(var(--muted-foreground))]">No file available</span>`;
+
+			return `<div class="resource-card group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2" data-category="${escapeHtml(resource.category || 'General')}">
+				<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100"></div>
+				<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
+					${thumb}
+					<div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-[hsl(var(--brand))]/90 text-[hsl(var(--brand-foreground))] text-xs font-medium">${escapeHtml(resource.category || 'General')}</div>
+					<div class="absolute top-4 right-4 px-2 py-1 rounded bg-red-500/90 text-white text-xs font-semibold">PDF</div>
+				</div>
+				<div class="relative p-6 flex flex-col flex-grow">
+					<h3 class="text-lg font-semibold text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">${escapeHtml(resource.title || '')}</h3>
+					<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">${escapeHtml(resource.description || '')}</p>
+					<div class="mt-4 pt-4 border-t border-[hsl(var(--border))]">
+						<ul class="space-y-2">${features}</ul>
+					</div>
+					<div class="mt-6 flex items-center justify-between">
+						<span class="text-xs text-[hsl(var(--muted-foreground))]">${escapeHtml(resource.fileSize || '')}</span>
+						${download}
+					</div>
+				</div>
+			</div>`;
+		}
+
+		function setupFiltering() {
+			const filterButtons = document.querySelectorAll('.category-btn');
+			const resourceCards = document.querySelectorAll('.resource-card');
+
+			function filterResources(category) {
+				filterButtons.forEach((btn) => {
+					if (btn.dataset.category === category) {
+						btn.classList.remove('bg-[hsl(var(--muted))]', 'text-[hsl(var(--muted-foreground))]');
+						btn.classList.add('bg-[hsl(var(--brand))]', 'text-[hsl(var(--brand-foreground))]');
+					} else {
+						btn.classList.remove('bg-[hsl(var(--brand))]', 'text-[hsl(var(--brand-foreground))]');
+						btn.classList.add('bg-[hsl(var(--muted))]', 'text-[hsl(var(--muted-foreground))]');
+					}
+				});
+
+				resourceCards.forEach((card) => {
+					if (category === 'All' || card.dataset.category === category) {
+						card.style.display = 'flex';
+						card.style.opacity = '1';
+						card.style.transform = 'none';
+						card.style.visibility = 'visible';
+						card.style.animation = 'fadeIn 0.3s ease-out';
+					} else {
+						card.style.display = 'none';
+					}
+				});
+
+				if (activeFilterDiv && activeFilterName) {
+					if (category !== 'All') {
+						activeFilterDiv.classList.remove('hidden');
+						activeFilterName.textContent = category;
+					} else {
+						activeFilterDiv.classList.add('hidden');
+					}
 				}
+			}
+
+			filterButtons.forEach((btn) => {
+				btn.addEventListener('click', () => {
+					filterResources(btn.dataset.category);
+				});
 			});
-		});
+
+			clearFilterBtn?.addEventListener('click', () => {
+				filterResources('All');
+			});
+		}
+
+		async function loadResources() {
+			renderSkeleton();
+			const cachedResources = cacheGet('resources:index');
+			if (cachedResources && Array.isArray(cachedResources)) {
+				const uniqueCategories = new Set(cachedResources.map((r) => r.category).filter(Boolean));
+				const defaultCats = ['Certification', 'Compliance', 'Sustainability', 'Strategy', 'Coffee', 'Finance'];
+				const resourceCats = Array.from(uniqueCategories);
+				const categories = ['All', ...defaultCats.filter((c) => resourceCats.includes(c)), ...resourceCats.filter((c) => !defaultCats.includes(c))];
+				renderFilters(categories);
+				if (grid) grid.innerHTML = cachedResources.map(resourceCard).join('');
+				setupFiltering();
+			}
+			try {
+				const url = `${CMS_BASE}/wp-json/mekan/v1/resources?per_page=100`;
+				const res = await fetch(url, { headers: { Accept: 'application/json' } });
+				if (!res.ok) throw new Error('Failed to load resources.');
+				const resources = await res.json();
+				if (!Array.isArray(resources)) throw new Error('Invalid resources response.');
+				cacheSet('resources:index', resources);
+
+				const uniqueCategories = new Set(resources.map((r) => r.category).filter(Boolean));
+				const defaultCats = ['Certification', 'Compliance', 'Sustainability', 'Strategy', 'Coffee', 'Finance'];
+				const resourceCats = Array.from(uniqueCategories);
+				const categories = ['All', ...defaultCats.filter((c) => resourceCats.includes(c)), ...resourceCats.filter((c) => !defaultCats.includes(c))];
+
+				renderFilters(categories);
+				if (grid) grid.innerHTML = resources.map(resourceCard).join('');
+				setupFiltering();
+			} catch (e) {
+				if (!cachedResources) {
+					const EMPTY_STATE_HTML = `
+					<div class="col-span-full text-center py-16 px-4">
+						<div class="w-20 h-20 mx-auto mb-6 rounded-full bg-[hsl(var(--muted))] flex items-center justify-center">
+							<svg class="w-10 h-10 text-[hsl(var(--muted-foreground))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold text-[hsl(var(--foreground))] mb-2">Resources Coming Soon</h3>
+						<p class="text-[hsl(var(--muted-foreground))] mb-6 max-w-md mx-auto">
+							We're curating valuable resources for you. Check back soon for guides, templates, and industry insights!
+						</p>
+						<a href="/#contact" class="inline-flex items-center gap-2 px-6 py-3 bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))] rounded-xl font-medium hover:opacity-90 transition-opacity">
+							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+							</svg>
+							Contact Us
+						</a>
+					</div>
+				`;
+
+					if (grid) grid.innerHTML = EMPTY_STATE_HTML;
+					if (errorEl) errorEl.classList.add('hidden');
+					// Hide filters when no resources
+					if (filtersWrap) filtersWrap.parentElement.classList.add('hidden');
+				}
+			}
+		}
+
+		loadResources();
 	</script>
 
 	<style>

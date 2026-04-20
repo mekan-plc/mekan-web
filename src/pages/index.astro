@@ -1,75 +1,53 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PartnersMarquee from '../components/PartnersMarquee.astro';
-import { listPosts } from '../lib/wp';
+import { listFeaturedProjects, listBlogs } from '../lib/wp';
 
-const { posts: latestPosts } = await listPosts({ perPage: 3 }).catch(() => ({ posts: [] }));
+const { blogs: featuredBlogs } = await listBlogs({ perPage: 3, featured: true }).catch(() => ({ blogs: [] }));
+
+const { projects } = await listFeaturedProjects({ perPage: 3 }).catch(() => ({ projects: [] }));
 
 const contactInfo = {
-	email: 'info@mekanconsultancy.com',
-	phone: '+251 911 234 567'
+	email: 'biniam@mekanplc.com',
+	phone: '+251 911 454 671'
 };
 
 const services = [
 	{
 		id: 'quality-assurance',
 		title: 'Quality Assurance & Regulatory Compliance',
-		summary: 'Food safety systems, private label standards, EU export readiness, and benchmarking.',
+		summary: 'Securing your license to operate with GAP, GHP, GMP, HACCP, BRCGS, and FSMS 22000. EU market entry, Private Label Standards, and Corporate Stewardship (CSR, ESG & ESMS).',
 		icon: 'Shield'
 	},
 	{
 		id: 'agribusiness-development',
 		title: 'Agribusiness Development & Strategic Growth',
-		summary: 'Scaling strategies, SME business plans, performance monitoring, and value chain development.',
+		summary: 'Scaling strategies, bespoke SME agronomy business plans, performance monitoring, B2B & value chain development, and executive coaching for long-term growth.',
 		icon: 'TrendingUp'
 	},
 	{
 		id: 'agricultural-productivity',
 		title: 'Agricultural Productivity & Sustainability',
-		summary: 'GAP implementation, postharvest safety, IPM, and integrated farm management.',
+		summary: 'Global G.A.P implementation, postharvest handling & safety, IPM strategies, soil & water management, and Integrated Farm Management (IFM) for regenerative practices.',
 		icon: 'Leaf'
 	},
 	{
 		id: 'food-systems',
 		title: 'Food Systems & Climate Resilience',
-		summary: 'Diagnostics, policy strategy, climate risk management, and nutrition programming.',
+		summary: 'Food systems assessment & diagnostics, policy & strategy development, climate resilience & risk management, and nutrition-sensitive agricultural programming.',
 		icon: 'Globe'
 	},
 	{
-		id: 'capacity-building',
-		title: 'Capacity Building & Training',
-		summary: 'Practical skills transfer, field-level training, and organizational development.',
-		icon: 'Users'
-	},
-	{
-		id: 'certification-support',
-		title: 'Certification & Audit Support',
-		summary: 'Third-party representation, gap analysis, and preparation for GlobalG.A.P., BRCGS, IFS.',
+		id: 'global-standards',
+		title: 'Global Standards & Certifications',
+		summary: 'Your technical partner for Global G.A.P, GRASP, BRCGS, IFS, HACCP, FSMS 22000, Organic, Tesco Nurture, LEAF, and SMETA certifications.',
 		icon: 'Award'
-	}
-];
-
-const projects = [
-	{
-		id: 1,
-		title: 'Ethiopian Coffee Export Compliance',
-		client: 'Regional Cooperative Union',
-		description: 'Achieved GlobalG.A.P. and organic certification for 2,000+ smallholder farmers.',
-		image: null
 	},
 	{
-		id: 2,
-		title: 'EU Market Entry Strategy',
-		client: 'Agro-Processing SME',
-		description: 'End-to-end compliance framework enabling first export to European markets.',
-		image: null
-	},
-	{
-		id: 3,
-		title: 'Climate Resilience Program',
-		client: 'International NGO',
-		description: 'Food systems diagnostics and risk management training across 15 districts.',
-		image: null
+		id: 'investment-advisory',
+		title: 'Private Sector & Investment Advisory',
+		summary: 'Supply chain & logistics optimization, MEL systems, investment readiness advisory, data modelling, and project design & implementation support.',
+		icon: 'BarChart'
 	}
 ];
 
@@ -82,12 +60,12 @@ function stripHtml(html: string) {
 }
 ---
 
-<Layout overlayNav>
+<Layout title="Mekan PLC | Quality Management, Compliance & Training" description="Mekan PLC provides quality management consulting, compliance support, certification readiness, and training services for agribusiness and related sectors in Ethiopia." overlayNav>
 	<!-- Hero: World-Class Design -->
 	<section id="home" class="relative w-full min-h-screen overflow-hidden flex">
 		{/* LEFT PANEL - Premium Navy with Depth */}
 		<div
-			class="relative w-full lg:w-[46%] xl:w-[46%] text-[hsl(var(--brand-foreground))] flex flex-col justify-center px-6 sm:px-10 lg:px-14 xl:px-20 pt-24 pb-28 lg:pt-24 lg:pb-32 lg:min-h-screen z-10"
+			class="relative w-full lg:w-[46%] xl:w-[46%] text-[hsl(var(--brand-foreground))] flex flex-col justify-center px-6 sm:px-10 lg:px-14 xl:px-20 pt-20 pb-28 lg:pt-20 lg:pb-32 lg:min-h-screen z-10"
 			style="background: linear-gradient(to right, #0A1628 0%, #0F2C59 25%, rgba(15, 44, 89, 0.9) 40%, rgba(15, 44, 89, 0.7) 55%, rgba(15, 44, 89, 0.4) 70%, rgba(15, 44, 89, 0.15) 85%, rgba(15, 44, 89, 0.05) 95%, transparent 100%);"
 		>
 			{/* Subtle pattern overlay */}
@@ -97,30 +75,21 @@ function stripHtml(html: string) {
 			<div class="absolute top-1/4 -left-20 w-40 h-40 bg-[#7EA2CE]/20 rounded-full blur-3xl"></div>
 			<div class="absolute bottom-1/4 -right-10 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
 			
-			<div class="relative z-10 max-w-lg">
-				{/* Top accent line + tag */}
-				<div class="flex items-center gap-3 mb-4">
-					<div class="w-8 h-[2px] bg-gradient-to-r from-white/60 to-transparent"></div>
-					<span class="text-[11px] font-medium tracking-[0.15em] text-white/60 uppercase">
-						EST. 2009
-					</span>
-				</div>
-				
+			<div class="relative z-10 max-w-xl lg:max-w-2xl">
 				{/* Main Headline */}
-				<h1 class="text-4xl sm:text-5xl lg:text-[3.75rem] xl:text-6xl font-bold tracking-tight leading-[1.05]">
-					<span class="block text-white">Global Agribusiness</span>
-					<span class="block mt-1 text-[#7EA2CE]">
-						Excellence
-					</span>
+				<h1 class="text-4xl sm:text-5xl lg:text-[3rem] xl:text-[3.25rem] font-bold tracking-tight leading-[1.06]">
+					<span class="block text-white mb-1">Empowering Sustainable</span>
+					<span class="block text-white mb-1">Growth in Agribusiness</span>
+					<span class="block text-[#7EA2CE]">& the Supply Chain</span>
 				</h1>
 				
-				{/* Subtitle */}
-				<p class="mt-4 text-sm lg:text-base text-white/60 max-w-sm leading-relaxed">
-					Strategic compliance, sustainable practices, and market-ready certification for African agriculture.
+				{/* Subtitle - More breathing room */}
+				<p class="mt-4 text-sm lg:text-base text-white/70 max-w-lg leading-relaxed">
+					Comprehensive Consulting, Compliance, and Strategic Solutions for a Resilient Future.
 				</p>
 				
 				{/* CTA Buttons - Professional */}
-				<div class="mt-6 flex flex-wrap gap-3">
+				<div class="mt-6 flex flex-wrap gap-4">
 					<a 
 						href="#contact" 
 						class="group inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-[#0F2C59] transition-all hover:shadow-lg hover:scale-[1.02]"
@@ -162,10 +131,10 @@ function stripHtml(html: string) {
 
 		{/* PARTNERS MARQUEE - Compact with breathing room */}
 		<div class="absolute bottom-0 left-0 right-0 z-30">
-			<div class="bg-gradient-to-t from-black/50 to-transparent pb-5 pt-10">
+			<div class="bg-gradient-to-t from-black/50 to-transparent pb-3 pt-7">
 				<div class="mx-4 sm:mx-8">
-					<div class="rounded-xl bg-white/10 backdrop-blur-md border border-white/10 py-2 px-4">
-						<div class="text-center mb-2">
+					<div class="rounded-xl bg-white/10 backdrop-blur-md border border-white/10 py-1.5 px-3">
+						<div class="text-center mb-1">
 							<span class="text-[9px] uppercase tracking-[0.25em] text-white/50">Trusted By Industry Leaders</span>
 						</div>
 						<PartnersMarquee overlay />
@@ -190,12 +159,12 @@ function stripHtml(html: string) {
 				<!-- Text content - now on LEFT -->
 				<div class="md:col-span-7">
 					<p class="text-sm font-medium text-[hsl(var(--brand))] uppercase tracking-wide">About Us</p>
-					<h2 class="mt-4 text-3xl font-semibold tracking-tight">Your Partner in Agricultural Excellence</h2>
+					<h2 class="mt-4 text-3xl font-semibold tracking-tight">Your Technical Partner for World-Class Agribusiness</h2>
 					<p class="mt-4 text-base leading-relaxed text-[hsl(var(--muted-foreground))]">
-						Mekan Quality Management & Training PLC is a leading consultancy firm specializing in agricultural quality assurance, regulatory compliance, and sustainable agribusiness development. We bridge the gap between local agricultural practices and global market standards.
+						Located in the heart of Addis Ababa, Mekan Quality Management and Training PLC is a premier consultancy dedicated to bridging the gap between Ethiopian agribusiness and the global marketplace. We specialize in transforming the supply chain through technical excellence, regulatory mastery, and strategic foresight.
 					</p>
 					<p class="mt-4 text-base leading-relaxed text-[hsl(var(--muted-foreground))]">
-						Our team of experts combines deep technical knowledge with practical field experience to deliver solutions that drive real results—from farm certification to international market entry.
+						As a comprehensive technical partner, we empower enterprises to navigate complex international standards—from EU market entry and Global G.A.P. certification to ESG corporate stewardship. By blending agronomic precision with data-driven corporate strategy, we help businesses optimize their value chains and achieve sustainable growth.
 					</p>
 					<div class="mt-8">
 						<a href="/about" class="btn btn-primary">Explore more about us →</a>
@@ -204,12 +173,12 @@ function stripHtml(html: string) {
 				<!-- Stats - now on RIGHT -->
 				<div class="md:col-span-5">
 					<div class="card p-8">
-						<div class="text-4xl font-bold text-[hsl(var(--brand))]">15+</div>
-						<p class="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Years of experience in agribusiness consulting</p>
-						<div class="mt-6 text-4xl font-bold text-[hsl(var(--brand))]">500+</div>
-						<p class="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Clients across Ethiopia and East Africa</p>
+						<div class="text-4xl font-bold text-[hsl(var(--brand))]">8+</div>
+						<p class="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Years of excellence (established 2018 GC)</p>
 						<div class="mt-6 text-4xl font-bold text-[hsl(var(--brand))]">50+</div>
-						<p class="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Certifications achieved annually</p>
+						<p class="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Clients served across agribusiness and supply chains</p>
+						<div class="mt-6 text-4xl font-bold text-[hsl(var(--brand))]">20+</div>
+						<p class="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Expert freelance consultants and trainers</p>
 					</div>
 				</div>
 			</div>
@@ -279,8 +248,11 @@ function stripHtml(html: string) {
 				<a href="/projects" class="hidden md:inline-flex btn btn-secondary">View all projects</a>
 			</div>
 
-			<div class="mt-16 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-				{projects.map((project, index) => (
+			<div id="projectsBanner" class="hidden mb-6 p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm text-center">
+				<span class="font-semibold">Hey you should really give it a taught</span>
+			</div>
+			<div id="projectsGrid" class="mt-16 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+				{projects.length > 0 ? projects.map((project, index) => (
 					<div
 						class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2"
 					>
@@ -289,7 +261,11 @@ function stripHtml(html: string) {
 						
 						{/* Project thumbnail */}
 						<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
-							<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
+							{project.imageUrl ? (
+								<img src={project.imageUrl} alt={project.title} class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+							) : (
+								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
+							)}
 							{/* Overlay gradient on hover */}
 							<div class="absolute inset-0 bg-gradient-to-t from-[hsl(var(--brand))]/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 						</div>
@@ -304,7 +280,58 @@ function stripHtml(html: string) {
 							</p>
 						</div>
 					</div>
-				))}
+				)) : (
+					<>
+						<div class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2">
+							<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
+							<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
+								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
+								<div class="absolute inset-0 bg-gradient-to-t from-[hsl(var(--brand))]/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+							</div>
+							<div class="relative p-6 flex flex-col flex-grow">
+								<p class="text-xs font-medium text-[hsl(var(--brand))] uppercase tracking-wide">Sidama Coffee Farmers Cooperative Union</p>
+								<h3 class="mt-2 text-lg font-semibold text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">
+									GLOBALG.A.P Certification for Sidama Coffee Cooperative
+								</h3>
+								<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">
+									Implemented comprehensive GLOBALG.A.P certification program for 2,400 smallholder coffee farmers, enabling access to premium European markets.
+								</p>
+							</div>
+						</div>
+						<div class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2">
+							<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
+							<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
+								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
+								<div class="absolute inset-0 bg-gradient-to-t from-[hsl(var(--brand))]/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+							</div>
+							<div class="relative p-6 flex flex-col flex-grow">
+								<p class="text-xs font-medium text-[hsl(var(--brand))] uppercase tracking-wide">Ethiopian Sesame Exporters Association</p>
+								<h3 class="mt-2 text-lg font-semibold text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">
+									Sesame Export Quality Improvement Program
+								</h3>
+								<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">
+									Established quality control systems and export documentation processes for major sesame exporters targeting Middle Eastern and Asian markets.
+								</p>
+							</div>
+						</div>
+						<div class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2">
+							<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
+							<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
+								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
+								<div class="absolute inset-0 bg-gradient-to-t from-[hsl(var(--brand))]/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+							</div>
+							<div class="relative p-6 flex flex-col flex-grow">
+								<p class="text-xs font-medium text-[hsl(var(--brand))] uppercase tracking-wide">Green Earth Spices PLC</p>
+								<h3 class="mt-2 text-lg font-semibold text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">
+									Organic Certification Transition for Spice Exporters
+								</h3>
+								<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">
+									Guided organic certification transition for turmeric and ginger exporters, including farm mapping, documentation, and EU organic compliance.
+								</p>
+							</div>
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	</section>
@@ -333,13 +360,13 @@ function stripHtml(html: string) {
 							<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
 						</div>
 						<p class="mt-4 text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">
-								"Mekan helped us achieve GlobalG.A.P. certification in record time. Their expertise in food safety systems transformed our entire operation."
-							</p>
+								"Mekan's GlobalG.A.P certification support opened European markets for our vegetables. Their audit preparation and documentation expertise was exceptional."
+						</p>
 							<div class="mt-6 flex items-center gap-3">
-								<div class="w-11 h-11 rounded-full bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--brand))]/70 text-[hsl(var(--brand-foreground))] flex items-center justify-center font-semibold text-sm shadow-lg shadow-[hsl(var(--brand))]/20">AT</div>
+								<div class="w-11 h-11 rounded-full bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--brand))]/70 text-[hsl(var(--brand-foreground))] flex items-center justify-center font-semibold text-sm shadow-lg shadow-[hsl(var(--brand))]/20">GA</div>
 								<div>
-									<p class="text-sm font-medium text-[hsl(var(--foreground))]">Abebe Tadesse</p>
-									<p class="text-xs text-[hsl(var(--muted-foreground))]">Managing Director, Sunrise Coffee Cooperative</p>
+									<p class="text-sm font-medium text-[hsl(var(--foreground))]">Getachew Assefa</p>
+									<p class="text-xs text-[hsl(var(--muted-foreground))]">Farm Manager, Ethio Vegpro Farm</p>
 								</div>
 							</div>
 						</div>
@@ -356,13 +383,13 @@ function stripHtml(html: string) {
 								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
 							</div>
 							<p class="mt-4 text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">
-								"The strategic growth planning workshop completely changed how we approach market expansion. Revenue increased 40% in the first year."
-							</p>
+								"Mekan's business plan and investment readiness support helped us secure funding and scale operations. Their agronomy expertise transformed our productivity."
+						</p>
 							<div class="mt-6 flex items-center gap-3">
-								<div class="w-11 h-11 rounded-full bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--brand))]/70 text-[hsl(var(--brand-foreground))] flex items-center justify-center font-semibold text-sm shadow-lg shadow-[hsl(var(--brand))]/20">SB</div>
+								<div class="w-11 h-11 rounded-full bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--brand))]/70 text-[hsl(var(--brand-foreground))] flex items-center justify-center font-semibold text-sm shadow-lg shadow-[hsl(var(--brand))]/20">TB</div>
 								<div>
-									<p class="text-sm font-medium text-[hsl(var(--foreground))]">Sarah Bekele</p>
-									<p class="text-xs text-[hsl(var(--muted-foreground))]">CEO, GreenHarvest Agro Processing</p>
+									<p class="text-sm font-medium text-[hsl(var(--foreground))]">Tigist Bekele</p>
+									<p class="text-xs text-[hsl(var(--muted-foreground))]">Managing Director, Greenpath Farm Ethiopia</p>
 								</div>
 							</div>
 						</div>
@@ -379,13 +406,13 @@ function stripHtml(html: string) {
 								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
 							</div>
 							<p class="mt-4 text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">
-								"Their training programs are practical and field-tested. Our extension officers now confidently support farmers across five districts."
-							</p>
+								"The food safety training and HACCP implementation Mekan provided ensured we meet export standards. Their hands-on approach made all the difference."
+						</p>
 							<div class="mt-6 flex items-center gap-3">
-								<div class="w-11 h-11 rounded-full bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--brand))]/70 text-[hsl(var(--brand-foreground))] flex items-center justify-center font-semibold text-sm shadow-lg shadow-[hsl(var(--brand))]/20">DM</div>
+								<div class="w-11 h-11 rounded-full bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--brand))]/70 text-[hsl(var(--brand-foreground))] flex items-center justify-center font-semibold text-sm shadow-lg shadow-[hsl(var(--brand))]/20">AA</div>
 								<div>
-									<p class="text-sm font-medium text-[hsl(var(--foreground))]">Dr. Mekonnen Demissie</p>
-									<p class="text-xs text-[hsl(var(--muted-foreground))]">Program Director, Regional Development NGO</p>
+									<p class="text-sm font-medium text-[hsl(var(--foreground))]">Alemayehu Ayalew</p>
+									<p class="text-xs text-[hsl(var(--muted-foreground))]">Operations Manager, Mahader Foods and Catering</p>
 								</div>
 							</div>
 						</div>
@@ -405,31 +432,43 @@ function stripHtml(html: string) {
 				<a href="/blog" class="hidden md:inline-flex btn btn-secondary">View all blogs</a>
 			</div>
 
-			<div class="mt-16 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-				{latestPosts.length > 0 ? latestPosts.map((post, index) => (
+			<div id="blogBanner" class="hidden mb-6 p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm text-center">
+				<span class="font-semibold">Hey you should really give it a taught</span>
+			</div>
+			<div id="blogGrid" class="mt-16 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+				{featuredBlogs.length > 0 ? featuredBlogs.map((blog) => (
 					<a 
-						href={`/blog/${post.slug}`}
+						href={`/blog/${blog.slug}`}
 						class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2"
 					>
 						{/* Glow effect */}
 						<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
 						
-						{/* Blog image placeholder */}
+						{/* Blog image */}
 						<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
-							<div class="text-5xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📝</div>
+							{blog.imageUrl ? (
+								<img 
+									src={blog.imageUrl} 
+									alt={blog.title}
+									class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+									loading="lazy"
+								/>
+							) : (
+								<div class="text-5xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📝</div>
+							)}
 							{/* Category badge */}
 							<div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-[hsl(var(--brand))]/90 text-[hsl(var(--brand-foreground))] text-xs font-medium">
-								{post.category || 'Insights'}
+								{blog.category}
 							</div>
 						</div>
 						
 						<div class="relative p-6 flex flex-col flex-grow">
-							<p class="text-xs text-[hsl(var(--muted-foreground))]">{formatDate(post.date)}</p>
+							<p class="text-xs text-[hsl(var(--muted-foreground))]">{blog.date}</p>
 							<h3 class="mt-2 text-lg font-semibold leading-snug text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">
-								{post.title.rendered}
+								{blog.title}
 							</h3>
 							<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow line-clamp-3">
-								{stripHtml(post.excerpt.rendered)}
+								{blog.excerpt}
 							</p>
 							<div class="mt-6 flex items-center gap-2 text-sm font-medium text-[hsl(var(--brand))] transition-all duration-300">
 								<span class="transition-transform duration-300 group-hover:translate-x-1">Read more</span>
@@ -576,7 +615,7 @@ function stripHtml(html: string) {
 											required
 											maxlength="50"
 											class="h-12 w-full rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] px-4 text-sm text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--brand))] focus:border-[hsl(var(--brand))] focus:bg-[hsl(var(--card))] transition-all shadow-sm" 
-											placeholder="John Doe"
+											placeholder="Biniam Tesfaye"
 										/>
 										<p id="nameError" class="hidden mt-1.5 text-xs text-red-500 flex items-center gap-1">
 											<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
@@ -597,7 +636,7 @@ function stripHtml(html: string) {
 											type="email" 
 											required
 											class="h-12 w-full rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] px-4 text-sm text-[hsl(var(--foreground))] placeholder:text-[hsl(var(--muted-foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--brand))] focus:border-[hsl(var(--brand))] focus:bg-[hsl(var(--card))] transition-all shadow-sm" 
-											placeholder="john@example.com"
+											placeholder="biniam@example.com"
 										/>
 										<p id="emailError" class="hidden mt-1.5 text-xs text-red-500 flex items-center gap-1">
 											<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
@@ -684,13 +723,13 @@ function stripHtml(html: string) {
 												name="your-service"
 												class="h-12 w-full rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] px-4 pr-10 text-sm text-[hsl(var(--foreground))] focus:outline-none focus:ring-2 focus:ring-[hsl(var(--brand))] focus:border-[hsl(var(--brand))] focus:bg-[hsl(var(--card))] transition-all cursor-pointer appearance-none shadow-sm"
 											>
-												<option value="General Inquiry" selected>General Inquiry</option>
-												<option value="Quality Assurance">Quality Assurance & Compliance</option>
-												<option value="Agribusiness Development">Agribusiness Development</option>
-												<option value="Agricultural Productivity">Agricultural Productivity</option>
-												<option value="Food Systems">Food Systems & Climate Resilience</option>
-												<option value="Capacity Building">Capacity Building & Training</option>
-												<option value="Certification Support">Certification & Audit Support</option>
+												<option value="General Inquiry" selected class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">General Inquiry</option>
+												<option value="Quality Assurance" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">Quality Assurance & Regulatory Compliance</option>
+												<option value="Agribusiness Development" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">Agribusiness Development & Strategic Growth</option>
+												<option value="Agricultural Productivity" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">Agricultural Productivity & Sustainability</option>
+												<option value="Food Systems" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">Food Systems & Climate Resilience</option>
+												<option value="Global Standards" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">Global Standards & Certifications</option>
+												<option value="Investment Advisory" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">Private Sector & Investment Advisory</option>
 											</select>
 											<div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
 												<svg class="w-4 h-4 text-[hsl(var(--muted-foreground))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -768,35 +807,49 @@ function stripHtml(html: string) {
 						
 						{/* Contact Details Cards */}
 						<div class="space-y-4">
-							{/* Email Card */}
-							<a href="mailto:info@mekanconsulting.com" class="group flex items-center gap-4 p-4 rounded-xl bg-[hsl(var(--card))] border border-[hsl(var(--border))] hover:border-[hsl(var(--brand))]/50 hover:shadow-lg hover:shadow-[hsl(var(--brand))]/10 transition-all duration-300">
-								<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--brand))]/70 flex items-center justify-center flex-shrink-0 shadow-lg shadow-[hsl(var(--brand))]/20 group-hover:scale-110 transition-transform duration-300">
-									<svg class="w-5 h-5 text-[hsl(var(--brand-foreground))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-									</svg>
+							{/* CEO Contact */}
+							<div class="p-4 rounded-xl bg-[hsl(var(--card))] border border-[hsl(var(--border))]">
+								<p class="text-xs font-medium text-[hsl(var(--brand))] dark:text-[#7EA2CE] uppercase tracking-wide mb-3">CEO - Biniam Amberbir</p>
+								<div class="space-y-2">
+									<a href="mailto:biniam@mekanplc.com" class="group flex items-center gap-3 text-sm">
+										<svg class="w-4 h-4 text-[hsl(var(--brand))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+										</svg>
+										<span class="text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--brand))] transition-colors">biniam@mekanplc.com</span>
+									</a>
+									<a href="tel:+251911454671" class="group flex items-center gap-3 text-sm">
+										<svg class="w-4 h-4 text-[hsl(var(--brand))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+										</svg>
+										<span class="text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--brand))] transition-colors">+251 911 454 671</span>
+									</a>
+									<a href="https://wa.me/251911454671" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-3 text-sm">
+										<svg class="w-4 h-4 text-[hsl(var(--brand))]" fill="currentColor" viewBox="0 0 24 24">
+											<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+										</svg>
+										<span class="text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--brand))] transition-colors">WhatsApp</span>
+									</a>
 								</div>
-								<div>
-									<p class="text-sm font-medium text-[hsl(var(--muted-foreground))]">Email us</p>
-									<p class="text-base font-semibold text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--brand))] transition-colors">
-										info@mekanconsulting.com
-									</p>
-								</div>
-							</a>
+							</div>
 
-							{/* Phone Card */}
-							<a href="tel:+251911234567" class="group flex items-center gap-4 p-4 rounded-xl bg-[hsl(var(--card))] border border-[hsl(var(--border))] hover:border-[hsl(var(--brand))]/50 hover:shadow-lg hover:shadow-[hsl(var(--brand))]/10 transition-all duration-300">
-								<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--brand))]/70 flex items-center justify-center flex-shrink-0 shadow-lg shadow-[hsl(var(--brand))]/20 group-hover:scale-110 transition-transform duration-300">
-									<svg class="w-5 h-5 text-[hsl(var(--brand-foreground))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-									</svg>
+							{/* Technical Director Contact */}
+							<div class="p-4 rounded-xl bg-[hsl(var(--card))] border border-[hsl(var(--border))]">
+								<p class="text-xs font-medium text-[hsl(var(--brand))] dark:text-[#7EA2CE] uppercase tracking-wide mb-3">Technical Director - Meron Melaku</p>
+								<div class="space-y-2">
+									<a href="mailto:meron@mekanplc.com" class="group flex items-center gap-3 text-sm">
+										<svg class="w-4 h-4 text-[hsl(var(--brand))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+										</svg>
+										<span class="text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--brand))] transition-colors">meron@mekanplc.com</span>
+									</a>
+									<a href="tel:+251932200019" class="group flex items-center gap-3 text-sm">
+										<svg class="w-4 h-4 text-[hsl(var(--brand))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+										</svg>
+										<span class="text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--brand))] transition-colors">+251 932 200 019</span>
+									</a>
 								</div>
-								<div>
-									<p class="text-sm font-medium text-[hsl(var(--muted-foreground))]">Call us</p>
-									<p class="text-base font-semibold text-[hsl(var(--foreground))] group-hover:text-[hsl(var(--brand))] transition-colors">
-										+251 91 123 4567
-									</p>
-								</div>
-							</a>
+							</div>
 
 							{/* Address Card */}
 							<div class="group flex items-center gap-4 p-4 rounded-xl bg-[hsl(var(--card))] border border-[hsl(var(--border))] hover:border-[hsl(var(--brand))]/50 hover:shadow-lg hover:shadow-[hsl(var(--brand))]/10 transition-all duration-300">
@@ -809,8 +862,9 @@ function stripHtml(html: string) {
 								<div>
 									<p class="text-sm font-medium text-[hsl(var(--muted-foreground))]">Visit us</p>
 									<p class="text-base font-semibold text-[hsl(var(--foreground))]">
-										Addis Ababa, Ethiopia
+										P.O. Box 990, Code 1230<br/>Addis Ababa, Ethiopia
 									</p>
+									<p class="text-xs text-[hsl(var(--muted-foreground))] mt-1">Search "Mekan Quality Management and Training PLC" on Google Maps</p>
 								</div>
 							</div>
 						</div>
@@ -881,6 +935,7 @@ function stripHtml(html: string) {
 	const emailInput = document.getElementById('email') as HTMLInputElement;
 	const phoneInput = document.getElementById('phone') as HTMLInputElement;
 	const countryCodeSelect = document.getElementById('countryCode') as HTMLSelectElement;
+	const serviceInput = document.getElementById('service') as HTMLSelectElement;
 	const messageInput = document.getElementById('message') as HTMLTextAreaElement;
 	
 	const nameError = document.getElementById('nameError');
@@ -1079,8 +1134,8 @@ function stripHtml(html: string) {
 		if (!phoneRegex.test(phone)) {
 			return { valid: false, error: 'Phone number can only contain numbers' };
 		}
-		if (phone.length !== 10) {
-			return { valid: false, error: 'Phone number must be exactly 10 digits' };
+		if (phone.length < 8 || phone.length > 14) {
+			return { valid: false, error: 'Please enter a valid phone number' };
 		}
 		return { valid: true, error: '' };
 	}
@@ -1187,8 +1242,9 @@ function stripHtml(html: string) {
 		}
 	});
 
-	// WordPress Contact Form 7 REST API endpoint
-	const CF7_ENDPOINT = '/wp-json/contact-form-7/v1/contact-forms/123/feedback';
+	// WP REST API endpoint for contact form (direct to CMS)
+	const CMS_BASE = (import.meta.env.PUBLIC_CMS_BASE_URL || 'http://localhost:8881').replace(/\/$/, '');
+	const API_ENDPOINT = `${CMS_BASE}/wp-json/mekan/v1/contact`;
 
 	form?.addEventListener('submit', async (e) => {
 		e.preventDefault();
@@ -1242,29 +1298,77 @@ function stripHtml(html: string) {
 		}
 
 		// Combine country code with phone number
-		const fullPhone = `${countryCodeSelect?.value || '+251'} ${phoneInput?.value || ''}`;
+		const fullPhone = `${countryCodeSelect?.value || '+251'}${phoneInput?.value || ''}`;
 
-		const formData = new FormData(form);
-		formData.set('your-phone', fullPhone);
+		// Prepare JSON payload
+		const payload = {
+			name: nameInput?.value?.trim() || '',
+			email: emailInput?.value?.trim() || '',
+			phone: fullPhone,
+			service: serviceInput?.value || 'General Inquiry',
+			message: messageInput?.value?.trim() || ''
+		};
 
 		try {
-			const response = await fetch(CF7_ENDPOINT, {
+			const response = await fetch(API_ENDPOINT, {
 				method: 'POST',
-				body: formData,
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(payload),
 			});
 
-			const result = await response.json();
+			const text = await response.text();
+			let result: any = null;
+			try {
+				result = text ? JSON.parse(text) : null;
+			} catch {
+				result = null;
+			}
 
-			if (result.status === 'mail_sent') {
+			if (!result) {
+				throw new Error('Something went wrong. Please try again.');
+			}
+
+			if (result.success) {
 				formFields?.classList.add('hidden');
 				formSuccess?.classList.remove('hidden');
 				formError?.classList.add('hidden');
 			} else {
+				// Handle validation errors from server
+				if (result.errors) {
+					Object.entries(result.errors).forEach(([field, errorMsg]) => {
+						if (field === 'name' && nameError) {
+							nameError.textContent = errorMsg;
+							nameError.classList.remove('hidden');
+							nameInput?.classList.add('border-red-500');
+							nameInput?.focus();
+						}
+						if (field === 'email' && emailError) {
+							emailError.textContent = errorMsg;
+							emailError.classList.remove('hidden');
+							emailInput?.classList.add('border-red-500');
+							emailInput?.focus();
+						}
+						if (field === 'phone' && phoneError) {
+							phoneError.textContent = errorMsg;
+							phoneError.classList.remove('hidden');
+							phoneInput?.classList.add('border-red-500');
+							phoneInput?.focus();
+						}
+						if (field === 'message' && messageError) {
+							messageError.textContent = errorMsg;
+							messageError.classList.remove('hidden');
+							messageInput?.classList.add('border-red-500');
+							messageInput?.focus();
+						}
+					});
+				}
 				throw new Error(result.message || 'Failed to send message');
 			}
 		} catch (error) {
 			if (formError) {
-				formError.textContent = error instanceof Error ? error.message : 'Something went wrong. Please try again or email us directly.';
+				formError.textContent = error instanceof Error ? error.message : 'Something went wrong. Please try again.';
 				formError.classList.remove('hidden');
 			}
 		} finally {
@@ -1274,4 +1378,22 @@ function stripHtml(html: string) {
 			}
 		}
 	});
+
+	// Check WordPress connectivity and show banners if down
+	(async function checkWordPressConnection() {
+		const CMS_BASE = import.meta.env.PUBLIC_CMS_BASE_URL || 'http://localhost:8881';
+		try {
+			const res = await fetch(`${CMS_BASE}/wp-json/mekan/v1/blogs?per_page=1`, {
+				method: 'HEAD',
+				headers: { Accept: 'application/json' }
+			});
+			if (!res.ok) throw new Error('WordPress unavailable');
+		} catch (e) {
+			// WordPress is down - show banners on homepage sections
+			const blogBanner = document.getElementById('blogBanner');
+			const projectsBanner = document.getElementById('projectsBanner');
+			if (blogBanner) blogBanner.classList.remove('hidden');
+			if (projectsBanner) projectsBanner.classList.remove('hidden');
+		}
+	})();
 </script>

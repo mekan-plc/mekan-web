@@ -1,304 +1,301 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getPostBySlug, listPosts } from '../../lib/wp';
+import { getBlogBySlug } from '../../lib/wp';
 
-export function getStaticPaths() {
-	// Static blog post slugs for pre-rendering
-	const slugs = [
-		'global-gap-certification-guide-2024',
-		'sustainable-farming-practices-2024',
-		'eu-export-compliance-2024'
-	];
-	return slugs.map(slug => ({ params: { slug } }));
-}
+export const prerender = false;
 
 const { slug } = Astro.params;
+const blog = await getBlogBySlug(slug);
 
-if (!slug) {
-	return Astro.redirect('/blog');
+// If blog not found, redirect to 404 page
+if (!blog) {
+	return Astro.redirect('/404', 404);
 }
 
-// Sample blog posts for fallback when WordPress is not available
-const samplePosts: Record<string, any> = {
-	'global-gap-certification-guide-2024': {
-		title: { rendered: 'The Complete Guide to GlobalG.A.P. Certification for Ethiopian Exporters' },
-		date: '2024-01-15',
-		content: { 
-			rendered: `
-				<p>GlobalG.A.P. certification has become a critical requirement for Ethiopian agricultural exporters seeking to access European and international markets. This comprehensive guide walks you through everything you need to know about achieving and maintaining this important certification.</p>
-				<h2>What is GlobalG.A.P.?</h2>
-				<p>GlobalG.A.P. (Good Agricultural Practice) is an internationally recognized standard for agricultural production that ensures food safety, environmental sustainability, and worker welfare. For Ethiopian exporters, this certification opens doors to premium markets that demand the highest standards of quality and safety.</p>
-				<h2>Why GlobalG.A.P. Matters for Ethiopian Exporters</h2>
-				<p>The European Union, which represents a significant market for Ethiopian agricultural products, increasingly requires GlobalG.A.P. certification for imported fresh produce. This standard ensures that products meet strict requirements for food safety and traceability, environmental sustainability, worker health and safety, and responsible use of water and plant protection products.</p>
-				<h2>The Certification Process</h2>
-				<p>Achieving GlobalG.A.P. certification involves several key steps including preparation and self-assessment, selecting a certification body, initial audit, and implementing corrective actions if needed.</p>
-				<h2>Maintaining Your Certification</h2>
-				<p>GlobalG.A.P. certification requires annual surveillance audits to ensure ongoing compliance. Continuous improvement and commitment to the standards are essential for maintaining your certified status.</p>
-			`
-		},
-		category: 'Certification',
-		icon: '🌱',
-		readTime: '8 min read'
+// Build BlogPosting structured data
+const requestOrigin = Astro.request?.url ? new URL(Astro.request.url).origin : '';
+const siteUrl = (import.meta.env.PUBLIC_SITE_URL || requestOrigin).replace(/\/$/, '');
+const pageUrl = siteUrl ? new URL(Astro.url.pathname, siteUrl).toString() : Astro.url.pathname;
+const imageUrl = blog.featuredImageUrl || (siteUrl ? new URL('/logo1.2.png', siteUrl).toString() : '/logo1.2.png');
+
+const blogPostingLd = {
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: blog.title,
+	description: blog.excerpt || blog.title,
+	image: imageUrl,
+	url: pageUrl,
+	datePublished: blog.date ? new Date(blog.date).toISOString() : new Date().toISOString(),
+	author: {
+		'@type': 'Organization',
+		name: 'Mekan PLC',
+		url: siteUrl || undefined
 	},
-	'sustainable-farming-practices-2024': {
-		title: { rendered: '5 Sustainable Farming Practices Transforming Ethiopian Agriculture' },
-		date: '2024-01-10',
-		content: { 
-			rendered: `
-				<p>Sustainable agriculture is not just an environmental imperative—it is a pathway to long-term profitability and resilience for Ethiopian farmers. Here are five transformative practices reshaping agriculture across the country.</p>
-				<h2>1. Integrated Pest Management (IPM)</h2>
-				<p>IPM combines biological, cultural, and chemical methods to control pests while minimizing environmental impact. This approach reduces pesticide use by up to 60% while maintaining crop yields and improving soil health.</p>
-				<h2>2. Water Conservation and Efficient Irrigation</h2>
-				<p>With changing climate patterns, water efficiency has become critical. Modern irrigation techniques like drip irrigation and mulching can reduce water usage by 40-60% while maintaining or even improving crop yields.</p>
-				<h2>3. Soil Health Management</h2>
-				<p>Healthy soil is the foundation of sustainable agriculture. Practices like cover cropping, crop rotation, and reduced tillage are helping Ethiopian farmers rebuild soil organic matter and improve long-term productivity.</p>
-				<h2>4. Agroforestry Integration</h2>
-				<p>Integrating trees with crops and livestock creates diverse, resilient farming systems that provide multiple income streams while improving biodiversity and soil conservation.</p>
-				<h2>5. Climate-Smart Agriculture</h2>
-				<p>Adapting farming practices to changing climate conditions includes selecting appropriate crop varieties, adjusting planting dates, and implementing soil and water conservation measures.</p>
-			`
-		},
-		category: 'Sustainability',
-		icon: '🌍',
-		readTime: '6 min read'
+	publisher: {
+		'@type': 'Organization',
+		name: 'Mekan PLC',
+		logo: {
+			'@type': 'ImageObject',
+			url: siteUrl ? new URL('/logo1.2.png', siteUrl).toString() : '/logo1.2.png'
+		}
 	},
-	'eu-export-compliance-2024': {
-		title: { rendered: 'EU Export Compliance: New Regulations Ethiopian Agribusinesses Must Know' },
-		date: '2024-01-05',
-		content: { 
-			rendered: `
-				<p>The European Union has implemented new regulations that significantly impact Ethiopian agribusinesses exporting to European markets. Understanding these changes is crucial for maintaining market access and avoiding costly compliance issues.</p>
-				<h2>The New EU Due Diligence Regulation</h2>
-				<p>The EU's new regulation on deforestation-free products requires companies to prove that their supply chains do not contribute to deforestation or forest degradation. This applies to several key Ethiopian exports including coffee.</p>
-				<h2>Enhanced Food Safety Standards</h2>
-				<p>The EU has tightened maximum residue levels (MRLs) for pesticides and introduced stricter requirements for food safety documentation. Exporters must ensure their products meet these enhanced standards.</p>
-				<h2>Traceability Requirements</h2>
-				<p>New regulations mandate comprehensive traceability systems that track products from farm to fork. Ethiopian exporters must implement robust documentation and tracking systems to comply with these requirements.</p>
-				<h2>Preparing for Compliance</h2>
-				<p>Ethiopian agribusinesses can take several steps to prepare for these new requirements including assessing current systems, investing in technology, and training personnel on compliance standards.</p>
-			`
-		},
-		category: 'Compliance',
-		icon: '📊',
-		readTime: '10 min read'
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': pageUrl
 	}
 };
 
-// Try to get post from WordPress, fallback to sample posts
-let post = samplePosts[slug];
-let isSample = true;
-
-if (!post) {
-	try {
-		const wpPost = await getPostBySlug(slug);
-		if (wpPost) {
-			post = wpPost;
-			isSample = false;
-		}
-	} catch (err) {
-		// WordPress not available, use sample posts
-	}
-}
-
-if (!post) {
-	return new Response('Not found', { status: 404 });
-}
-
-const { posts: relatedPosts } = await listPosts({ perPage: 3 }).catch(() => ({ posts: [] }));
-const filteredRelated = relatedPosts.filter((p) => p.slug !== slug).slice(0, 2);
-
-function formatDate(dateStr: string) {
-	return new Date(dateStr).toLocaleDateString('en-US', {
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric'
-	});
-}
-
-function stripHtml(html: string) {
-	return html.replace(/<[^>]*>/g, '').substring(0, 120) + '...';
-}
 ---
 
-<Layout title={`${post.title.rendered.replace(/<[^>]*>/g, '')} | Mekan Insights`} overlayNav>
-	{/* Article Header */}
-	<section class="relative text-white overflow-hidden">
-		<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/logo.png');"></div>
-		<div class="absolute inset-0 bg-[#0F2C59]/90"></div>
-		<div class="relative container max-w-4xl pt-32 pb-24">
-			{/* Breadcrumb */}
-			<nav class="flex items-center gap-2 text-sm text-white/70 mb-6" data-aos="fade-up">
-				<a href="/" class="hover:text-white transition-colors flex items-center gap-1">
+<Layout title={blog.title} description={(blog.excerpt || '').slice(0, 160)} overlayNav>
+	<script type="application/ld+json" set:html={JSON.stringify(blogPostingLd)} />
+	<div class="min-h-screen bg-[hsl(var(--background))]">
+		{/* Hero Banner with Logo Background */}
+		<section class="relative text-white overflow-hidden">
+			<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style={`background-image: url('${blog.featuredImageUrl || '/logo.png'}');`}></div>
+			<div class="absolute inset-0 bg-[#0F2C59]/90"></div>
+			<div class="relative container pt-32 pb-20">
+				{/* Breadcrumb */}
+				<nav class="flex items-center gap-2 text-sm text-white/70 mb-6">
+					<a href="/" class="hover:text-white transition-colors flex items-center gap-1">
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+						</svg>
+						Home
+					</a>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
 					</svg>
-					Home
-				</a>
-				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-				</svg>
-				<a href="/blog" class="hover:text-white transition-colors">Insights</a>
-				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-				</svg>
-				<span class="text-white font-medium">{post.category || 'Article'}</span>
-			</nav>
-			
-			{isSample && (
-				<div class="flex items-center gap-4 mb-6" data-aos="fade-up" data-aos-delay="100">
-					<div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-4xl">
-						{post.icon}
-					</div>
-					<div>
-						<span class="px-3 py-1 rounded-full bg-white/10 text-sm font-medium text-white">
-							{post.category}
-						</span>
-					</div>
-				</div>
-			)}
+					<a href="/blog" class="hover:text-white transition-colors">Blog</a>
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+					</svg>
+					<span class="text-white font-medium truncate max-w-[200px]">{blog.title}</span>
+				</nav>
 
-			<h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight leading-tight text-white" data-aos="fade-up" data-aos-delay="200">
-				{isSample ? post.title.rendered : <span set:html={post.title?.rendered ?? ''} />}
-			</h1>
-			
-			<div class="mt-6 flex flex-wrap items-center gap-6 text-sm text-white/70" data-aos="fade-up" data-aos-delay="300">
-				<div class="flex items-center gap-2">
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-					</svg>
-					<span>{formatDate(post.date)}</span>
+				{/* Title */}
+				<h1 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-3 max-w-3xl">{blog.title}</h1>
+
+				{/* Category Badge - Below Title */}
+				<div class="mb-4">
+					<span class="inline-block px-3 py-1 rounded-full bg-white/15 text-white/90 text-xs font-medium backdrop-blur-sm border border-white/20">
+						{blog.category || 'Blog'}
+					</span>
 				</div>
-				{isSample && (
+
+				{/* Date & Read Time */}
+				<div class="flex items-center gap-4 text-sm text-white/70">
 					<div class="flex items-center gap-2">
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
 						</svg>
-						<span>{post.readTime}</span>
+						<span>{blog.date}</span>
 					</div>
-				)}
-			</div>
-		</div>
-	</section>
-
-	{/* Article Content */}
-	<section class="section bg-[hsl(var(--background))] border-t border-white/10">
-		<div class="container max-w-3xl">
-			{/* Intro Card */}
-			<div class="relative rounded-2xl bg-slate-100 dark:bg-[#1F2937] p-8 md:p-10 mb-10 overflow-hidden border-l-4 border-[#0F2C59] dark:border-[#7EA2CE]" data-aos="fade-up">
-				<div class="absolute left-0 top-0 bottom-0 w-1 bg-[#0F2C59] dark:bg-[#7EA2CE]"></div>
-				<div class="relative">
-					<div class="flex items-center gap-3 mb-4">
-						<div class="w-10 h-10 rounded-full bg-[#0F2C59] dark:bg-[#7EA2CE] text-white flex items-center justify-center">
-							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-							</svg>
-						</div>
-						<span class="text-sm font-medium text-[#0F2C59] dark:text-[#7EA2CE] uppercase tracking-wide">Overview</span>
-					</div>
-					<p class="text-lg leading-relaxed text-slate-700 dark:text-white/90">
-						{isSample 
-							? stripHtml(post.content.rendered).substring(0, 200) + '...'
-							: stripHtml(post.excerpt?.rendered ?? post.content?.rendered ?? '').substring(0, 200) + '...'
-						}
-					</p>
-				</div>
-			</div>
-
-			{/* Main Content */}
-			<article class="prose prose-lg max-w-none prose-headings:text-[hsl(var(--foreground))] prose-p:text-[hsl(var(--muted-foreground))] prose-li:text-[hsl(var(--muted-foreground))] prose-strong:text-[hsl(var(--foreground))] prose-a:text-[hsl(var(--brand))]" data-aos="fade-up" data-aos-delay="100">
-				{isSample ? (
-					<div set:html={post.content.rendered} />
-				) : (
-					<div set:html={post.content?.rendered ?? ''} />
-				)}
-			</article>
-
-			{/* Share Section */}
-			<div class="mt-16" data-aos="fade-up">
-				<div class="relative rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-[#1F2937] dark:to-[#0F172A] p-8 overflow-hidden">
-					{/* Decorative elements */}
-					<div class="absolute top-0 right-0 w-32 h-32 bg-[#0F2C59]/5 dark:bg-[#7EA2CE]/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-					<div class="absolute bottom-0 left-0 w-24 h-24 bg-[#0F2C59]/5 dark:bg-[#7EA2CE]/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
-					
-					<div class="relative text-center">
-						<div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#0F2C59] dark:bg-[#7EA2CE] text-white mb-4">
-							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-							</svg>
-						</div>
-						<h3 class="text-xl font-semibold text-[hsl(var(--foreground))] mb-2">Share this article</h3>
-						<p class="text-sm text-[hsl(var(--muted-foreground))] mb-6">Found this helpful? Share it with your network.</p>
-						
-						<div class="flex items-center justify-center gap-4 flex-wrap">
-							<a 
-								href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title.rendered.replace(/<[^>]*>/g, ''))}&url=${encodeURIComponent(`https://mekanplc.com/blog/${slug}`)}`}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="group flex items-center gap-3 px-6 py-3 rounded-xl bg-[#1DA1F2] hover:bg-[#1a8cd8] text-white transition-all hover:scale-105 hover:shadow-lg"
-							>
-								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-								<span class="font-medium">Twitter</span>
-							</a>
-							
-							<a 
-								href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://mekanplc.com/blog/${slug}`)}`}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="group flex items-center gap-3 px-6 py-3 rounded-xl bg-[#0A66C2] hover:bg-[#0958a8] text-white transition-all hover:scale-105 hover:shadow-lg"
-							>
-								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-								<span class="font-medium">LinkedIn</span>
-							</a>
-							
-							<a 
-								href={`mailto:?subject=${encodeURIComponent(post.title.rendered.replace(/<[^>]*>/g, ''))}&body=${encodeURIComponent(`Check out this article: https://mekanplc.com/blog/${slug}`)}`}
-								class="group flex items-center gap-3 px-6 py-3 rounded-xl bg-slate-600 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white transition-all hover:scale-105 hover:shadow-lg"
-							>
-								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-								</svg>
-								<span class="font-medium">Email</span>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			{/* Back to articles */}
-			<div class="mt-8 text-center" data-aos="fade-up">
-				<a href="/blog" class="inline-flex items-center gap-2 text-sm font-medium text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--brand))] transition-colors">
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-					</svg>
-					← Back to all articles
-				</a>
-			</div>
-		</div>
-	</section>
-
-	{filteredRelated.length > 0 && (
-		<section class="section bg-[hsl(var(--muted))]">
-			<div class="container">
-				<h2 class="text-2xl font-semibold tracking-tight mb-8">Related insights</h2>
-				<div class="grid gap-6 md:grid-cols-2">
-					{filteredRelated.map((relatedPost) => (
-						<article class="card bg-[hsl(var(--background))] p-6 transition-all hover:shadow-md">
-							<p class="text-xs text-[hsl(var(--muted-foreground))] uppercase tracking-wide">
-								{formatDate(relatedPost.date)}
-							</p>
-							<h3 class="mt-2 text-lg font-semibold">
-								<a href={`/blog/${relatedPost.slug}`} class="hover:text-[hsl(var(--brand))] transition-colors" set:html={relatedPost.title?.rendered ?? ''} />
-							</h3>
-							<p class="mt-2 text-sm text-[hsl(var(--muted-foreground))]">
-								{stripHtml(relatedPost.excerpt?.rendered ?? '')}
-							</p>
-							<a href={`/blog/${relatedPost.slug}`} class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-[hsl(var(--brand))] hover:underline">
-								Read more →
-							</a>
-						</article>
-					))}
+					<span>•</span>
+					<span>5 min read</span>
 				</div>
 			</div>
 		</section>
-	)}
+
+		{/* Main Content Area */}
+		<section class="py-12 md:py-16">
+			<div class="container">
+				<div class="max-w-4xl mx-auto">
+					{/* Featured Image - Professional Container */}
+					<div class:list={["mb-10", !blog.imageUrl && "hidden"]}>
+						<div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-video bg-[hsl(var(--muted))]">
+							<img src={blog.imageUrl} alt={blog.title} class="w-full h-full object-cover" loading="eager" />
+							{/* Subtle gradient overlay at bottom */}
+							<div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/20 to-transparent"></div>
+						</div>
+					</div>
+
+					<div class="grid gap-8 lg:grid-cols-[1fr,280px]">
+						{/* Left Column - Content */}
+						<div>
+							{/* Short Description Card - Styled like About page */}
+							<div class="relative rounded-2xl bg-slate-100 dark:bg-[#1F2937] p-6 md:p-8 mb-8 overflow-hidden">
+								<div class="absolute left-0 top-0 bottom-0 w-1 bg-[#0F2C59] dark:bg-[#7EA2CE]"></div>
+								<div class="relative">
+									<div class="flex items-center gap-2 mb-3">
+										<svg class="w-5 h-5 text-[#0F2C59] dark:text-[#7EA2CE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+										</svg>
+										<span class="text-sm font-semibold text-[#0F2C59] dark:text-[#7EA2CE] uppercase tracking-wide">Summary</span>
+									</div>
+									<p class="text-lg text-slate-700 dark:text-white/90 leading-relaxed italic">{blog.excerpt}</p>
+								</div>
+							</div>
+							
+							{/* Full Content - Enhanced Typography */}
+							<article class="prose prose-lg max-w-none 
+								prose-headings:text-[hsl(var(--foreground))] 
+								prose-headings:font-semibold
+								prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4
+								prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3
+								prose-p:text-[hsl(var(--muted-foreground))] prose-p:leading-relaxed
+								prose-li:text-[hsl(var(--muted-foreground))]
+								prose-strong:text-[hsl(var(--foreground))] prose-strong:font-semibold
+								prose-a:text-[hsl(var(--brand))] prose-a:no-underline hover:prose-a:underline
+								prose-blockquote:border-l-4 prose-blockquote:border-[hsl(var(--brand))] prose-blockquote:bg-[hsl(var(--muted))] prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg
+								prose-img:rounded-xl prose-img:shadow-lg">
+								<div set:html={blog.content}></div>
+							</article>
+
+							{/* Social Sharing Card */}
+							<div class="mt-12 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-[#1F2937] dark:to-[#111827] p-6 md:p-8 border border-slate-200 dark:border-gray-700 shadow-sm">
+								<div class="flex items-center gap-3 mb-5">
+									<div class="w-10 h-10 rounded-xl bg-[#0F2C59]/10 dark:bg-[#7EA2CE]/20 flex items-center justify-center">
+										<svg class="w-5 h-5 text-[#0F2C59] dark:text-[#7EA2CE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+										</svg>
+									</div>
+									<h3 class="font-semibold text-[hsl(var(--foreground))]">Share this article</h3>
+								</div>
+								
+								<div class="grid grid-cols-3 gap-3">
+									<a id="shareLinkedIn" href="#" target="_blank" rel="noopener noreferrer" 
+										class="group flex flex-col items-center gap-2 p-4 rounded-xl bg-white dark:bg-gray-800 hover:bg-[#0077b5] dark:hover:bg-[#0077b5] border border-slate-200 dark:border-gray-600 hover:border-[#0077b5] transition-all duration-300 shadow-sm hover:shadow-md"
+										aria-label="Share on LinkedIn">
+										<svg class="w-6 h-6 text-[#0077b5] group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
+											<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+										</svg>
+										<span class="text-xs font-medium text-slate-600 dark:text-slate-400 group-hover:text-white transition-colors">LinkedIn</span>
+									</a>
+									
+									<a id="shareTwitter" href="#" target="_blank" rel="noopener noreferrer"
+										class="group flex flex-col items-center gap-2 p-4 rounded-xl bg-white dark:bg-gray-800 hover:bg-[#1DA1F2] dark:hover:bg-[#1DA1F2] border border-slate-200 dark:border-gray-600 hover:border-[#1DA1F2] transition-all duration-300 shadow-sm hover:shadow-md"
+										aria-label="Share on Twitter">
+										<svg class="w-6 h-6 text-[#1DA1F2] group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
+											<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+										</svg>
+										<span class="text-xs font-medium text-slate-600 dark:text-slate-400 group-hover:text-white transition-colors">Twitter</span>
+									</a>
+									
+									<a id="shareFacebook" href="#" target="_blank" rel="noopener noreferrer"
+										class="group flex flex-col items-center gap-2 p-4 rounded-xl bg-white dark:bg-gray-800 hover:bg-[#4267B2] dark:hover:bg-[#4267B2] border border-slate-200 dark:border-gray-600 hover:border-[#4267B2] transition-all duration-300 shadow-sm hover:shadow-md"
+										aria-label="Share on Facebook">
+										<svg class="w-6 h-6 text-[#4267B2] group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
+											<path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+										</svg>
+										<span class="text-xs font-medium text-slate-600 dark:text-slate-400 group-hover:text-white transition-colors">Facebook</span>
+									</a>
+								</div>
+							</div>
+
+							{/* Elegant Back to Blogs Link */}
+							<div class="mt-10 flex items-center justify-between">
+								<a 
+									href="/blog" 
+									class="group inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[hsl(var(--muted))] hover:bg-[hsl(var(--brand))] text-[hsl(var(--foreground))] hover:text-[hsl(var(--brand-foreground))] transition-all duration-300 font-medium"
+								>
+									<span class="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
+										<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+										</svg>
+									</span>
+									<span>Back to all blogs</span>
+								</a>
+							</div>
+						</div>
+
+						{/* Right Column - Sidebar */}
+						<aside class="hidden lg:block">
+							<div class="sticky top-24">
+								{/* CTA Card - Redesigned */}
+								<div class="rounded-2xl bg-gradient-to-br from-[#0F2C59] to-[#1a3a6e] dark:from-[#1a3a6e] dark:to-[#0F2C59] p-6 text-white shadow-lg relative overflow-hidden">
+									{/* Decorative elements */}
+									<div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+									<div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+									
+									<div class="relative">
+										<div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-4">
+											<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+											</svg>
+										</div>
+										<h3 class="font-bold text-lg mb-2">Need Expert Help?</h3>
+										<p class="text-sm text-white/80 mb-5 leading-relaxed">Our consultants can help you implement these strategies in your business.</p>
+										<a href="/#contact" class="inline-flex items-center gap-2 text-sm font-semibold bg-white text-[#0F2C59] px-5 py-2.5 rounded-xl hover:bg-white/90 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5">
+											Contact Us
+											<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+											</svg>
+										</a>
+									</div>
+								</div>
+							</div>
+						</aside>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		{/* Related Posts Section */}
+		<section id="relatedSection" class="hidden py-16 bg-[hsl(var(--muted))]">
+			<div class="container">
+				<div class="max-w-4xl mx-auto">
+					<h2 class="text-2xl font-bold mb-8 text-[hsl(var(--foreground))]">Related Articles</h2>
+					<div id="relatedGrid" class="grid gap-6 md:grid-cols-2"></div>
+				</div>
+			</div>
+		</section>
+	</div>
 </Layout>
+
+<script>
+	// Client-side script for social sharing URLs (needs current URL) and related posts
+	const CMS_BASE = (import.meta.env.PUBLIC_CMS_BASE_URL || 'http://localhost:8881').replace(/\/$/, '');
+	const slug = window.location.pathname.split('/').filter(Boolean).pop();
+	const currentUrl = window.location.origin + window.location.pathname;
+
+	// Set up social sharing links
+	const shareLinkedIn = document.getElementById('shareLinkedIn');
+	const shareTwitter = document.getElementById('shareTwitter');
+	const shareFacebook = document.getElementById('shareFacebook');
+	const blogTitle = document.querySelector('h1')?.textContent || '';
+
+	if (shareLinkedIn) shareLinkedIn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`;
+	if (shareTwitter) shareTwitter.href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(blogTitle)}`;
+	if (shareFacebook) shareFacebook.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
+
+	// Load related posts
+	const relatedSection = document.getElementById('relatedSection');
+	const relatedGrid = document.getElementById('relatedGrid');
+
+	function escapeHtml(str) {
+		return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+	}
+
+	function renderRelatedCard(b) {
+		return `<article class="group rounded-2xl bg-[hsl(var(--card))] overflow-hidden border border-[hsl(var(--border))] transition-all hover:shadow-lg hover:-translate-y-1">
+			<a href="/blog/${escapeHtml(b.slug)}" class="block">
+				${b.imageUrl ? `<div class="h-48 overflow-hidden"><img src="${escapeHtml(b.imageUrl)}" alt="${escapeHtml(b.title)}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" /></div>` : ''}
+				<div class="p-6">
+					<span class="inline-block px-3 py-1 rounded-full bg-[hsl(var(--brand))]/10 text-[hsl(var(--brand))] text-xs font-medium mb-3">${escapeHtml(b.category || '')}</span>
+					<p class="text-xs text-[hsl(var(--muted-foreground))] mb-2">${escapeHtml(b.date || '')}</p>
+					<h3 class="text-lg font-semibold text-[hsl(var(--foreground))] line-clamp-2 group-hover:text-[hsl(var(--brand))] transition-colors">${escapeHtml(b.title || '')}</h3>
+				</div>
+			</a>
+		</article>`;
+	}
+
+	async function loadRelatedPosts() {
+		if (!relatedSection || !relatedGrid || !slug) return;
+		try {
+			const res = await fetch(`${CMS_BASE}/wp-json/mekan/v1/blogs?per_page=4`, { headers: { Accept: 'application/json' } });
+			if (!res.ok) return;
+			const blogs = await res.json();
+			if (!Array.isArray(blogs)) return;
+			const related = blogs.filter((b) => b.slug !== slug).slice(0, 2);
+			if (related.length > 0) {
+				relatedGrid.innerHTML = related.map(renderRelatedCard).join('');
+				relatedSection.classList.remove('hidden');
+			}
+		} catch {
+			// Silently fail - related posts are optional
+		}
+	}
+
+	loadRelatedPosts();
+</script>

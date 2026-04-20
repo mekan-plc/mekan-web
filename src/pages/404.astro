@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Page Not Found" description="The page you're looking for doesn't exist. Explore Mekan PLC services, projects, or get in touch with us." overlayNav>
+	<div class="min-h-screen bg-[hsl(var(--background))] flex flex-col">
+		{/* Hero Section with 404 Message */}
+		<section class="relative flex-1 flex items-center justify-center overflow-hidden">
+			{/* Background Pattern */}
+			<div class="absolute inset-0 bg-[#0F2C59]">
+				<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/logo.png'); background-size: 300px; background-repeat: repeat; opacity: 0.05;"></div>
+				<div class="absolute inset-0 bg-gradient-to-br from-[#0F2C59] via-[#1a3a6e] to-[#0F2C59]"></div>
+			</div>
+			
+			{/* Decorative Elements */}
+			<div class="absolute top-20 left-10 w-72 h-72 bg-[#7EA2CE]/10 rounded-full blur-3xl"></div>
+			<div class="absolute bottom-20 right-10 w-96 h-96 bg-[#7EA2CE]/10 rounded-full blur-3xl"></div>
+			
+			{/* Content */}
+			<div class="relative z-10 container max-w-4xl mx-auto px-4 text-center pt-32 pb-12">
+				{/* 404 Number */}
+				<div class="mb-8">
+					<span class="text-8xl md:text-9xl font-bold text-white/20 select-none">404</span>
+				</div>
+				
+				{/* Icon */}
+				<div class="w-24 h-24 mx-auto mb-6 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
+					<svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+					</svg>
+				</div>
+				
+				{/* Heading */}
+				<h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+					Oops! Page Not Found
+				</h1>
+				
+				{/* Description */}
+				<p class="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto leading-relaxed">
+					The page you're looking for seems to have wandered off. 
+					Don't worry — we're here to help you find what you need.
+				</p>
+				
+				{/* Action Buttons */}
+				<div class="flex flex-col sm:flex-row gap-4 justify-center">
+					<a 
+						href="/" 
+						class="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#0F2C59] rounded-xl font-semibold transition-all hover:bg-white/90 hover:shadow-lg hover:shadow-white/20 hover:-translate-y-0.5"
+					>
+						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+						</svg>
+						Back to Home
+					</a>
+					<a 
+						href="/#contact" 
+						class="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white rounded-xl font-semibold border border-white/30 transition-all hover:bg-white/20 hover:border-white/50"
+					>
+						<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+						</svg>
+						Contact Us
+					</a>
+				</div>
+			</div>
+		</section>
+	</div>
+</Layout>

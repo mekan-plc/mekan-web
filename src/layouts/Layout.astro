@@ -5,10 +5,51 @@ import CTASection from '../components/CTASection.astro';
 import Footer from '../components/Footer.astro';
 
 interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	canonical?: string;
 	overlayNav?: boolean;
 }
 
-const { overlayNav = false } = Astro.props;
+const { title, description, image, canonical, overlayNav = false } = Astro.props;
+
+const DEFAULT_TITLE = 'Mekan PLC | Quality Management, Compliance & Training';
+const DEFAULT_DESCRIPTION = 'Mekan PLC provides quality management consulting, compliance support, certification readiness, and training services for agribusiness and related sectors in Ethiopia.';
+
+const requestOrigin = Astro.request?.url ? new URL(Astro.request.url).origin : '';
+const siteUrl = (import.meta.env.PUBLIC_SITE_URL || requestOrigin).replace(/\/$/, '');
+
+const pageTitle = title
+	? (title.includes('Mekan PLC') ? title : `${title} | Mekan PLC`)
+	: DEFAULT_TITLE;
+const pageDescription = description || DEFAULT_DESCRIPTION;
+
+const canonicalUrl = (() => {
+	if (!siteUrl) return undefined;
+	if (canonical) return new URL(canonical, siteUrl).toString();
+	return new URL(Astro.url.pathname, siteUrl).toString();
+})();
+
+const ogImage = image || '/logo1.2.png';
+const ogImageUrl = siteUrl ? new URL(ogImage, siteUrl).toString() : ogImage;
+
+const organizationLd = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	name: 'Mekan PLC',
+	url: siteUrl || undefined,
+	logo: ogImageUrl,
+	contactPoint: [
+		{
+			'@type': 'ContactPoint',
+			contactType: 'sales',
+			email: 'biniam@mekanplc.com',
+			telephone: '+251911454671',
+			availableLanguage: ['English']
+		}
+	]
+};
 ---
  
 <!doctype html>
@@ -21,7 +62,24 @@ const { overlayNav = false } = Astro.props;
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 		<link rel="icon" type="image/png" href="/logo1.2.png" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Mekan Consultancy</title>
+		<title>{pageTitle}</title>
+		<meta name="description" content={pageDescription} />
+		{canonicalUrl ? <link rel="canonical" href={canonicalUrl} /> : null}
+		<meta name="robots" content="index,follow" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Mekan PLC" />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={pageDescription} />
+		{canonicalUrl ? <meta property="og:url" content={canonicalUrl} /> : null}
+		<meta property="og:image" content={ogImageUrl} />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={pageDescription} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		<script type="application/ld+json" set:html={JSON.stringify(organizationLd)} />
 		<script is:inline>
 			(() => {
 				const STORAGE_KEY = 'theme';

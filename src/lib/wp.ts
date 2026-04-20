@@ -1,8 +1,8 @@
 // WordPress REST Client for Astro SSR
 // Uses hardcoded dev URL - change for production
 
-const API_BASE = process.env.WP_API_BASE || 'http://localhost:8882/wp-json/wp/v2';
-const CACHE_TTL_MS = Number(process.env.WP_CACHE_TTL_SECONDS || '60') * 1000;
+const API_BASE = (import.meta as any).env?.WP_API_BASE || 'http://localhost:8881/wp-json/wp/v2';
+const CACHE_TTL_MS = Number((import.meta as any).env?.WP_CACHE_TTL_SECONDS || '60') * 1000;
 
 type CacheEntry<T> = {
 	value: T;
@@ -17,6 +17,14 @@ function getApiBase(): string {
 		throw new Error('Missing WP_API_BASE. Set WP_API_BASE environment variable.');
 	}
 	return base.replace(/\/$/, '');
+}
+
+function getWpRootBase(): string {
+	const apiBase = getApiBase();
+	if (apiBase.endsWith('/wp/v2')) {
+		return apiBase.slice(0, -'/wp/v2'.length);
+	}
+	return apiBase;
 }
 
 async function cachedFetchJson<T>(url: string): Promise<T> {
@@ -75,6 +83,21 @@ export type WpPost = {
 	link: string;
 };
 
+export type MekanProject = {
+	id: number;
+	slug: string;
+	date: string;
+	title: string;
+	client: string;
+	location: string;
+	duration: string;
+	description: string;
+	services: string[];
+	results: string[];
+	imageUrl: string | null;
+	featured: boolean;
+};
+
 export async function listPosts(opts?: {
 	page?: number;
 	perPage?: number;
@@ -97,6 +120,96 @@ export async function getPostBySlug(slug: string): Promise<WpPost | null> {
 	return posts[0] ?? null;
 }
 
+export async function listProjects(opts?: {
+	perPage?: number;
+}): Promise<{ projects: MekanProject[]; perPage: number }> {
+	const perPage = opts?.perPage && opts.perPage > 0 ? opts.perPage : 100;
+	const root = getWpRootBase();
+	const url = `${root}/mekan/v1/projects?per_page=${perPage}`;
+	const projects = await cachedFetchJson<MekanProject[]>(url);
+	return { projects, perPage };
+}
+
+export async function listFeaturedProjects(opts?: {
+	perPage?: number;
+}): Promise<{ projects: MekanProject[]; perPage: number }> {
+	const perPage = opts?.perPage && opts.perPage > 0 ? opts.perPage : 3;
+	const root = getWpRootBase();
+	const url = `${root}/mekan/v1/projects?featured=1&per_page=${perPage}`;
+	const projects = await cachedFetchJson<MekanProject[]>(url);
+	return { projects, perPage };
+}
+
+export type MekanResource = {
+	id: number;
+	slug: string;
+	title: string;
+	description: string;
+	category: string;
+	icon: string;
+	fileSize: string;
+	fileType: string;
+	downloadUrl: string;
+	features: string[];
+	imageUrl: string | null;
+};
+
+export async function listResources(opts?: {
+	perPage?: number;
+	category?: string;
+}): Promise<{ resources: MekanResource[]; perPage: number }> {
+	const perPage = opts?.perPage && opts.perPage > 0 ? opts.perPage : 100;
+	const root = getWpRootBase();
+	let url = `${root}/mekan/v1/resources?per_page=${perPage}`;
+	if (opts?.category) {
+		url += `&category=${encodeURIComponent(opts.category)}`;
+	}
+	const resources = await cachedFetchJson<MekanResource[]>(url);
+	return { resources, perPage };
+}
+
 export function clearWpCache(): void {
 	cache.clear();
+}
+
+export type MekanBlog = {
+	id: number;
+	slug: string;
+	title: string;
+	excerpt: string;
+	content?: string;
+	category: string;
+	categorySlug?: string;
+	date: string;
+	imageUrl: string | null;
+	featured?: boolean;
+};
+
+export async function listBlogs(opts?: {
+	perPage?: number;
+	category?: string;
+	featured?: boolean;
+}): Promise<{ blogs: MekanBlog[]; perPage: number }> {
+	const perPage = opts?.perPage && opts.perPage > 0 ? opts.perPage : 10;
+	const root = getWpRootBase();
+	let url = `${root}/mekan/v1/blogs?per_page=${perPage}`;
+	if (opts?.category) {
+		url += `&category=${encodeURIComponent(opts.category)}`;
+	}
+	if (opts?.featured) {
+		url += `&featured=1`;
+	}
+	const blogs = await cachedFetchJson<MekanBlog[]>(url);
+	return { blogs, perPage };
+}
+
+export async function getBlogBySlug(slug: string): Promise<MekanBlog | null> {
+	const root = getWpRootBase();
+	const url = `${root}/mekan/v1/blogs/${encodeURIComponent(slug)}`;
+	try {
+		const blog = await cachedFetchJson<MekanBlog>(url);
+		return blog;
+	} catch {
+		return null;
+	}
 }
