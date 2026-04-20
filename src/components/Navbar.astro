@@ -38,15 +38,15 @@ const links = [
 			<span
 				class={
 					overlay
-						? 'hidden md:inline text-[hsl(var(--brand-foreground))] group-data-[scrolled=true]:text-[hsl(var(--foreground))] font-semibold'
-						: 'hidden md:inline font-semibold'
+						? 'hidden lg:inline text-[hsl(var(--brand-foreground))] group-data-[scrolled=true]:text-[hsl(var(--foreground))] font-semibold'
+						: 'hidden lg:inline font-semibold'
 				}
 			>
 				Mekan PLC
 			</span>
 		</a>
 
-		<nav class="hidden items-center gap-6 text-sm font-semibold md:flex">
+		<nav class="hidden items-center gap-6 text-sm font-semibold lg:flex">
 			{links.map((l) => (
 				<a
 					href={l.href}
@@ -62,12 +62,31 @@ const links = [
 		</nav>
 
 		<div class="flex items-center gap-3">
+			<button
+				type="button"
+				id="mobile-nav-toggle"
+				class={
+					overlay
+						? 'inline-flex items-center justify-center rounded-md p-2 text-[hsl(var(--brand-foreground))] opacity-90 hover:opacity-100 group-data-[scrolled=true]:text-[hsl(var(--foreground))] lg:hidden'
+						: 'inline-flex items-center justify-center rounded-md p-2 text-[hsl(var(--foreground))] opacity-90 hover:opacity-100 lg:hidden'
+				}
+				aria-label="Open navigation menu"
+				aria-controls="mobile-nav"
+				aria-expanded="false"
+			>
+				<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<line x1="3" y1="6" x2="21" y2="6" />
+					<line x1="3" y1="12" x2="21" y2="12" />
+					<line x1="3" y1="18" x2="21" y2="18" />
+				</svg>
+			</button>
+
 			<a
 				href="/#contact"
 				class={
 					overlay
-						? 'hidden rounded-md border border-[hsl(var(--brand-border))] bg-[hsl(var(--brand))]/30 px-3 py-2 text-sm font-semibold text-[hsl(var(--brand-foreground))] group-data-[scrolled=true]:border-[hsl(var(--border))] group-data-[scrolled=true]:bg-[hsl(var(--primary))] group-data-[scrolled=true]:text-[hsl(var(--primary-foreground))] md:inline-flex'
-						: 'hidden rounded-md bg-[hsl(var(--primary))] px-3 py-2 text-sm font-semibold text-[hsl(var(--primary-foreground))] md:inline-flex'
+						? 'hidden rounded-md border border-[hsl(var(--brand-border))] bg-[hsl(var(--brand))]/30 px-3 py-2 text-sm font-semibold text-[hsl(var(--brand-foreground))] group-data-[scrolled=true]:border-[hsl(var(--border))] group-data-[scrolled=true]:bg-[hsl(var(--primary))] group-data-[scrolled=true]:text-[hsl(var(--primary-foreground))] lg:inline-flex'
+						: 'hidden rounded-md bg-[hsl(var(--primary))] px-3 py-2 text-sm font-semibold text-[hsl(var(--primary-foreground))] lg:inline-flex'
 				}
 			>
 				Get in touch
@@ -75,6 +94,32 @@ const links = [
 			<ThemeToggle />
 		</div>
 	</div>
+
+	<nav
+		id="mobile-nav"
+		class={
+			overlay
+				? 'hidden lg:hidden border-t border-white/10 bg-[hsl(var(--background))]/95 backdrop-blur-md'
+				: 'hidden lg:hidden border-t border-[hsl(var(--border))] bg-[hsl(var(--background))]/95 backdrop-blur-md'
+		}
+	>
+		<div class="mx-auto w-full max-w-6xl px-4 py-3">
+			<div class="flex flex-col gap-1 text-sm font-semibold">
+				{links.map((l) => (
+					<a
+						href={l.href}
+						class={
+							overlay
+								? 'rounded-md px-3 py-2 text-[hsl(var(--foreground))] opacity-90 hover:opacity-100 hover:bg-black/5'
+								: 'rounded-md px-3 py-2 text-[hsl(var(--foreground))] opacity-90 hover:opacity-100 hover:bg-black/5'
+						}
+					>
+						{l.label}
+					</a>
+				))}
+			</div>
+		</div>
+	</nav>
 </header>
 
 <script is:inline>
@@ -89,7 +134,34 @@ const links = [
 			header.dataset.scrolled = scrolled ? 'true' : 'false';
 		};
 
+		const toggle = document.getElementById('mobile-nav-toggle');
+		const mobileNav = document.getElementById('mobile-nav');
+
+		const setMobileOpen = (open) => {
+			if (!toggle || !mobileNav) return;
+			toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+			mobileNav.classList.toggle('hidden', !open);
+		};
+
 		apply();
 		window.addEventListener('scroll', apply, { passive: true });
+
+		if (toggle && mobileNav) {
+			let open = false;
+			setMobileOpen(open);
+
+			toggle.addEventListener('click', () => {
+				open = !open;
+				setMobileOpen(open);
+			});
+
+			mobileNav.addEventListener('click', (e) => {
+				const target = e.target;
+				if (target && target.closest && target.closest('a')) {
+					open = false;
+					setMobileOpen(open);
+				}
+			});
+		}
 	})();
 </script>

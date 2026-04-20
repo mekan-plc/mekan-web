@@ -1,5 +1,24 @@
+/**
+ * Dynamic XML Sitemap Generator
+ *
+ * Generates sitemap.xml on-demand for search engine crawlers.
+ * Lists all static pages that should be indexed by Google and other search engines.
+ *
+ * Features:
+ * - Dynamic site URL detection from PUBLIC_SITE_URL env var or request origin
+ * - XML escaping for special characters in URLs
+ * - Proper XML headers and sitemap schema
+ * - 1-hour cache for performance
+ *
+ * @see https://www.sitemaps.org/protocol.html
+ * @see https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview
+ */
 export const prerender = false;
 
+/**
+ * Determine site base URL for sitemap generation
+ * Priority: PUBLIC_SITE_URL env var > request origin
+ */
 function getSiteUrl(request: Request) {
 	const fromEnv = (import.meta.env.PUBLIC_SITE_URL || '').replace(/\/$/, '');
 	if (fromEnv) return fromEnv;
@@ -10,6 +29,10 @@ function getSiteUrl(request: Request) {
 	}
 }
 
+/**
+ * Escape special XML characters to prevent parsing errors
+ * Required by XML 1.0 specification for valid sitemap documents
+ */
 function xmlEscape(str: string) {
 	return str
 		.replace(/&/g, '&amp;')

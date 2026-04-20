@@ -1,4 +1,22 @@
 ---
+/**
+ * Root Layout Component with Comprehensive SEO
+ *
+ * This layout provides the HTML shell for all pages with full SEO implementation:
+ * - Dynamic title templating with "Mekan PLC" branding
+ * - Meta description with fallback to default
+ * - Canonical URL generation for duplicate content prevention
+ * - OpenGraph tags for social media sharing
+ * - Twitter Card metadata
+ * - Organization structured data (JSON-LD) for Google Knowledge Graph
+ *
+ * Props:
+ * - title: Page-specific title (automatically appends "| Mekan PLC" if not present)
+ * - description: Page-specific description (falls back to default company description)
+ * - image: Custom OG image path (defaults to /logo1.2.png)
+ * - canonical: Override canonical URL (auto-generated from current path if not provided)
+ * - overlayNav: Whether navbar should overlay hero content (transparent background)
+ */
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
 import CTASection from '../components/CTASection.astro';

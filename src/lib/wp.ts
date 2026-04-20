@@ -1,5 +1,18 @@
-// WordPress REST Client for Astro SSR
-// Uses hardcoded dev URL - change for production
+/**
+ * WordPress REST API Client for Astro SSR
+ *
+ * Provides cached access to WordPress content with the following features:
+ * - In-memory caching with configurable TTL (default: 60 seconds)
+ * - Automatic cache invalidation on expiry
+ * - Error handling with descriptive messages
+ * - Support for both standard WP REST API and custom Mekan endpoints
+ *
+ * Environment Variables:
+ * - WP_API_BASE: WordPress REST API base URL (default: http://localhost:8881/wp-json/wp/v2)
+ * - WP_CACHE_TTL_SECONDS: Cache duration in seconds (default: 60)
+ *
+ * @module wp
+ */
 
 const API_BASE = (import.meta as any).env?.WP_API_BASE || 'http://localhost:8881/wp-json/wp/v2';
 const CACHE_TTL_MS = Number((import.meta as any).env?.WP_CACHE_TTL_SECONDS || '60') * 1000;
@@ -27,8 +40,21 @@ function getWpRootBase(): string {
 	return apiBase;
 }
 
+/**
+ * Cached JSON fetch from WordPress API
+ *
+ * Implements request deduplication and response caching to minimize
+ * API calls during SSR. Cache entries are keyed by full URL and include
+ * TTL-based expiration. Non-JSON responses trigger descriptive errors
+ * to help diagnose REST API configuration issues.
+ *
+ * @template T - Expected response type
+ * @param url - Full WordPress API URL to fetch
+ * @returns Parsed JSON response
+ * @throws Error if request fails or returns non-JSON
+ */
 async function cachedFetchJson<T>(url: string): Promise<T> {
-	// Check cache
+	// Return cached response if still valid
 	if (CACHE_TTL_MS > 0) {
 		const hit = cache.get(url);
 		if (hit && hit.expiresAt > Date.now()) {
@@ -37,13 +63,13 @@ async function cachedFetchJson<T>(url: string): Promise<T> {
 	}
 
 	console.log('[WP] Fetching:', url);
-	
+
 	const res = await fetch(url, {
 		headers: {
 			Accept: 'application/json'
 		}
 	});
-	
+
 	if (!res.ok) {
 		const text = await res.text().catch(() => '');
 		console.error('[WP] Error response:', res.status, text.slice(0, 200));
@@ -58,12 +84,12 @@ async function cachedFetchJson<T>(url: string): Promise<T> {
 	}
 
 	const data = (await res.json()) as T;
-	
-	// Store in cache
+
+	// Cache successful response with TTL
 	if (CACHE_TTL_MS > 0) {
 		cache.set(url, { value: data, expiresAt: Date.now() + CACHE_TTL_MS });
 	}
-	
+
 	return data;
 }
 

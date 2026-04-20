@@ -27,9 +27,9 @@ const contactInfo = [
 ---
 
 <footer class="bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))]">
-	<div class="mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 px-4 py-12 md:grid-cols-4">
+	<div class="mx-auto grid w-full max-w-6xl grid-cols-1 gap-8 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10 lg:px-4">
 		{/* Brand Column */}
-		<div class="space-y-4">
+		<div class="space-y-4 sm:pr-4">
 			<div class="text-sm font-semibold tracking-tight">Mekan PLC</div>
 			<img 
 				src="/logo.png" 
@@ -85,9 +85,9 @@ const contactInfo = [
 		</div>
 
 		{/* Services Column */}
-		<div class="space-y-4">
+		<div class="space-y-4 sm:col-span-2 lg:col-span-1">
 			<div class="text-sm font-semibold">Services</div>
-			<div class="grid gap-2 text-sm">
+			<div class="grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-1">
 				<a href="/services/quality-assurance" class="text-[hsl(var(--brand-foreground))]/80 hover:text-[hsl(var(--brand-foreground))] transition-colors">Quality Assurance & Compliance</a>
 				<a href="/services/agribusiness-development" class="text-[hsl(var(--brand-foreground))]/80 hover:text-[hsl(var(--brand-foreground))] transition-colors">Agribusiness Development</a>
 				<a href="/services/agricultural-productivity" class="text-[hsl(var(--brand-foreground))]/80 hover:text-[hsl(var(--brand-foreground))] transition-colors">Productivity & Sustainability</a>
@@ -132,9 +132,9 @@ const contactInfo = [
 
 	{/* Built by Digital Aksumite */}
 	<div class="border-t border-[hsl(var(--brand-foreground))]/10">
-		<div class="mx-auto w-full max-w-6xl px-4 py-6">
-			<div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-				<div class="flex items-center gap-4">
+		<div class="mx-auto w-full max-w-6xl px-6 py-6 lg:px-4">
+			<div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 md:justify-between">
+				<div class="flex flex-wrap items-center justify-center gap-3">
 					<span class="text-xs text-[hsl(var(--brand-foreground))]/60">Built by</span>
 					<a 
 						href="https://digitalaksumite.com" 
@@ -167,10 +167,10 @@ const contactInfo = [
 						</a>
 					</div>
 				</div>
-				<div class="text-xs text-[hsl(var(--brand-foreground))]/60">
+				<div class="hidden lg:block text-xs text-[hsl(var(--brand-foreground))]/60">
 					© {year} Mekan Consultancy. All rights reserved.
 				</div>
-				<div class="flex items-center gap-4 text-xs text-[hsl(var(--brand-foreground))]/60">
+				<div class="flex flex-wrap items-center justify-center gap-4 text-xs text-[hsl(var(--brand-foreground))]/60">
 					<a href="/privacy-policy" class="hover:text-[hsl(var(--brand-foreground))] transition-colors">Privacy Policy</a>
 					<a href="/terms-of-service" class="hover:text-[hsl(var(--brand-foreground))] transition-colors">Terms of Service</a>
 				</div>

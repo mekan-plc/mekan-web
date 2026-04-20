@@ -7,6 +7,18 @@ function jsonResponse(body: unknown, status = 200) {
 	});
 }
 
+/**
+ * Determine WordPress root URL from environment variables
+ *
+ * Supports multiple configuration patterns:
+ * - WP_ROOT_BASE: Direct root URL (preferred)
+ * - WP_API_BASE: API endpoint (extracts root by removing /wp-json/*)
+ *
+ * Handles various trailing slash and path combinations to ensure
+ * consistent root URL for constructing contact form endpoint.
+ *
+ * @returns WordPress root URL without trailing slash
+ */
 function getWpRootBase(): string {
 	const envAny = (import.meta as any).env || {};
 	const explicit = envAny.WP_ROOT_BASE;
@@ -25,6 +37,20 @@ function getWpRootBase(): string {
 	return 'http://127.0.0.1:8881';
 }
 
+/**
+ * Handle contact form submissions
+ *
+ * Proxies contact form data to the WordPress backend endpoint. This API route:
+ * - Receives JSON payload from frontend contact form
+ * - Forwards to WordPress custom REST endpoint (/mekan/v1/contact)
+ * - Handles WordPress connectivity failures gracefully
+ * - Returns structured JSON response for frontend error handling
+ *
+ * Expected payload: { name, email, phone, service, message }
+ *
+ * @param request - Astro API request object
+ * @returns JSON response with success status and optional error messages
+ */
 export async function POST({ request }: { request: Request }) {
 	try {
 		const payload = await request.json();

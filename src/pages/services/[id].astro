@@ -18,9 +18,9 @@ const services = {
 		title: 'Quality Assurance & Regulatory Compliance',
 		description: 'Securing your license to operate in a global marketplace.',
 		images: [
-			'/gallary/photo_1.jpg', '/gallary/photo_2.jpg', '/gallary/photo_3.jpg',
-			'/gallary/photo_4.jpg', '/gallary/photo_5.jpg', '/gallary/photo_6.jpg',
-			'/gallary/photo_7.jpg', '/gallary/photo_8.jpg'
+			'/gallery/photo_1.jpg', '/gallery/photo_2.jpg', '/gallery/photo_3.jpg',
+			'/gallery/photo_4.jpg', '/gallery/photo_5.jpg', '/gallery/photo_6.jpg',
+			'/gallery/photo_7.jpg', '/gallery/photo_8.jpg'
 		],
 		about: [
 			'In an increasingly regulated landscape, compliance is the foundation of market trust. We provide the technical architecture and end-to-end oversight required to ensure your agribusiness aligns with Private Label Standards and international requirements.',
@@ -48,9 +48,9 @@ const services = {
 		title: 'Agribusiness Development & Strategic Growth',
 		description: 'Transforming agricultural potential into competitive commercial enterprises.',
 		images: [
-			'/gallary/photo_9.jpg', '/gallary/photo_10.jpg', '/gallary/photo_11.jpg',
-			'/gallary/photo_12.jpg', '/gallary/photo_13.jpg', '/gallary/photo_14.jpg',
-			'/gallary/photo_15.jpg', '/gallary/photo_16.jpg'
+			'/gallery/photo_9.jpg', '/gallery/photo_10.jpg', '/gallery/photo_11.jpg',
+			'/gallery/photo_12.jpg', '/gallery/photo_13.jpg', '/gallery/photo_14.jpg',
+			'/gallery/photo_15.jpg', '/gallery/photo_16.jpg'
 		],
 		about: [
 			'Scaling an agribusiness requires a sophisticated blend of agronomic precision and corporate strategy. We empower enterprises to optimize their value chains and achieve sustainable growth.',
@@ -77,9 +77,9 @@ const services = {
 		title: 'Agricultural Productivity & Sustainability',
 		description: 'Future-proofing food systems through regenerative and science-backed practices.',
 		images: [
-			'/gallary/photo_17.jpg', '/gallary/photo_18.jpg', '/gallary/photo_19.jpg',
-			'/gallary/photo_20.jpg', '/gallary/photo_21.jpg', '/gallary/photo_22.jpg',
-			'/gallary/photo_23.jpg', '/gallary/photo_24.jpg'
+			'/gallery/photo_17.jpg', '/gallery/photo_18.jpg', '/gallery/photo_19.jpg',
+			'/gallery/photo_20.jpg', '/gallery/photo_21.jpg', '/gallery/photo_22.jpg',
+			'/gallery/photo_23.jpg', '/gallery/photo_24.jpg'
 		],
 		about: [
 			'We believe that high-yield productivity must be balanced with ecological stewardship to ensure long-term food security and business continuity.',
@@ -106,9 +106,9 @@ const services = {
 		title: 'Food Systems & Climate Resilience',
 		description: 'Building future-proof systems for a changing global landscape.',
 		images: [
-			'/gallary/photo_25.jpg', '/gallary/photo_26.jpg', '/gallary/photo_27.jpg',
-			'/gallary/photo_28.jpg', '/gallary/photo_29.jpg', '/gallary/photo_30.jpg',
-			'/gallary/photo_31.jpg', '/gallary/photo_32.jpg'
+			'/gallery/photo_25.jpg', '/gallery/photo_26.jpg', '/gallery/photo_27.jpg',
+			'/gallery/photo_28.jpg', '/gallery/photo_29.jpg', '/gallery/photo_30.jpg',
+			'/gallery/photo_31.jpg', '/gallery/photo_32.jpg'
 		],
 		about: [
 			'As global food systems face unprecedented pressure, we help our clients build resilience against environmental, social, and policy-driven risks.',
@@ -132,9 +132,9 @@ const services = {
 		title: 'Global Standards & Certifications',
 		description: 'Your technical partner for world-class accreditation.',
 		images: [
-			'/gallary/photo_33.jpg', '/gallary/photo_34.jpg', '/gallary/photo_35.jpg',
-			'/gallary/photo_36.jpg', '/gallary/photo_37.jpg', '/gallary/photo_38.jpg',
-			'/gallary/photo_39.jpg', '/gallary/photo_40.jpg'
+			'/gallery/photo_33.jpg', '/gallery/photo_34.jpg', '/gallery/photo_35.jpg',
+			'/gallery/photo_36.jpg', '/gallery/photo_37.jpg', '/gallery/photo_38.jpg',
+			'/gallery/photo_39.jpg', '/gallery/photo_40.jpg'
 		],
 		about: [
 			'We demystify the certification journey, providing the technical oversight needed to secure the industry’s most respected seals of quality.',
@@ -158,11 +158,11 @@ const services = {
 		title: 'Private Sector & Investment Advisory',
 		description: 'Turning data into decisive action for investors and stakeholders.',
 		images: [
-			'/gallary/photo_41.jpg', '/gallary/photo_42.jpg', '/gallary/photo_43.jpg',
-			'/gallary/photo_44.jpg', '/gallary/photo_45.jpg', '/gallary/photo_46.jpg',
-			'/gallary/photo_47.jpg', '/gallary/photo_48.jpg', '/gallary/photo_49.jpg',
-			'/gallary/photo_50.jpg', '/gallary/photo_51.jpg', '/gallary/photo_52.jpg',
-			'/gallary/photo_53.jpg', '/gallary/photo_54.jpg'
+			'/gallery/photo_41.jpg', '/gallery/photo_42.jpg', '/gallery/photo_43.jpg',
+			'/gallery/photo_44.jpg', '/gallery/photo_45.jpg', '/gallery/photo_46.jpg',
+			'/gallery/photo_47.jpg', '/gallery/photo_48.jpg', '/gallery/photo_49.jpg',
+			'/gallery/photo_50.jpg', '/gallery/photo_51.jpg', '/gallery/photo_52.jpg',
+			'/gallery/photo_53.jpg', '/gallery/photo_54.jpg'
 		],
 		about: [
 			'For investors and private sector entities, we serve as the analytical bridge between capital and agricultural success through data-driven insights.',
@@ -222,7 +222,17 @@ if (!service) {
 	return Astro.redirect('/#services');
 }
 
-// Build Service structured data
+/**
+ * Service Schema.org Structured Data (JSON-LD)
+ * 
+ * Implements schema.org/Service markup to help search engines understand
+ * this page represents a professional consulting service. This enables:
+ * - Rich snippets in search results
+ * - Service-specific SEO enhancements
+ * - Better visibility for "consulting Ethiopia" searches
+ * 
+ * @see https://schema.org/Service
+ */
 const requestOrigin = Astro.request?.url ? new URL(Astro.request.url).origin : '';
 const siteUrl = (import.meta.env.PUBLIC_SITE_URL || requestOrigin).replace(/\/$/, '');
 const pageUrl = siteUrl ? new URL(Astro.url.pathname, siteUrl).toString() : Astro.url.pathname;
@@ -277,9 +287,9 @@ const serviceLd = {
 				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
 				</svg>
-				<span class="text-white font-medium">{service.title}</span>
+				<span class="text-white font-medium whitespace-nowrap overflow-x-auto max-w-[200px] sm:max-w-none scrollbar-hide">{service.title}</span>
 			</nav>
-			<h1 class="text-3xl md:text-4xl font-semibold tracking-tight max-w-3xl">
+			<h1 class="text-xl sm:text-2xl md:text-4xl font-semibold tracking-tight max-w-3xl whitespace-nowrap overflow-x-auto scrollbar-hide">
 				{service.title}
 			</h1>
 			<p class="mt-4 text-lg text-white/80 max-w-2xl">
@@ -340,15 +350,15 @@ const serviceLd = {
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
 								</svg>
 							</a>
-							<div class="mt-4 grid grid-cols-2 gap-3">
-								<a href="tel:+251911454671" class="btn bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-white w-full text-center inline-flex items-center justify-center gap-2 py-2 text-sm rounded-lg transition-colors">
-									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<div class="mt-4 flex gap-2">
+								<a href="tel:+251911454671" class="btn bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-white flex-1 text-center inline-flex items-center justify-center gap-1.5 py-2 px-2 text-xs sm:text-sm rounded-lg transition-colors whitespace-nowrap">
+									<svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
 									</svg>
 									Call us
 								</a>
-								<a href="mailto:biniam@mekanplc.com" class="btn bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-white w-full text-center inline-flex items-center justify-center gap-2 py-2 text-sm rounded-lg transition-colors">
-									<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<a href="mailto:biniam@mekanplc.com" class="btn bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-white flex-1 text-center inline-flex items-center justify-center gap-1.5 py-2 px-2 text-xs sm:text-sm rounded-lg transition-colors whitespace-nowrap">
+									<svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
 									</svg>
 									Email us
