@@ -157,25 +157,27 @@ function stripHtml(html: string) {
 	</section>
 
 	<!-- About: Same background, with top border -->
-	<section id="about" class="section bg-[hsl(var(--background))] border-t border-[hsl(var(--border))]">
+	<section id="about" class="section bg-[hsl(var(--background))]">
 		<div class="container">
-			<div class="grid gap-12 md:grid-cols-12 md:items-center">
-				<!-- Text content - now on LEFT -->
-				<div class="md:col-span-7">
+			<div class="grid gap-12 lg:grid-cols-12 items-center">
+				<div class="lg:col-span-7">
 					<p class="text-sm font-medium text-[hsl(var(--brand))] uppercase tracking-wide">About Us</p>
 					<h2 class="mt-4 text-3xl font-semibold tracking-tight">Your Technical Partner for World-Class Agribusiness</h2>
 					<p class="mt-4 text-base leading-relaxed text-[hsl(var(--muted-foreground))]">
-						Located in the heart of Addis Ababa, Mekan Quality Management and Training PLC is a premier consultancy dedicated to bridging the gap between Ethiopian agribusiness and the global marketplace. We specialize in transforming the supply chain through technical excellence, regulatory mastery, and strategic foresight.
+						Based in Addis Ababa, Mekan Quality Management and Training PLC is a leading consultancy committed to connecting Ethiopian agribusinesses with global markets. The firm focuses on strengthening agricultural value chains through technical expertise, regulatory insight, and forward-looking strategy.
 					</p>
 					<p class="mt-4 text-base leading-relaxed text-[hsl(var(--muted-foreground))]">
-						As a comprehensive technical partner, we empower enterprises to navigate complex international standards—from EU market entry and Global G.A.P. certification to ESG corporate stewardship. By blending agronomic precision with data-driven corporate strategy, we help businesses optimize their value chains and achieve sustainable growth.
+						As an integrated technical partner, Mekan supports enterprises in meeting complex international requirements—ranging from EU market access and Global G.A.P. certification to ESG (Environmental, Social, and Governance) standards. By combining agronomic expertise with data-driven business strategy, the company enables clients to enhance value chain performance and achieve long-term, sustainable growth.
 					</p>
-					<div class="mt-8">
-						<a href="/about" class="btn btn-primary">Explore more about us →</a>
-					</div>
+					<a href="/about" class="inline-flex items-center gap-2 mt-8 text-sm font-semibold text-[hsl(var(--brand))] hover:opacity-80 transition-opacity">
+						Explore more about us
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+						</svg>
+					</a>
 				</div>
 				<!-- Stats - now on RIGHT -->
-				<div class="md:col-span-5">
+				<div class="lg:col-span-5">
 					<div class="card p-8">
 						<div class="text-4xl font-bold text-[hsl(var(--brand))]">8+</div>
 						<p class="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Years of excellence (established 2018 GC)</p>
@@ -194,7 +196,7 @@ function stripHtml(html: string) {
 		<div class="container">
 			<div class="text-center max-w-2xl mx-auto">
 				<p class="text-sm font-medium text-[hsl(var(--brand))] uppercase tracking-wide">Our Services</p>
-				<h2 class="mt-4 text-3xl font-semibold tracking-tight">Comprehensive Solutions for Every Stage</h2>
+				<h2 class="mt-4 text-3xl font-semibold tracking-tight">Holistic Support at Every Stage of the Journey</h2>
 				<p class="mt-4 text-base text-[hsl(var(--muted-foreground))]">
 					From initial compliance assessments to full-scale certification support, we provide end-to-end services tailored to your needs.
 				</p>
@@ -364,7 +366,7 @@ function stripHtml(html: string) {
 							<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
 						</div>
 						<p class="mt-4 text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">
-								"Mekan's GlobalG.A.P certification support opened European markets for our vegetables. Their audit preparation and documentation expertise was exceptional."
+								"Before Mekan came in, getting our smallholder farmers certified for European markets felt like a distant dream. They did not just hand us a checklist—they sat with us in the fields, understood our daily challenges, and walked us through every step of the GlobalG.A.P process. Today, our tomatoes and peppers are on shelves in Germany and the Netherlands. That changed everything for our farmers."
 						</p>
 							<div class="mt-6 flex items-center gap-3">
 								<div class="w-11 h-11 rounded-full bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--brand))]/70 text-[hsl(var(--brand-foreground))] flex items-center justify-center font-semibold text-sm shadow-lg shadow-[hsl(var(--brand))]/20">GA</div>
@@ -387,7 +389,7 @@ function stripHtml(html: string) {
 								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
 							</div>
 							<p class="mt-4 text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">
-								"Mekan's business plan and investment readiness support helped us secure funding and scale operations. Their agronomy expertise transformed our productivity."
+								"We had good land and hardworking people, but we lacked the structure investors were looking for. Mekan helped us see our farm not just as a field, but as a business. They refined our business plan, sharpened our financial projections, and prepared us for conversations we never thought we would have. Within a year, we had secured our first major investment and expanded our operations to three additional sites."
 						</p>
 							<div class="mt-6 flex items-center gap-3">
 								<div class="w-11 h-11 rounded-full bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--brand))]/70 text-[hsl(var(--brand-foreground))] flex items-center justify-center font-semibold text-sm shadow-lg shadow-[hsl(var(--brand))]/20">TB</div>
@@ -410,7 +412,7 @@ function stripHtml(html: string) {
 								<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
 							</div>
 							<p class="mt-4 text-sm leading-relaxed text-[hsl(var(--muted-foreground))]">
-								"The food safety training and HACCP implementation Mekan provided ensured we meet export standards. Their hands-on approach made all the difference."
+								"When our biggest client asked for HACCP compliance, we were overwhelmed. Mekan's team did not bury us in jargon—they broke everything down into steps we could actually follow. They trained our kitchen and warehouse staff with patience and respect, and when the audit day came, we were ready. Now we supply some of the largest hotels in Addis with confidence."
 						</p>
 							<div class="mt-6 flex items-center gap-3">
 								<div class="w-11 h-11 rounded-full bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--brand))]/70 text-[hsl(var(--brand-foreground))] flex items-center justify-center font-semibold text-sm shadow-lg shadow-[hsl(var(--brand))]/20">AA</div>
@@ -878,7 +880,7 @@ function stripHtml(html: string) {
 							<p class="text-sm font-medium text-[hsl(var(--muted-foreground))] mb-4">Follow us on social media</p>
 							<div class="flex gap-3">
 								<a 
-									href="https://linkedin.com" 
+									href="https://www.linkedin.com/company/mekan-quality-management-training/" 
 									target="_blank" 
 									rel="noopener noreferrer"
 									class="group w-12 h-12 rounded-xl bg-[hsl(var(--muted))] flex items-center justify-center text-[hsl(var(--muted-foreground))] hover:bg-gradient-to-br hover:from-[hsl(var(--brand))] hover:to-[hsl(var(--brand))]/70 hover:text-[hsl(var(--brand-foreground))] hover:shadow-lg hover:shadow-[hsl(var(--brand))]/20 hover:-translate-y-1 transition-all duration-300"
@@ -887,7 +889,7 @@ function stripHtml(html: string) {
 									<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
 								</a>
 								<a 
-									href="https://facebook.com" 
+									href="https://web.facebook.com/mekanplc?checkpoint_src=any#" 
 									target="_blank" 
 									rel="noopener noreferrer"
 									class="group w-12 h-12 rounded-xl bg-[hsl(var(--muted))] flex items-center justify-center text-[hsl(var(--muted-foreground))] hover:bg-gradient-to-br hover:from-[hsl(var(--brand))] hover:to-[hsl(var(--brand))]/70 hover:text-[hsl(var(--brand-foreground))] hover:shadow-lg hover:shadow-[hsl(var(--brand))]/20 hover:-translate-y-1 transition-all duration-300"
@@ -896,13 +898,11 @@ function stripHtml(html: string) {
 									<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
 								</a>
 								<a 
-									href="https://twitter.com" 
-									target="_blank" 
-									rel="noopener noreferrer"
+									href="mailto:biniam@mekanplc.com"
 									class="group w-12 h-12 rounded-xl bg-[hsl(var(--muted))] flex items-center justify-center text-[hsl(var(--muted-foreground))] hover:bg-gradient-to-br hover:from-[hsl(var(--brand))] hover:to-[hsl(var(--brand))]/70 hover:text-[hsl(var(--brand-foreground))] hover:shadow-lg hover:shadow-[hsl(var(--brand))]/20 hover:-translate-y-1 transition-all duration-300"
-									aria-label="Twitter"
+									aria-label="Email"
 								>
-									<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+									<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
 								</a>
 							</div>
 						</div>

@@ -52,7 +52,13 @@ export async function GET({ request }: { request: Request }) {
 		'/blog',
 		'/resources',
 		'/privacy-policy',
-		'/terms-of-service'
+		'/terms-of-service',
+		'/services/quality-assurance',
+		'/services/agribusiness-development',
+		'/services/agricultural-productivity',
+		'/services/food-systems',
+		'/services/global-standards',
+		'/services/investment-advisory'
 	];
 
 	const urls = paths

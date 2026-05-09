@@ -49,7 +49,7 @@ const canonicalUrl = (() => {
 	return new URL(Astro.url.pathname, siteUrl).toString();
 })();
 
-const ogImage = image || '/logo1.2.png';
+const ogImage = image || '/og-image.png';
 const ogImageUrl = siteUrl ? new URL(ogImage, siteUrl).toString() : ogImage;
 
 const organizationLd = {
