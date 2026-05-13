@@ -13,6 +13,8 @@
  * @see https://www.sitemaps.org/protocol.html
  * @see https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview
  */
+import { listBlogs } from '../lib/wp';
+
 export const prerender = false;
 
 /**
@@ -45,7 +47,7 @@ function xmlEscape(str: string) {
 export async function GET({ request }: { request: Request }) {
 	const siteUrl = getSiteUrl(request);
 
-	const paths = [
+	const staticPaths = [
 		'/',
 		'/about',
 		'/projects',
@@ -60,6 +62,12 @@ export async function GET({ request }: { request: Request }) {
 		'/services/global-standards',
 		'/services/investment-advisory'
 	];
+
+	const blogPaths = await listBlogs({ perPage: 100 })
+		.then(({ blogs }) => blogs.map((blog) => `/blog/${blog.slug}`))
+		.catch(() => []);
+
+	const paths = [...staticPaths, ...blogPaths];
 
 	const urls = paths
 		.map((path) => {

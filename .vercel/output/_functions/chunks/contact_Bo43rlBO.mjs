@@ -1,4 +1,4 @@
-const __vite_import_meta_env__ = {"ASSETS_PREFIX": undefined, "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "PUBLIC_CMS_BASE_URL": "http://localhost:8881", "PUBLIC_SITE_URL": "http://localhost:4321", "SITE": undefined, "SSR": true};
+const __vite_import_meta_env__ = {"ASSETS_PREFIX": undefined, "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "PUBLIC_CMS_BASE_URL": "http://localhost:8881", "PUBLIC_SITE_URL": "https://mekanplc.com", "SITE": undefined, "SSR": true};
 const prerender = false;
 function jsonResponse(body, status = 200) {
   return new Response(JSON.stringify(body), {

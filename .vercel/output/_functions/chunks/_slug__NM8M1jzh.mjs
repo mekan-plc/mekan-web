@@ -1,7 +1,8 @@
-import { c as createComponent } from './astro-component_B3Fxz6hG.mjs';
+import { c as createComponent } from './astro-component_v2g3HnPa.mjs';
 import 'piccolore';
-import { l as createRenderInstruction, r as renderTemplate, m as maybeRenderHead, h as addAttribute, n as renderComponent, o as renderSlot, p as renderHead, u as unescapeHTML } from './entrypoint_gciQtj2S.mjs';
+import { l as createRenderInstruction, r as renderTemplate, m as maybeRenderHead, h as addAttribute, n as renderComponent, o as renderSlot, p as renderHead, u as unescapeHTML } from './entrypoint_iqnPl3Pl.mjs';
 import 'clsx';
+import { g as getBlogBySlug } from './wp_BS7XIf38.mjs';
 
 async function renderScript(result, id) {
   const inlined = result.inlinedScripts.get(id);
@@ -145,7 +146,7 @@ const $$Layout = createComponent(($$result, $$props, $$slots) => {
   const DEFAULT_TITLE = "Mekan PLC | Quality Management, Compliance & Training";
   const DEFAULT_DESCRIPTION = "Mekan PLC provides quality management consulting, compliance support, certification readiness, and training services for agribusiness and related sectors in Ethiopia.";
   Astro2.request?.url ? new URL(Astro2.request.url).origin : "";
-  const siteUrl = "http://localhost:4321".replace(/\/$/, "");
+  const siteUrl = "https://mekanplc.com".replace(/\/$/, "");
   const pageTitle = title ? title.includes("Mekan PLC") ? title : `${title} | Mekan PLC` : DEFAULT_TITLE;
   const pageDescription = description || DEFAULT_DESCRIPTION;
   const canonicalUrl = (() => {
@@ -174,62 +175,6 @@ const $$Layout = createComponent(($$result, $$props, $$slots) => {
   return renderTemplate(_a$1 || (_a$1 = __template$1(['<html lang="en" data-astro-cid-sckkx6r4> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="icon" type="image/png" href="/logo1.2.png"><meta name="generator"', "><title>", '</title><meta name="description"', ">", '<meta name="robots" content="index,follow"><meta property="og:type" content="website"><meta property="og:site_name" content="Mekan PLC"><meta property="og:title"', '><meta property="og:description"', ">", '<meta property="og:image"', '><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title"', '><meta name="twitter:description"', '><meta name="twitter:image"', '><script type="application/ld+json">', "</script><script>\n			(() => {\n				const STORAGE_KEY = 'theme';\n				const stored = localStorage.getItem(STORAGE_KEY);\n				const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;\n				const theme = stored === 'light' || stored === 'dark' ? stored : systemDark ? 'dark' : 'light';\n				document.documentElement.classList.toggle('dark', theme === 'dark');\n			})();\n		</script>", "</head> <body data-astro-cid-sckkx6r4> ", " <main data-astro-cid-sckkx6r4> ", " </main> ", " ", " <script>\n			// Load AOS (Animate On Scroll) - the industry standard\n			(function() {\n				// Load CSS\n				const aosCss = document.createElement('link');\n				aosCss.href = 'https://unpkg.com/aos@2.3.1/dist/aos.css';\n				aosCss.rel = 'stylesheet';\n				document.head.appendChild(aosCss);\n				\n				// Load JS\n				const script = document.createElement('script');\n				script.src = 'https://unpkg.com/aos@2.3.1/dist/aos.js';\n				script.onload = function() {\n					AOS.init({\n						duration: 800,\n						easing: 'ease-out-cubic',\n						offset: 100,\n						delay: 0,\n						anchorPlacement: 'top-bottom',\n						startEvent: 'DOMContentLoaded',\n						animatedClassName: 'aos-animate',\n						mirror: false\n					});\n				};\n				document.head.appendChild(script);\n			})();\n		</script> </body> </html>"])), addAttribute(Astro2.generator, "content"), pageTitle, addAttribute(pageDescription, "content"), canonicalUrl ? renderTemplate`<link rel="canonical"${addAttribute(canonicalUrl, "href")}>` : null, addAttribute(pageTitle, "content"), addAttribute(pageDescription, "content"), canonicalUrl ? renderTemplate`<meta property="og:url"${addAttribute(canonicalUrl, "content")}>` : null, addAttribute(ogImageUrl, "content"), addAttribute(pageTitle, "content"), addAttribute(pageDescription, "content"), addAttribute(ogImageUrl, "content"), unescapeHTML(JSON.stringify(organizationLd)), renderHead(), renderComponent($$result, "Navbar", $$Navbar, { "overlay": overlayNav, "data-astro-cid-sckkx6r4": true }), renderSlot($$result, $$slots["default"]), renderComponent($$result, "CTASection", $$CTASection, { "data-astro-cid-sckkx6r4": true }), renderComponent($$result, "Footer", $$Footer, { "data-astro-cid-sckkx6r4": true }));
 }, "C:/Users/Biniam/Desktop/Biniam/Biniam Projects/Mekan/mekan-web/src/layouts/Layout.astro", void 0);
 
-const __vite_import_meta_env__ = {"ASSETS_PREFIX": undefined, "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "PUBLIC_CMS_BASE_URL": "http://localhost:8881", "PUBLIC_SITE_URL": "http://localhost:4321", "SITE": undefined, "SSR": true};
-const API_BASE = "http://localhost:8881/wp-json/wp/v2";
-const CACHE_TTL_MS = Number(Object.assign(__vite_import_meta_env__, { WP_API_BASE: "http://localhost:8881/wp-json/wp/v2" })?.WP_CACHE_TTL_SECONDS || "60") * 1e3;
-const cache = /* @__PURE__ */ new Map();
-function getApiBase() {
-  const base = API_BASE;
-  return base.replace(/\/$/, "");
-}
-function getWpRootBase() {
-  const apiBase = getApiBase();
-  if (apiBase.endsWith("/wp/v2")) {
-    return apiBase.slice(0, -"/wp/v2".length);
-  }
-  return apiBase;
-}
-async function cachedFetchJson(url) {
-  if (CACHE_TTL_MS > 0) {
-    const hit = cache.get(url);
-    if (hit && hit.expiresAt > Date.now()) {
-      return hit.value;
-    }
-  }
-  console.log("[WP] Fetching:", url);
-  const res = await fetch(url, {
-    headers: {
-      Accept: "application/json"
-    }
-  });
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    console.error("[WP] Error response:", res.status, text.slice(0, 200));
-    throw new Error(`WordPress API failed (${res.status}): ${text.slice(0, 100)}`);
-  }
-  const contentType = res.headers.get("content-type") || "";
-  if (!contentType.includes("application/json")) {
-    const text = await res.text();
-    console.error("[WP] Non-JSON response:", text.slice(0, 200));
-    throw new Error("WordPress returned non-JSON response. Is the REST API enabled?");
-  }
-  const data = await res.json();
-  if (CACHE_TTL_MS > 0) {
-    cache.set(url, { value: data, expiresAt: Date.now() + CACHE_TTL_MS });
-  }
-  return data;
-}
-async function getBlogBySlug(slug) {
-  const root = getWpRootBase();
-  const url = `${root}/mekan/v1/blogs/${encodeURIComponent(slug)}`;
-  try {
-    const blog = await cachedFetchJson(url);
-    return blog;
-  } catch {
-    return null;
-  }
-}
-
 var __freeze = Object.freeze;
 var __defProp = Object.defineProperty;
 var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(cooked.slice()) }));
@@ -244,7 +189,7 @@ const $$slug = createComponent(async ($$result, $$props, $$slots) => {
     return Astro2.redirect("/404", 404);
   }
   Astro2.request?.url ? new URL(Astro2.request.url).origin : "";
-  const siteUrl = "http://localhost:4321".replace(/\/$/, "");
+  const siteUrl = "https://mekanplc.com".replace(/\/$/, "");
   const pageUrl = siteUrl ? new URL(Astro2.url.pathname, siteUrl).toString() : Astro2.url.pathname;
   const imageUrl = blog.featuredImageUrl || (siteUrl ? new URL("/logo1.2.png", siteUrl).toString() : "/logo1.2.png");
   const blogPostingLd = {

@@ -1,6 +1,8 @@
+import { l as listBlogs } from './wp_BS7XIf38.mjs';
+
 const prerender = false;
 function getSiteUrl(request) {
-  const fromEnv = "http://localhost:4321".replace(/\/$/, "");
+  const fromEnv = "https://mekanplc.com".replace(/\/$/, "");
   if (fromEnv) return fromEnv;
   try {
     return new URL(request.url).origin;
@@ -13,7 +15,7 @@ function xmlEscape(str) {
 }
 async function GET({ request }) {
   const siteUrl = getSiteUrl(request);
-  const paths = [
+  const staticPaths = [
     "/",
     "/about",
     "/projects",
@@ -28,6 +30,8 @@ async function GET({ request }) {
     "/services/global-standards",
     "/services/investment-advisory"
   ];
+  const blogPaths = await listBlogs({ perPage: 100 }).then(({ blogs }) => blogs.map((blog) => `/blog/${blog.slug}`)).catch(() => []);
+  const paths = [...staticPaths, ...blogPaths];
   const urls = paths.map((path) => {
     const loc = siteUrl ? new URL(path, siteUrl).toString() : path;
     return `
