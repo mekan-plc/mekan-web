@@ -254,9 +254,6 @@ function stripHtml(html: string) {
 				<a href="/projects" class="inline-flex btn btn-secondary sm:self-auto">View all projects</a>
 			</div>
 
-			<div id="projectsBanner" class="hidden mb-6 p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm text-center">
-				<span class="font-semibold">Hey you should really give it a taught</span>
-			</div>
 			<div id="projectsGrid" class="mt-16 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 				{projects.length > 0 ? projects.map((project, index) => (
 					<div
@@ -438,9 +435,6 @@ function stripHtml(html: string) {
 				<a href="/blog" class="inline-flex btn btn-secondary sm:self-auto">View all blogs</a>
 			</div>
 
-			<div id="blogBanner" class="hidden mb-6 p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm text-center">
-				<span class="font-semibold">Hey you should really give it a taught</span>
-			</div>
 			<div id="blogGrid" class="mt-16 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 				{featuredBlogs.length > 0 ? featuredBlogs.map((blog, index) => (
 					<a 
@@ -1247,8 +1241,7 @@ function stripHtml(html: string) {
 	});
 
 	// WP REST API endpoint for contact form (direct to CMS)
-	const CMS_BASE = (import.meta.env.PUBLIC_CMS_BASE_URL || 'http://localhost:8881').replace(/\/$/, '');
-	const API_ENDPOINT = `${CMS_BASE}/wp-json/mekan/v1/contact`;
+	const API_ENDPOINT = '/api/contact';
 
 	form?.addEventListener('submit', async (e) => {
 		e.preventDefault();
@@ -1383,32 +1376,17 @@ function stripHtml(html: string) {
 		}
 	});
 
-	/**
-	 * WordPress Connection Health Check
-	 * 
-	 * Detects if the CMS backend is unreachable on page load. When WordPress
-	 * is down, this reveals amber warning banners on the homepage projects
-	 * and blog sections. The banner text "Hey you should really give it a taught"
-	 * alerts admins to connection issues while displaying static fallback
-	 * content to end users instead of error messages.
-	 * 
-	 * Uses HEAD request for minimal overhead - only checking connectivity,
-	 * not fetching actual content (that's done server-side during build/SSR).
-	 */
 	(async function checkWordPressConnection() {
-		const CMS_BASE = import.meta.env.PUBLIC_CMS_BASE_URL || 'http://localhost:8881';
+		const CMS_BASE = (import.meta.env.PUBLIC_CMS_BASE_URL || 'http://localhost:8881').replace(/\/$/, '');
 		try {
 			const res = await fetch(`${CMS_BASE}/wp-json/mekan/v1/blogs?per_page=1`, {
 				method: 'HEAD',
 				headers: { Accept: 'application/json' }
 			});
 			if (!res.ok) throw new Error('WordPress unavailable');
+			localStorage.removeItem('mekan_da_fallback');
 		} catch (e) {
-			// WordPress is down - reveal amber banners on homepage sections
-			const blogBanner = document.getElementById('blogBanner');
-			const projectsBanner = document.getElementById('projectsBanner');
-			if (blogBanner) blogBanner.classList.remove('hidden');
-			if (projectsBanner) projectsBanner.classList.remove('hidden');
+			localStorage.setItem('mekan_da_fallback', '1');
 		}
 	})();
 </script>

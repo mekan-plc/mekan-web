@@ -32,9 +32,6 @@ import Layout from '../../layouts/Layout.astro';
 
 	<section class="section bg-[hsl(var(--background))] border-t border-white/10">
 		<div class="container">
-			<div id="staticBanner" class="hidden mb-6 p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm text-center">
-				<span class="font-semibold">Hey you should really give it a taught</span>
-			</div>
 			<p id="projectsError" class="hidden text-sm text-[hsl(var(--muted-foreground))]"></p>
 			<div id="projectsGrid" class="grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
 		</div>
@@ -175,12 +172,11 @@ import Layout from '../../layouts/Layout.astro';
 				const projects = await res.json();
 				if (!Array.isArray(projects)) throw new Error('Invalid projects response.');
 				cacheSet('projects:index', projects);
+				localStorage.removeItem('mekan_da_fallback');
 				if (grid) grid.innerHTML = projects.map(projectCard).join('');
 			} catch (e) {
 				if (!cached) {
-					// Show static fallback content
-					const banner = document.getElementById('staticBanner');
-					if (banner) banner.classList.remove('hidden');
+					localStorage.setItem('mekan_da_fallback', '1');
 					if (grid) grid.innerHTML = STATIC_PROJECTS.map(projectCard).join('');
 					if (errorEl) errorEl.classList.add('hidden');
 				}

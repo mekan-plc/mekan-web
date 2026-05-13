@@ -7,7 +7,7 @@ function jsonResponse(body, status = 200) {
   });
 }
 function getWpRootBase() {
-  const envAny = Object.assign(__vite_import_meta_env__, { WP_API_BASE: "http://localhost:8881/wp-json/wp/v2", WP_ROOT_BASE: "http://localhost:8881", OS: "Windows_NT", _: "C:/Program Files/nodejs/node.exe" }) || {};
+  const envAny = Object.assign(__vite_import_meta_env__, { WP_API_BASE: "http://localhost:8881/wp-json/wp/v2", WP_ROOT_BASE: "http://localhost:8881", OS: "Windows_NT" }) || {};
   const explicit = envAny.WP_ROOT_BASE;
   if (explicit) return String(explicit).replace(/\/$/, "");
   const apiBase = envAny.WP_API_BASE;

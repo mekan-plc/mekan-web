@@ -20,9 +20,6 @@ import Layout from '../../layouts/Layout.astro';
 		<section class="py-16 md:py-24">
 			<div class="container">
 				<div id="blogError" class="hidden mb-8 p-4 rounded-lg bg-red-50 text-red-600"></div>
-				<div id="staticBanner" class="hidden mb-6 p-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm text-center">
-					<span class="font-semibold">Hey you should really give it a taught</span>
-				</div>
 				<div id="blogGrid" class="grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
 			</div>
 		</section>
@@ -188,13 +185,12 @@ import Layout from '../../layouts/Layout.astro';
 				const blogs = await res.json();
 				if (!Array.isArray(blogs)) throw new Error('Invalid blogs response.');
 				cacheSet('blogs:index', blogs);
+				localStorage.removeItem('mekan_da_fallback');
 				if (grid) grid.innerHTML = blogs.length ? blogs.map(blogCard).join('') : `<div class="text-center py-16"><p class="text-[hsl(var(--muted-foreground))]">No blog posts found. Check back soon!</p></div>`;
 				setupPrefetching();
 			} catch (e) {
 				if (!cached) {
-					// Show static fallback content
-					const banner = document.getElementById('staticBanner');
-					if (banner) banner.classList.remove('hidden');
+					localStorage.setItem('mekan_da_fallback', '1');
 					if (grid) grid.innerHTML = STATIC_BLOGS.map(blogCard).join('');
 					if (errorEl) errorEl.classList.add('hidden');
 				}

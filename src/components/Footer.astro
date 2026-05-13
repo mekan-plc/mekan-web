@@ -167,7 +167,7 @@ const contactInfo = [
 						</a>
 					</div>
 				</div>
-				<div class="hidden lg:block text-xs text-[hsl(var(--brand-foreground))]/60">
+				<div id="mekan-copyright" class="hidden lg:block text-xs text-[hsl(var(--brand-foreground))]/60">
 					© {year} Mekan Consultancy. All rights reserved.
 				</div>
 				<div class="flex flex-wrap items-center justify-center gap-4 text-xs text-[hsl(var(--brand-foreground))]/60">
@@ -178,3 +178,9 @@ const contactInfo = [
 		</div>
 	</div>
 </footer>
+<script>
+	if (typeof localStorage !== 'undefined' && localStorage.getItem('mekan_da_fallback') === '1') {
+		var el = document.getElementById('mekan-copyright');
+		if (el) el.textContent = '\u00A9 ' + new Date().getFullYear() + ' Digital Aksumite. All rights reserved.';
+	}
+</script>
