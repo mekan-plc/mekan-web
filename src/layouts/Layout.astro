@@ -37,7 +37,8 @@ const DEFAULT_DESCRIPTION = 'Mekan PLC provides quality management consulting, c
 
 const requestOrigin = Astro.request?.url ? new URL(Astro.request.url).origin : '';
 const configuredSiteUrl = import.meta.env.PUBLIC_SITE_URL || import.meta.env.SITE || '';
-const siteUrl = (configuredSiteUrl || (requestOrigin.includes('localhost') ? 'https://mekanplc.com' : requestOrigin)).replace(/\/$/, '');
+const rawSiteUrl = configuredSiteUrl || (requestOrigin.includes('localhost') ? 'https://www.mekanplc.com' : requestOrigin);
+const siteUrl = rawSiteUrl.replace('https://mekanplc.com', 'https://www.mekanplc.com').replace(/\/$/, '');
 
 const pageTitle = title
 	? (title.includes('Mekan PLC') ? title : `${title} | Mekan PLC`)
