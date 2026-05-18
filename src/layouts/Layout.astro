@@ -36,7 +36,8 @@ const DEFAULT_TITLE = 'Mekan PLC | Quality Management, Compliance & Training';
 const DEFAULT_DESCRIPTION = 'Mekan PLC provides quality management consulting, compliance support, certification readiness, and training services for agribusiness and related sectors in Ethiopia.';
 
 const requestOrigin = Astro.request?.url ? new URL(Astro.request.url).origin : '';
-const siteUrl = (import.meta.env.PUBLIC_SITE_URL || requestOrigin).replace(/\/$/, '');
+const configuredSiteUrl = import.meta.env.PUBLIC_SITE_URL || import.meta.env.SITE || '';
+const siteUrl = (configuredSiteUrl || (requestOrigin.includes('localhost') ? 'https://mekanplc.com' : requestOrigin)).replace(/\/$/, '');
 
 const pageTitle = title
 	? (title.includes('Mekan PLC') ? title : `${title} | Mekan PLC`)
