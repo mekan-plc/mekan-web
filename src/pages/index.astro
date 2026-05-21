@@ -77,19 +77,19 @@ function stripHtml(html: string) {
 			
 			<div class="relative z-10 max-w-xl lg:max-w-2xl">
 				{/* Main Headline */}
-				<h1 class="text-5xl sm:text-6xl lg:text-[3.5rem] xl:text-[3.75rem] font-bold tracking-tight leading-[1.06]">
+				<h1 class="hero-title text-5xl sm:text-6xl lg:text-[3.5rem] xl:text-[3.75rem] font-bold tracking-tight leading-[1.06]">
 					<span class="block text-white mb-1">Empowering Sustainable</span>
 					<span class="block text-white mb-1">Growth in Agribusiness</span>
 					<span class="block text-[#7EA2CE]">& the Supply Chain</span>
 				</h1>
 				
 				{/* Subtitle - More breathing room */}
-				<p class="mt-4 text-sm lg:text-base text-white/70 max-w-lg leading-relaxed">
+				<p class="hero-subtitle mt-4 text-sm lg:text-base text-white/70 max-w-lg leading-relaxed">
 					Comprehensive Consulting, Compliance, and Strategic Solutions for a Resilient Future.
 				</p>
 				
 				{/* CTA Buttons - Professional */}
-				<div class="mt-6 flex flex-wrap gap-4">
+				<div class="hero-actions mt-6 flex flex-wrap gap-4">
 					<a 
 						href="#contact" 
 						class="group inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-[#0F2C59] transition-all hover:shadow-lg hover:scale-[1.02]"
@@ -145,6 +145,23 @@ function stripHtml(html: string) {
 			@media (max-width: 1023px) {
 				#home {
 					background: linear-gradient(to right, #0A1628 0%, #0F2C59 25%, rgba(15, 44, 89, 0.9) 40%, rgba(15, 44, 89, 0.7) 55%, rgba(15, 44, 89, 0.4) 70%, rgba(15, 44, 89, 0.15) 85%, rgba(15, 44, 89, 0.05) 95%, transparent 100%);
+				}
+			}
+
+			@media (min-width: 1024px) and (max-height: 760px) {
+				#home .hero-subtitle {
+					margin-top: 0.75rem;
+				}
+
+				#home .hero-actions {
+					margin-top: 1rem;
+				}
+			}
+
+			@media (min-width: 1024px) and (max-height: 680px) {
+				#home .hero-title {
+					font-size: clamp(3rem, 4.6vw, 3.4rem);
+					line-height: 1.03;
 				}
 			}
 
