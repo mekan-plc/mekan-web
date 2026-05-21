@@ -230,8 +230,48 @@ function stripHtml(html: string) {
 						
 						{/* Icon container with animated background */}
 						<div class="relative">
-							<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--brand))]/70 text-[hsl(var(--brand-foreground))] flex items-center justify-center text-xl font-bold transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-lg shadow-[hsl(var(--brand))]/20">
-								{service.icon.charAt(0)}
+							<div class="w-14 h-14 rounded-xl bg-gradient-to-br from-[hsl(var(--brand))] to-[hsl(var(--brand))]/70 text-[hsl(var(--brand-foreground))] flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-lg shadow-[hsl(var(--brand))]/20">
+								{service.icon === 'Shield' && (
+									<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 3.5 5.5 6v5.25c0 4.15 2.65 7.85 6.5 9.25 3.85-1.4 6.5-5.1 6.5-9.25V6L12 3.5Z" />
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m9 12 2 2 4-4" />
+									</svg>
+								)}
+								{service.icon === 'TrendingUp' && (
+									<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 18h16" />
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m5 14 4-4 3 3 6-7" />
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M14 6h4v4" />
+									</svg>
+								)}
+								{service.icon === 'Leaf' && (
+									<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 19c8.5 0 13-5.5 14-14-8.5 1-14 5.5-14 14Z" />
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5 19 15 9" />
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 19c0-3-1.5-5-4-6" />
+									</svg>
+								)}
+								{service.icon === 'Globe' && (
+									<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" />
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3.6 9h16.8M3.6 15h16.8M12 3c2.2 2.35 3.25 5.35 3.25 9S14.2 18.65 12 21c-2.2-2.35-3.25-5.35-3.25-9S9.8 5.35 12 3Z" />
+									</svg>
+								)}
+								{service.icon === 'Award' && (
+									<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 14.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z" />
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m9.5 14-1 6 3.5-2 3.5 2-1-6" />
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m10 9 1.25 1.25L14.5 7" />
+									</svg>
+								)}
+								{service.icon === 'BarChart' && (
+									<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 19h16" />
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16V9" />
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 16V5" />
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 16v-4" />
+									</svg>
+								)}
 							</div>
 							{/* Subtle line connecting icon */}
 							<div class="absolute -bottom-2 left-7 h-px w-0 bg-gradient-to-r from-[hsl(var(--brand))] to-transparent transition-all duration-500 group-hover:w-8" />
