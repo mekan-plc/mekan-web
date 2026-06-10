@@ -6,6 +6,7 @@
  * - Automatic cache invalidation on expiry
  * - Error handling with descriptive messages
  * - Support for both standard WP REST API and custom Mekan endpoints
+ * - HTML entity decoding for titles/excerpts (defense against WP smart quotes)
  *
  * Environment Variables:
  * - WP_API_BASE: WordPress REST API base URL (default: http://localhost:8881/wp-json/wp/v2)
@@ -13,6 +14,28 @@
  *
  * @module wp
  */
+
+/**
+ * Decode common HTML entities in a string (Node.js and browser safe).
+ * WordPress wptexturize converts apostrophes to &#8217; and quotes to &#8220;/&#8221;.
+ * This ensures they render correctly even if the CMS sends encoded entities.
+ */
+function decodeEntities(text: string | null | undefined): string {
+	if (!text) return '';
+	return text
+		.replace(/&#8217;/g, "'")   // right single quote (')
+		.replace(/&#8216;/g, "'")   // left single quote (')
+		.replace(/&#8220;/g, '"')   // left double quote (")
+		.replace(/&#8221;/g, '"')   // right double quote (")
+		.replace(/&#8230;/g, '...') // ellipsis
+		.replace(/&#8211;/g, '-')   // en dash
+		.replace(/&#8212;/g, '--')  // em dash
+		.replace(/&amp;/g, '&')
+		.replace(/&lt;/g, '<')
+		.replace(/&gt;/g, '>')
+		.replace(/&quot;/g, '"')
+		.replace(/&#039;/g, "'");
+}
 
 const API_BASE = (import.meta as any).env?.WP_API_BASE || 'http://localhost:8881/wp-json/wp/v2';
 const CACHE_TTL_MS = Number((import.meta as any).env?.WP_CACHE_TTL_SECONDS || '60') * 1000;
@@ -136,6 +159,11 @@ export async function listPosts(opts?: {
 	const url = `${apiBase}/posts?_embed=1&status=publish&orderby=date&order=desc&page=${page}&per_page=${perPage}`;
 
 	const posts = await cachedFetchJson<WpPost[]>(url);
+	posts.forEach((post) => {
+		if (post.title?.rendered) post.title.rendered = decodeEntities(post.title.rendered);
+		if (post.excerpt?.rendered) post.excerpt.rendered = decodeEntities(post.excerpt.rendered);
+		if (post.content?.rendered) post.content.rendered = decodeEntities(post.content.rendered);
+	});
 	return { posts, page, perPage };
 }
 
@@ -144,7 +172,13 @@ export async function getPostBySlug(slug: string): Promise<WpPost | null> {
 	const url = `${apiBase}/posts?_embed=1&status=publish&slug=${encodeURIComponent(slug)}`;
 
 	const posts = await cachedFetchJson<WpPost[]>(url);
-	return posts[0] ?? null;
+	const post = posts[0] ?? null;
+	if (post) {
+		if (post.title?.rendered) post.title.rendered = decodeEntities(post.title.rendered);
+		if (post.excerpt?.rendered) post.excerpt.rendered = decodeEntities(post.excerpt.rendered);
+		if (post.content?.rendered) post.content.rendered = decodeEntities(post.content.rendered);
+	}
+	return post;
 }
 
 export async function listProjects(opts?: {
@@ -154,6 +188,15 @@ export async function listProjects(opts?: {
 	const root = getWpRootBase();
 	const url = `${root}/mekan/v1/projects?per_page=${perPage}`;
 	const projects = await cachedFetchJson<MekanProject[]>(url);
+	projects.forEach((p) => {
+		p.title = decodeEntities(p.title);
+		p.client = decodeEntities(p.client);
+		p.location = decodeEntities(p.location);
+		p.duration = decodeEntities(p.duration);
+		p.description = decodeEntities(p.description);
+		if (p.content) p.content = decodeEntities(p.content);
+		if (p.results) p.results = p.results.map(decodeEntities);
+	});
 	return { projects, perPage };
 }
 
@@ -164,6 +207,15 @@ export async function listFeaturedProjects(opts?: {
 	const root = getWpRootBase();
 	const url = `${root}/mekan/v1/projects?featured=1&per_page=${perPage}`;
 	const projects = await cachedFetchJson<MekanProject[]>(url);
+	projects.forEach((p) => {
+		p.title = decodeEntities(p.title);
+		p.client = decodeEntities(p.client);
+		p.location = decodeEntities(p.location);
+		p.duration = decodeEntities(p.duration);
+		p.description = decodeEntities(p.description);
+		if (p.content) p.content = decodeEntities(p.content);
+		if (p.results) p.results = p.results.map(decodeEntities);
+	});
 	return { projects, perPage };
 }
 
@@ -172,6 +224,13 @@ export async function getProjectBySlug(slug: string): Promise<MekanProject | nul
 	const url = `${root}/mekan/v1/projects/${encodeURIComponent(slug)}`;
 	try {
 		const project = await cachedFetchJson<MekanProject>(url);
+		project.title = decodeEntities(project.title);
+		project.client = decodeEntities(project.client);
+		project.location = decodeEntities(project.location);
+		project.duration = decodeEntities(project.duration);
+		project.description = decodeEntities(project.description);
+		if (project.content) project.content = decodeEntities(project.content);
+		if (project.results) project.results = project.results.map(decodeEntities);
 		return project;
 	} catch {
 		return null;
@@ -203,6 +262,11 @@ export async function listResources(opts?: {
 		url += `&category=${encodeURIComponent(opts.category)}`;
 	}
 	const resources = await cachedFetchJson<MekanResource[]>(url);
+	resources.forEach((r) => {
+		r.title = decodeEntities(r.title);
+		r.description = decodeEntities(r.description);
+		if (r.features) r.features = r.features.map(decodeEntities);
+	});
 	return { resources, perPage };
 }
 
@@ -238,6 +302,12 @@ export async function listBlogs(opts?: {
 		url += `&featured=1`;
 	}
 	const blogs = await cachedFetchJson<MekanBlog[]>(url);
+	blogs.forEach((b) => {
+		b.title = decodeEntities(b.title);
+		b.excerpt = decodeEntities(b.excerpt);
+		if (b.content) b.content = decodeEntities(b.content);
+		b.category = decodeEntities(b.category);
+	});
 	return { blogs, perPage };
 }
 
@@ -246,6 +316,10 @@ export async function getBlogBySlug(slug: string): Promise<MekanBlog | null> {
 	const url = `${root}/mekan/v1/blogs/${encodeURIComponent(slug)}`;
 	try {
 		const blog = await cachedFetchJson<MekanBlog>(url);
+		blog.title = decodeEntities(blog.title);
+		blog.excerpt = decodeEntities(blog.excerpt);
+		if (blog.content) blog.content = decodeEntities(blog.content);
+		blog.category = decodeEntities(blog.category);
 		return blog;
 	} catch {
 		return null;
