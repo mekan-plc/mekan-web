@@ -118,6 +118,7 @@ export type MekanProject = {
 	location: string;
 	duration: string;
 	description: string;
+	content?: string;
 	services: string[];
 	results: string[];
 	imageUrl: string | null;
@@ -164,6 +165,17 @@ export async function listFeaturedProjects(opts?: {
 	const url = `${root}/mekan/v1/projects?featured=1&per_page=${perPage}`;
 	const projects = await cachedFetchJson<MekanProject[]>(url);
 	return { projects, perPage };
+}
+
+export async function getProjectBySlug(slug: string): Promise<MekanProject | null> {
+	const root = getWpRootBase();
+	const url = `${root}/mekan/v1/projects/${encodeURIComponent(slug)}`;
+	try {
+		const project = await cachedFetchJson<MekanProject>(url);
+		return project;
+	} catch {
+		return null;
+	}
 }
 
 export type MekanResource = {

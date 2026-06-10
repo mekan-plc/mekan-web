@@ -313,20 +313,18 @@ function stripHtml(html: string) {
 
 			<div id="projectsGrid" class="mt-16 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 				{projects.length > 0 ? projects.map((project, index) => (
-					<div
+					<a
+						href={`/projects/${project.slug}`}
 						class={`group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2 ${index >= 2 ? 'md:hidden lg:flex' : ''}`}
 					>
-						{/* Glow effect on hover */}
 						<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
 						
-						{/* Project thumbnail */}
 						<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
 							{project.imageUrl ? (
 								<img src={project.imageUrl} alt={project.title} class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
 							) : (
 								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
 							)}
-							{/* Overlay gradient on hover */}
 							<div class="absolute inset-0 bg-gradient-to-t from-[hsl(var(--brand))]/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 						</div>
 						
@@ -339,10 +337,10 @@ function stripHtml(html: string) {
 								{project.description}
 							</p>
 						</div>
-					</div>
+					</a>
 				)) : (
 					<>
-						<div class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2">
+						<a href="/projects/globalgap-certification-for-sidama-coffee-cooperative" class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2">
 							<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
 							<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
 								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
@@ -357,8 +355,8 @@ function stripHtml(html: string) {
 									Implemented comprehensive GLOBALG.A.P certification program for 2,400 smallholder coffee farmers, enabling access to premium European markets.
 								</p>
 							</div>
-						</div>
-						<div class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2">
+						</a>
+						<a href="/projects/sesame-export-quality-improvement-program" class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2">
 							<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
 							<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
 								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
@@ -373,8 +371,8 @@ function stripHtml(html: string) {
 									Established quality control systems and export documentation processes for major sesame exporters targeting Middle Eastern and Asian markets.
 								</p>
 							</div>
-						</div>
-						<div class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2">
+						</a>
+						<a href="/projects/organic-certification-transition-for-spice-exporters" class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2">
 							<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
 							<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
 								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
@@ -389,7 +387,7 @@ function stripHtml(html: string) {
 									Guided organic certification transition for turmeric and ginger exporters, including farm mapping, documentation, and EU organic compliance.
 								</p>
 							</div>
-						</div>
+						</a>
 					</>
 				)}
 			</div>
