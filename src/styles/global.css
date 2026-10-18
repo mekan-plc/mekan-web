@@ -23,10 +23,6 @@
     --brand: 216 71% 20%;              /* Deep Navy #0F2C59 */
     --brand-foreground: 0 0% 100%;   /* White on brand */
     --brand-border: 216 50% 30%;       /* Muted navy border */
-    
-    /* Accent - Golden Amber */
-    --accent: 38 92% 50%;              /* Golden amber #D97706 */
-    --accent-foreground: 0 0% 100%;  /* White on accent */
   }
 
   .dark {
@@ -44,10 +40,6 @@
     --brand: 216 71% 20%;              /* Deep Navy #0F2C59 */
     --brand-foreground: 0 0% 100%;     /* White */
     --brand-border: 216 50% 30%;       /* Navy border */
-    
-    /* Accent - Soft Gold */
-    --accent: 45 90% 60%;              /* Soft gold #FBBF24 */
-    --accent-foreground: 220 10% 8%;   /* Dark on accent */
   }
 
   html {
