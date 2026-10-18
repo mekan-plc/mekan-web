@@ -63,114 +63,70 @@ function stripHtml(html: string) {
 ---
 
 <Layout title="Mekan PLC | Quality Management, Compliance & Training" description="Mekan PLC provides quality management consulting, compliance support, certification readiness, and training services for agribusiness and related sectors in Ethiopia." overlayNav>
-	<!-- Hero: World-Class Design -->
-	<section id="home" class="relative w-full min-h-[100svh] lg:min-h-screen overflow-hidden flex flex-col lg:flex-row">
-		{/* LEFT PANEL - Premium Navy with Depth */}
-		<div
-			class="relative w-full flex-1 lg:w-[46%] xl:w-[46%] text-[hsl(var(--brand-foreground))] flex flex-col justify-center px-6 sm:px-10 lg:px-14 xl:px-20 pt-20 pb-8 sm:pb-10 lg:pt-20 lg:pb-32 min-h-0 lg:min-h-screen z-10"
-			style="background: linear-gradient(to right, #0A1628 0%, #0F2C59 25%, rgba(15, 44, 89, 0.9) 40%, rgba(15, 44, 89, 0.7) 55%, rgba(15, 44, 89, 0.4) 70%, rgba(15, 44, 89, 0.15) 85%, rgba(15, 44, 89, 0.05) 95%, transparent 100%);"
-		>
-			{/* Subtle pattern overlay */}
-			<div class="absolute inset-0 opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
-			
-			{/* Glowing accent */}
-			<div class="absolute top-1/4 -left-20 w-40 h-40 bg-[#7EA2CE]/20 rounded-full blur-3xl"></div>
-			<div class="absolute bottom-1/4 -right-10 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
-			
-			<div class="relative z-10 max-w-xl lg:max-w-2xl">
-				{/* Main Headline */}
-				<h1 class="hero-title text-5xl sm:text-6xl lg:text-[3.5rem] xl:text-[3.75rem] font-bold tracking-tight leading-[1.06]">
-					<span class="block text-white mb-1">Empowering Sustainable</span>
-					<span class="block text-white mb-1">Growth in Agribusiness</span>
-					<span class="block text-[#7EA2CE] lg:whitespace-nowrap">& the Supply Chain</span>
+	<!-- Hero: navy brand band, project photos on the right from lg (guide §10, §14) -->
+	<section id="home" class="brand-band relative isolate flex min-h-[100svh] flex-col overflow-hidden lg:min-h-screen">
+		{/* Photos fade in turn. Navy scrims keep the nav, the headline edge and the partner strip on calm, dark areas (guide §10). */}
+		<div class="absolute inset-y-0 right-0 -z-10 hidden w-[54%] lg:block" aria-hidden="true">
+			{/* The mask fades the photos into the navy band, so there is no seam at the panel edge. */}
+			<div class="absolute inset-0 [mask-image:linear-gradient(to_right,transparent,black_55%)]">
+				{[1, 2, 3, 4, 5].map((num, index) => (
+					<div
+						class="hero-slide absolute inset-0 bg-cover bg-center bg-no-repeat"
+						style={`background-image: url('/hero/${num}.jpg'); opacity: ${index === 0 ? '1' : '0'}; animation-delay: ${index * 6}s;`}
+					/>
+				))}
+			</div>
+			<div class="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-brand-surface/85 to-transparent"></div>
+			<div class="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-brand-surface via-brand-surface/70 to-transparent"></div>
+		</div>
+
+		<div class="container relative flex flex-1 items-center pb-10 pt-28 lg:pb-16 lg:pt-32">
+			<div class="max-w-xl lg:max-w-[36rem]">
+				<h1 class="text-hero font-medium">
+					Empowering Sustainable Growth in Agribusiness
+					<span class="block text-on-brand-accent">& the Supply Chain</span>
 				</h1>
-				
-				{/* Subtitle - More breathing room */}
-				<p class="hero-subtitle mt-4 text-sm lg:text-base text-white/70 max-w-lg leading-relaxed">
+
+				<p class="lead mt-5 max-w-lg">
 					Comprehensive Consulting, Compliance, and Strategic Solutions for a Resilient Future.
 				</p>
-				
-				{/* CTA Buttons - Professional */}
-				<div class="hero-actions mt-6 flex flex-wrap gap-4">
-					<a 
-						href="#contact" 
-						class="group inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-[#0F2C59] transition-all hover:shadow-lg hover:scale-[1.02]"
-					>
-						<span>Get Started</span>
-						<svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+
+				<div class="mt-8 flex flex-col gap-3 sm:flex-row">
+					<a href="#contact" class="btn btn-primary h-12 px-7">
+						<span>Get started</span>
+						<svg class="h-[18px] w-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 8l4 4m0 0l-4 4m4-4H3" />
 						</svg>
 					</a>
-					<a 
-						href="#services" 
-						class="group inline-flex items-center gap-2 rounded-lg border border-white/30 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-white/10"
-					>
-						<span>Our Services</span>
-						<svg class="w-4 h-4 transition-transform group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+					<a href="#services" class="btn btn-secondary h-12 px-7">
+						<span>Our services</span>
+						<svg class="h-[18px] w-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 9l-7 7-7-7" />
 						</svg>
 					</a>
 				</div>
 			</div>
 		</div>
 
-		{/* RIGHT PANEL - Clean images with subtle overlay */}
-		<div class="hidden lg:block lg:w-[54%] xl:w-[54%] relative">
-			{[1, 2, 3, 4, 5].map((num, index) => (
-				<div
-					class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1500 ease-in-out hero-slide"
-					style={`
-						background-image: url('/hero/${num}.jpg');
-						opacity: ${index === 0 ? '1' : '0'};
-						animation: heroFade 30s infinite;
-						animation-delay: ${index * 6}s;
-					`}
-				/>
-			))}
-			{/* Left edge darkening overlay - seamless with navy gradient */}
-			<div class="absolute inset-0 bg-gradient-to-r from-[#0F2C59]/60 via-[#0F2C59]/20 to-transparent"></div>
-		</div>
-
-		{/* PARTNERS MARQUEE - Positioned over hero (no separate background) */}
-		<div class="relative lg:absolute lg:bottom-0 left-0 right-0 z-30 shrink-0">
-			<div class="text-white">
-				<div class="px-4 sm:px-8 py-2 sm:py-3">
-					<div class="mb-2 text-center">
-						<span class="text-[9px] uppercase tracking-[0.25em] text-white/60">Trusted By Industry Leaders</span>
-					</div>
-					<PartnersMarquee overlay />
-				</div>
-			</div>
+		<div class="relative pb-6 lg:pb-8">
+			<p class="eyebrow mb-4 text-center">Trusted by industry leaders</p>
+			<PartnersMarquee />
 		</div>
 
 		<style>
-			@media (max-width: 1023px) {
-				#home {
-					background: linear-gradient(to right, #0A1628 0%, #0F2C59 25%, rgba(15, 44, 89, 0.9) 40%, rgba(15, 44, 89, 0.7) 55%, rgba(15, 44, 89, 0.4) 70%, rgba(15, 44, 89, 0.15) 85%, rgba(15, 44, 89, 0.05) 95%, transparent 100%);
-				}
-			}
-
-			@media (min-width: 1024px) and (max-height: 760px) {
-				#home .hero-subtitle {
-					margin-top: 0.75rem;
-				}
-
-				#home .hero-actions {
-					margin-top: 1rem;
-				}
-			}
-
-			@media (min-width: 1024px) and (max-height: 680px) {
-				#home .hero-title {
-					font-size: clamp(3rem, 4.6vw, 3.4rem);
-					line-height: 1.03;
-				}
+			.hero-slide {
+				animation: heroFade 30s infinite;
 			}
 
 			@keyframes heroFade {
 				0%, 16% { opacity: 1; }
 				20%, 96% { opacity: 0; }
 				100% { opacity: 1; }
+			}
+
+			/* Reduced motion (guide §9): hold the first photo instead of cycling. */
+			@media (prefers-reduced-motion: reduce) {
+				.hero-slide { animation: none; }
 			}
 		</style>
 	</section>

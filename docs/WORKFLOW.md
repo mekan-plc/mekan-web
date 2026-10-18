@@ -5,7 +5,7 @@
 
 ## Current status
 
-**Next step:** 3.1 · **Last updated:** 2026-10-19 · **Phase:** 3 · Homepage
+**Next step:** 3.2 · **Last updated:** 2026-10-19 · **Phase:** 3 · Homepage
 
 ---
 
@@ -68,7 +68,7 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 - [x] **2.4** `CTASection.astro` (navy brand band, frame grid lines). *(2026-10-19: done)*
 
 ### Phase 3 · Homepage (`src/pages/index.astro`), one section per step
-- [ ] **3.1** Hero (navy, Sky highlight line, buttons) + `PartnersMarquee.astro`. Move the headline to `text-hero` (it is 48 px / 6 lines on phones now; the guide says 38–42 px). At 1024–1280 px the transparent header's white links cross the light middle of the hero photo, so the hero needs a calmer or darker area under the nav (guide §10)
+- [x] **3.1** Hero (navy, Sky highlight line, buttons) + `PartnersMarquee.astro`. Move the headline to `text-hero` (it is 48 px / 6 lines on phones now; the guide says 38–42 px). At 1024–1280 px the transparent header's white links cross the light middle of the hero photo, so the hero needs a calmer or darker area under the nav (guide §10) *(2026-10-19: done)*
 - [ ] **3.2** About + stats
 - [ ] **3.3** Services cards
 - [ ] **3.4** Projects cards
@@ -103,6 +103,8 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 ## Log
 
 Add one line per finished step, newest first: `YYYY-MM-DD · step · what changed · files`.
+
+- 2026-10-19 · 3.1 · Hero is a `.brand-band`: solid navy in both modes (phones used to fade to transparent, so “Supply Chain” sat on Paper). From 1024 px the five project photos fill the right 54%, faded into the navy through a mask (no seam), with navy scrims at the top (calm area under the nav links, guide §10) and bottom (partner strip). Headline on `text-hero` Source Serif 4 Medium (40 px phone, 60 px desktop; was 48 px / 6 lines), highlight line in Sky (`text-on-brand-accent`), subtitle `.lead`, buttons `.btn-primary`/`.btn-secondary` at 48 px with 1.75 px icons, labels in sentence case like the CTA. Removed the glow blobs, the plus pattern, the `#0A1628`/`#0F2C59`/`#7EA2CE` gradients and the max-height font hacks. Photos hold still under reduced motion. Partners: the rAF JavaScript loop (it ignored reduced motion and duplicated the list in a script) is replaced by a CSS `.marquee` in the component layer: list ×4, slides half its width, pauses on hover or keyboard focus, edges fade through a mask, and becomes a still row you can scroll under reduced motion. Only the first copy is focusable and announced (8 links). Logo tiles on `bg-logo-panel` at the control radius; the hover name tooltip (clipped by the hero) is now a `title`. Label is a Sprout `.eyebrow`. Build passes; checked at 1280/1024/375 px, light and dark · `src/pages/index.astro`, `src/components/PartnersMarquee.astro`, `src/styles/global.css`
 
 - 2026-10-19 · 2.4 · CTA is a `.brand-band` with a new `.frame-grid` class (guide §8: 1px lines at 6% on-brand, 10% columns × 6rem rows, radial fade to the edges) replacing 15 hand-placed gradient divs. Heading uses `text-h1` (was up to 60px), the paragraph `.lead`, and the buttons `.btn-primary` (white on navy through the band context) and `.btn-secondary` (outline) at 48px with 1.75px icons. The `hover:scale-105` bounce is gone (guide §9). The footer gets a thin top rule so it no longer merges with the CTA. Copy unchanged. Build passes; checked headlessly at 1280/375 px, light and dark · `src/components/CTASection.astro`, `src/components/Footer.astro`, `src/styles/global.css`
 
