@@ -5,7 +5,7 @@
 
 ## Current status
 
-**Next step:** 3.4 · **Last updated:** 2026-10-19 · **Phase:** 3 · Homepage
+**Next step:** 3.5 · **Last updated:** 2026-10-19 · **Phase:** 3 · Homepage
 
 ---
 
@@ -71,7 +71,7 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 - [x] **3.1** Hero (navy, Sky highlight line, buttons) + `PartnersMarquee.astro`. Move the headline to `text-hero` (it is 48 px / 6 lines on phones now; the guide says 38–42 px). At 1024–1280 px the transparent header's white links cross the light middle of the hero photo, so the hero needs a calmer or darker area under the nav (guide §10) *(2026-10-19: done)*
 - [x] **3.2** About + stats *(2026-10-19: done)*
 - [x] **3.3** Services cards *(2026-10-19: done)*
-- [ ] **3.4** Projects cards
+- [x] **3.4** Projects cards *(2026-10-19: done)*
 - [ ] **3.5** Testimonials (`Testimonials.astro`, `TestimonialMedia.astro`): replace gold accent and Fraunces with brand tokens, then delete `--accent`/`--accent-foreground` from `global.css` and Fraunces from the font link in `Layout.astro`
 - [ ] **3.6** Blog cards
 - [ ] **3.7** Contact section and form (inputs, country picker, errors, success state)
@@ -103,6 +103,8 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 ## Log
 
 Add one line per finished step, newest first: `YYYY-MM-DD · step · what changed · files`.
+
+- 2026-10-19 · 3.4 · Projects section on tokens: `.eyebrow` + `.section-title` header with the existing `.btn-secondary`. CMS projects and the offline fallback now share one card template: the three hand-copied fallback cards became a `fallbackProjects` array and `projectCards` picks CMS or fallback (about 50 fewer lines, and the tablet rule that hides the 3rd card now applies to both). Each card is a `.card .card-interactive` with the photo at 16:10 above a `border-line` rule; the hover glow, navy photo wash, `scale-110` zoom and `-translate-y-2` jump are gone (guide §9). Client name is a green `.eyebrow`, title `text-h3 text-heading` (`text-brand` on hover), description `text-small text-muted` clamped to 3 lines so cards line up. The 📁 emoji placeholder is now a 1.75px folder line icon on the navy tint. Fixes dark mode, where client names were navy on black. Copy unchanged. Build passes; checked at 1280/375 px, light and dark (CMS offline, so placeholders showed instead of photos) · `src/pages/index.astro`
 
 - 2026-10-19 · 3.3 · Services section on tokens: `bg-page` with a `border-line` top rule, centred `.eyebrow` / `.section-title` / `.lead` header. Each service is a `.card .card-interactive` (white / dark card, 1px line, 16px radius, soft lift on hover only) replacing the gradient card, the hover glow layer, the `-translate-y-2` jump and the icon’s scale/rotate wiggle (guide §9: nothing bounces or spins). Icons sit on a 48px navy tile (`bg-brand-surface text-on-brand`, 10px radius, no shadow) with 1.75px strokes, drawn from a new `serviceIcons` path map instead of six repeated SVG blocks. Titles are `text-h3 text-heading` (turn `text-brand` on hover), summaries `text-small text-muted`, “Read more” is green/Sprout and underlines on hover. Fixes dark mode, where the bridge `--brand` made the link navy on black. Copy and service full names unchanged (full names are right for cards, §12). Build passes; checked at 1280/375 px, light and dark, with hover · `src/pages/index.astro`
 

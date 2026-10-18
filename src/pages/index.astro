@@ -9,6 +9,33 @@ const { blogs: featuredBlogs } = await listBlogs({ perPage: 3, featured: true })
 
 const { projects } = await listFeaturedProjects({ perPage: 3 }).catch(() => ({ projects: [] }));
 
+// Shown when the CMS has no featured projects (or is offline).
+const fallbackProjects = [
+	{
+		slug: 'globalgap-certification-for-sidama-coffee-cooperative',
+		client: 'Sidama Coffee Farmers Cooperative Union',
+		title: 'GLOBALG.A.P Certification for Sidama Coffee Cooperative',
+		description: 'Implemented comprehensive GLOBALG.A.P certification program for 2,400 smallholder coffee farmers, enabling access to premium European markets.',
+		imageUrl: null
+	},
+	{
+		slug: 'sesame-export-quality-improvement-program',
+		client: 'Ethiopian Sesame Exporters Association',
+		title: 'Sesame Export Quality Improvement Program',
+		description: 'Established quality control systems and export documentation processes for major sesame exporters targeting Middle Eastern and Asian markets.',
+		imageUrl: null
+	},
+	{
+		slug: 'organic-certification-transition-for-spice-exporters',
+		client: 'Green Earth Spices PLC',
+		title: 'Organic Certification Transition for Spice Exporters',
+		description: 'Guided organic certification transition for turmeric and ginger exporters, including farm mapping, documentation, and EU organic compliance.',
+		imageUrl: null
+	}
+];
+
+const projectCards = projects.length > 0 ? projects : fallbackProjects;
+
 const contactInfo = {
 	email: 'biniam@mekanplc.com',
 	phone: '+251 911 454 671'
@@ -225,95 +252,45 @@ function stripHtml(html: string) {
 	</section>
 
 	<!-- Projects: Same background, with top border -->
-	<section id="projects" class="section bg-[hsl(var(--background))] border-t border-[hsl(var(--border))]">
+	<section id="projects" class="section border-t border-line bg-page">
 		<div class="container">
 			<div class="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
 				<div>
-					<p class="text-sm font-medium text-[hsl(var(--brand))] uppercase tracking-wide">Featured Work</p>
-					<h2 class="mt-4 text-3xl font-semibold tracking-tight">Projects That Drive Impact</h2>
+					<p class="eyebrow">Featured Work</p>
+					<h2 class="section-title mt-4">Projects That Drive Impact</h2>
 				</div>
-				<a href="/projects" class="inline-flex btn btn-secondary sm:self-auto">View all projects</a>
+				<a href="/projects" class="btn btn-secondary">View all projects</a>
 			</div>
 
-			<div id="projectsGrid" class="mt-16 grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-				{projects.length > 0 ? projects.map((project, index) => (
+			<div id="projectsGrid" class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{projectCards.map((project, index) => (
 					<a
 						href={`/projects/${project.slug}`}
-						class={`group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2 ${index >= 2 ? 'md:hidden lg:flex' : ''}`}
+						class:list={['card card-interactive group flex flex-col overflow-hidden', index >= 2 && 'md:hidden lg:flex']}
 					>
-						<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
-						
-						<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
+						<div class="relative aspect-[16/10] overflow-hidden border-b border-line bg-tint-brand">
 							{project.imageUrl ? (
-								<img src={project.imageUrl} alt={project.title} class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+								<img src={project.imageUrl} alt={project.title} class="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
 							) : (
-								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
+								<div class="flex h-full items-center justify-center text-brand/40" aria-hidden="true">
+									<svg class="h-10 w-10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+										<path d="M3.5 7.5A1.5 1.5 0 0 1 5 6h4l2 2h8a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 19H5a1.5 1.5 0 0 1-1.5-1.5v-10Z" />
+									</svg>
+								</div>
 							)}
-							<div class="absolute inset-0 bg-gradient-to-t from-[hsl(var(--brand))]/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 						</div>
-						
-						<div class="relative p-6 flex flex-col flex-grow">
-							<p class="text-xs font-medium text-[hsl(var(--brand))] uppercase tracking-wide">{project.client}</p>
-							<h3 class="mt-2 text-lg font-semibold text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">
+
+						<div class="flex flex-grow flex-col p-6 md:p-7">
+							<p class="eyebrow">{project.client}</p>
+							<h3 class="mt-3 text-h3 text-heading transition-colors duration-fast ease-out group-hover:text-brand">
 								{project.title}
 							</h3>
-							<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">
+							<p class="mt-3 line-clamp-3 text-small text-muted">
 								{project.description}
 							</p>
 						</div>
 					</a>
-				)) : (
-					<>
-						<a href="/projects/globalgap-certification-for-sidama-coffee-cooperative" class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2">
-							<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
-							<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
-								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
-								<div class="absolute inset-0 bg-gradient-to-t from-[hsl(var(--brand))]/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-							</div>
-							<div class="relative p-6 flex flex-col flex-grow">
-								<p class="text-xs font-medium text-[hsl(var(--brand))] uppercase tracking-wide">Sidama Coffee Farmers Cooperative Union</p>
-								<h3 class="mt-2 text-lg font-semibold text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">
-									GLOBALG.A.P Certification for Sidama Coffee Cooperative
-								</h3>
-								<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">
-									Implemented comprehensive GLOBALG.A.P certification program for 2,400 smallholder coffee farmers, enabling access to premium European markets.
-								</p>
-							</div>
-						</a>
-						<a href="/projects/sesame-export-quality-improvement-program" class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2">
-							<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
-							<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
-								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
-								<div class="absolute inset-0 bg-gradient-to-t from-[hsl(var(--brand))]/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-							</div>
-							<div class="relative p-6 flex flex-col flex-grow">
-								<p class="text-xs font-medium text-[hsl(var(--brand))] uppercase tracking-wide">Ethiopian Sesame Exporters Association</p>
-								<h3 class="mt-2 text-lg font-semibold text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">
-									Sesame Export Quality Improvement Program
-								</h3>
-								<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">
-									Established quality control systems and export documentation processes for major sesame exporters targeting Middle Eastern and Asian markets.
-								</p>
-							</div>
-						</a>
-						<a href="/projects/organic-certification-transition-for-spice-exporters" class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2">
-							<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
-							<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
-								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
-								<div class="absolute inset-0 bg-gradient-to-t from-[hsl(var(--brand))]/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-							</div>
-							<div class="relative p-6 flex flex-col flex-grow">
-								<p class="text-xs font-medium text-[hsl(var(--brand))] uppercase tracking-wide">Green Earth Spices PLC</p>
-								<h3 class="mt-2 text-lg font-semibold text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">
-									Organic Certification Transition for Spice Exporters
-								</h3>
-								<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">
-									Guided organic certification transition for turmeric and ginger exporters, including farm mapping, documentation, and EU organic compliance.
-								</p>
-							</div>
-						</a>
-					</>
-				)}
+				))}
 			</div>
 		</div>
 	</section>
