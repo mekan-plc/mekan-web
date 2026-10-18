@@ -5,7 +5,7 @@
 
 ## Current status
 
-**Next step:** 3.6 · **Last updated:** 2026-10-19 · **Phase:** 3 · Homepage
+**Next step:** 3.7 · **Last updated:** 2026-10-19 · **Phase:** 3 · Homepage
 
 ---
 
@@ -73,7 +73,7 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 - [x] **3.3** Services cards *(2026-10-19: done)*
 - [x] **3.4** Projects cards *(2026-10-19: done)*
 - [x] **3.5** Testimonials (`Testimonials.astro`, `TestimonialMedia.astro`): replace gold accent and Fraunces with brand tokens, then delete `--accent`/`--accent-foreground` from `global.css` and Fraunces from the font link in `Layout.astro` *(2026-10-19: done)*
-- [ ] **3.6** Blog cards
+- [x] **3.6** Blog cards *(2026-10-19: done)*
 - [ ] **3.7** Contact section and form (inputs, country picker, errors, success state)
 
 ### Phase 4 · Inner pages
@@ -103,6 +103,8 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 ## Log
 
 Add one line per finished step, newest first: `YYYY-MM-DD · step · what changed · files`.
+
+- 2026-10-19 · 3.6 · Blog section on tokens, matching Projects: `.eyebrow` + `.section-title` header with the existing `.btn-secondary`. CMS posts and the offline fallback share one card template: the three hand-copied fallback cards became a `fallbackBlogs` array and `blogCards` picks CMS or fallback (about 60 fewer lines; the tablet rule hiding the 3rd card now applies to both). Each card is a `.card .card-interactive` with a 16:10 image above a `border-line` rule; the hover glow, `scale-110` zoom and `-translate-y-2` jump are gone. The category is a `.badge` (green on green tint; Sprout in dark) instead of a navy/90 pill, the date `text-small text-muted`, the title `text-h3 text-heading` (`text-brand` on hover), the excerpt clamped to 3 lines, and “Read more” green/Sprout with an underline on hover. The 📝🌱🌍📊 emoji placeholders are now a 1.75px document line icon on the green tint, so blog cards read as a different kind of content from project cards (navy tint) when there is no photo. Fixes dark mode, where the bridge `--brand` link was navy on black. Copy unchanged. Build passes; checked at 1280/375 px, light and dark (CMS offline, so placeholders showed) · `src/pages/index.astro`
 
 - 2026-10-19 · 3.5 · Testimonials on tokens. The carousel's structure, script and accessibility (tabs, pause, swipe, reading-time autoplay, reduced motion) are unchanged; only its look moved. Header uses `.eyebrow` / `.section-title` / `.lead`; the section is `bg-page` with a `border-line` top rule. Scoped styles now read role tokens (`rgb(var(--color-*))`, `--mk-font-heading`, `--mk-radius-*`, `--mk-duration-*`) instead of `hsl(var(--x))`. Gold is gone: author role, highlight rule, active tab border and progress bar use Mekan Green (Sprout in dark); the gold radial glow was removed. Fraunces italic is replaced by Source Serif 4 Medium for the pull quote and the big quote mark (brand colour at 7%). The stage is a brand card (16px radius, no heavy drop shadow, was 28px); tabs use the 10px control radius; prev/next/pause are `.btn-icon` with 1.75px strokes, and focus uses the global ring (no gold outline). Avatar ring is card + accent with no drop shadow; logos sit on `--color-logo-panel` (guide §5); initials on the navy surface. Then deleted `--accent`/`--accent-foreground` from the `global.css` bridge and Fraunces from the font link (one less font download). Build passes; checked at 1280/375 px, light and dark · `src/components/Testimonials.astro`, `src/components/TestimonialMedia.astro`, `src/styles/global.css`, `src/layouts/Layout.astro`
 
