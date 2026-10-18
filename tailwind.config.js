@@ -32,6 +32,7 @@ export default {
         focus: role('ring'),              // ring-focus, outline-focus
         'btn-secondary': role('btn-secondary-text'),
         'btn-primary': role('btn-primary-ring'),
+        'logo-panel': role('logo-panel'),
         tint: {
           brand: role('tint-brand'),      // bg-tint-brand
           accent: role('tint-accent'),    // bg-tint-accent

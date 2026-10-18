@@ -108,7 +108,8 @@ const organizationLd = {
 		<script is:inline>
 			(() => {
 				const STORAGE_KEY = 'theme';
-				const stored = localStorage.getItem(STORAGE_KEY);
+				let stored = null;
+				try { stored = localStorage.getItem(STORAGE_KEY); } catch {}
 				const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 				const theme = stored === 'light' || stored === 'dark' ? stored : systemDark ? 'dark' : 'light';
 				document.documentElement.classList.toggle('dark', theme === 'dark');
@@ -237,57 +238,4 @@ const organizationLd = {
 	.reveal-delay-4 { transition-delay: 0.4s; }
 	.reveal-delay-5 { transition-delay: 0.5s; }
 	.reveal-delay-6 { transition-delay: 0.6s; }
-
-	/* Scroll progress bar */
-	.scroll-progress {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 3px;
-		z-index: 9999;
-		background: transparent;
-	}
-
-	.scroll-progress-bar {
-		height: 100%;
-		width: 0%;
-		background: hsl(var(--brand));
-		transition: width 0.1s linear;
-	}
-
-	/* Back to top button */
-	.back-to-top {
-		position: fixed;
-		bottom: 2rem;
-		right: 2rem;
-		width: 48px;
-		height: 48px;
-		border-radius: 50%;
-		background: hsl(var(--brand));
-		color: hsl(var(--brand-foreground));
-		border: none;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 1.25rem;
-		opacity: 0;
-		visibility: hidden;
-		transform: translateY(20px);
-		transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-		z-index: 9998;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-	}
-
-	.back-to-top.visible {
-		opacity: 1;
-		visibility: visible;
-		transform: translateY(0);
-	}
-
-	.back-to-top:hover {
-		transform: translateY(-4px);
-		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-	}
 </style>

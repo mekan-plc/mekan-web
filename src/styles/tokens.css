@@ -95,8 +95,11 @@
   --color-ring: var(--mk-navy);
   --color-btn-secondary-text: var(--mk-green);
   --color-btn-primary-ring: var(--mk-navy);  /* invisible on the navy fill */
+  --color-logo-panel: var(--mk-white);      /* guide §5: logo always sits on white */
   --color-tint-brand: var(--mk-navy-tint);
   --color-tint-accent: var(--mk-green-tint);
+
+  color-scheme: light; /* native scrollbars and form controls follow the theme */
 }
 
 /* ── Role tokens · dark mode ─────────────────────────────────
@@ -118,7 +121,10 @@
   --color-ring: var(--mk-sky);
   --color-btn-secondary-text: var(--mk-dark-text); /* guide §9: Sprout outline, light text */
   --color-btn-primary-ring: var(--mk-sky);   /* guide §9: Sky outline on hover */
+  --color-logo-panel: var(--mk-white);
   /* The guide defines tints for light mode only; on dark pages they fall back to the card surface. */
   --color-tint-brand: var(--mk-dark-card);
   --color-tint-accent: var(--mk-dark-card);
+
+  color-scheme: dark;
 }

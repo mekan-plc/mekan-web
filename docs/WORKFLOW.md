@@ -5,7 +5,7 @@
 
 ## Current status
 
-**Next step:** 2.1 · **Last updated:** 2026-10-19 · **Phase:** 2 · Global shell
+**Next step:** 3.1 · **Last updated:** 2026-10-19 · **Phase:** 3 · Homepage
 
 ---
 
@@ -62,13 +62,13 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 - [x] **1.4** Build the shared component classes in `global.css` from tokens only: `.card`, `.btn-primary`, `.btn-secondary`, `.btn-on-navy`, `.link`, `.eyebrow`, `.section-title`, `.lead`, `.input`, `.badge`, `.brand-band`, focus rings, reduced-motion handling (guide §9). *(2026-10-19: done; preview at `/kit-preview`)*
 
 ### Phase 2 · Global shell
-- [ ] **2.1** `Layout.astro`: page background, scroll progress bar, back-to-top button, theme init.
-- [ ] **2.2** `Navbar.astro` + `ThemeToggle.astro`.
-- [ ] **2.3** `Footer.astro` (service short names from guide §12).
-- [ ] **2.4** `CTASection.astro` (navy brand band, frame grid lines).
+- [x] **2.1** `Layout.astro`: page background, scroll progress bar, back-to-top button, theme init. *(2026-10-19: done; progress bar and back-to-top were dead CSS with no markup, so removed)*
+- [x] **2.2** `Navbar.astro` + `ThemeToggle.astro`. *(2026-10-19: done)*
+- [x] **2.3** `Footer.astro` (service short names from guide §12). *(2026-10-19: done; names already matched §12)*
+- [x] **2.4** `CTASection.astro` (navy brand band, frame grid lines). *(2026-10-19: done)*
 
 ### Phase 3 · Homepage (`src/pages/index.astro`), one section per step
-- [ ] **3.1** Hero (navy, Sky highlight line, buttons) + `PartnersMarquee.astro`. Move the headline to `text-hero` (it is 48 px / 6 lines on phones now; the guide says 38–42 px)
+- [ ] **3.1** Hero (navy, Sky highlight line, buttons) + `PartnersMarquee.astro`. Move the headline to `text-hero` (it is 48 px / 6 lines on phones now; the guide says 38–42 px). At 1024–1280 px the transparent header's white links cross the light middle of the hero photo, so the hero needs a calmer or darker area under the nav (guide §10)
 - [ ] **3.2** About + stats
 - [ ] **3.3** Services cards
 - [ ] **3.4** Projects cards
@@ -82,13 +82,13 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 - [ ] **4.3** `projects/index.astro` + `projects/[slug].astro`
 - [ ] **4.4** `blog/index.astro` + `blog/[slug].astro` (prose styles from tokens)
 - [ ] **4.5** `resources/index.astro`
-- [ ] **4.6** `privacy-policy.astro` + `terms-of-service.astro`
+- [ ] **4.6** `privacy-policy.astro` + `terms-of-service.astro` (dark mode section cards are hard-coded slate, blue-grey on the neutral black page)
 - [ ] **4.7** `404.astro` + `500.astro`
 
 ### Phase 5 · Clean-up
 - [ ] **5.1** Delete the old HSL bridge variables from `global.css`. Search `src/` for leftover hex codes, `#7EA2CE`/`#0F2C59`, `slate-`/`gray-` colours and hand-written `dark:` colour classes. Target: **zero** outside `tokens.css`.
 - [ ] **5.2** Remove dead CSS (duplicate reveal styles in `Layout.astro` and `global.css`, unused Lenis styles, unused classes). Delete the temporary `src/pages/kit-preview.astro`.
-- [ ] **5.3** Naming per guide §4 and §12: consistent company name and service names across nav, footer, titles and meta tags.
+- [ ] **5.3** Naming per guide §4 and §12: consistent company name and service names across nav, footer, titles and meta tags. Footer: the "Mekan PLC" label and "© Mekan Consultancy" should use the full legal name (§4).
 
 ### Phase 6 · Signature touches *(only after the user approves Phases 1–5)*
 - [ ] **6.1** Propose where to use the frame element (guide §8): offset frame on one hero or about image, corner marks on key numbers. Show a preview first, apply only once approved.
@@ -103,6 +103,14 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 ## Log
 
 Add one line per finished step, newest first: `YYYY-MM-DD · step · what changed · files`.
+
+- 2026-10-19 · 2.4 · CTA is a `.brand-band` with a new `.frame-grid` class (guide §8: 1px lines at 6% on-brand, 10% columns × 6rem rows, radial fade to the edges) replacing 15 hand-placed gradient divs. Heading uses `text-h1` (was up to 60px), the paragraph `.lead`, and the buttons `.btn-primary` (white on navy through the band context) and `.btn-secondary` (outline) at 48px with 1.75px icons. The `hover:scale-105` bounce is gone (guide §9). The footer gets a thin top rule so it no longer merges with the CTA. Copy unchanged. Build passes; checked headlessly at 1280/375 px, light and dark · `src/components/CTASection.astro`, `src/components/Footer.astro`, `src/styles/global.css`
+
+- 2026-10-19 · 2.3 · Footer rebuilt on the component layer: `.brand-band`, `container` widths, column titles as Sprout `.eyebrow`s, list links as new `.link-quiet` (muted, underline on hover; on-navy variant), social and credit icons as `.btn-icon`, contact icons in Sky (guide §6), 1.75 px strokes, small text from the type scale. The full logo now sits on a white panel (guide §5). Services and pages are rendered from arrays; copy and links are unchanged (the §12 short names were already correct). The copyright fallback script guards `localStorage`. Build passes; footer checked headlessly at 1280/375 px, light and dark · `src/components/Footer.astro`, `src/styles/global.css`
+
+- 2026-10-19 · 2.2 · Navbar on tokens: transparent and on-navy over heroes, navy band (`bg-brand-surface/95`, soft shadow) once scrolled or when the phone menu is open; a solid Paper variant is kept for non-overlay pages, though every current page uses the overlay. Logo now sits on a white panel (guide §5, new `--color-logo-panel`); wordmark shows from 1280 px so 8 links fit at 1024. New component classes: `.nav-link`, `.btn-icon`, and an `.on-navy` context shared with `.brand-band`. Inside it, headings, eyebrows, links, secondary/icon buttons and focus rings switch to the on-navy colours, and `.btn-primary` becomes the white-on-navy button. Phone menu: icon swaps to a close X, Escape closes it, and the aria-label updates. ThemeToggle uses `.btn-icon` with 1.75 px strokes (guide §9) and an aria-label naming the action. Build passes; header states checked headlessly at 1280/1024/375 px, light and dark, top/scrolled/menu · `src/components/Navbar.astro`, `src/components/ThemeToggle.astro`, `src/styles/global.css`, `src/styles/tokens.css`, `tailwind.config.js`
+
+- 2026-10-19 · 2.1 · Body now `bg-page text-ink`. Legacy bridge neutrals (`--background`, `--foreground`, `--card`, `--border`, `--muted-foreground`, dark `--muted`) now hold the brand neutral values, so every un-migrated section moved to Paper/White/Black/Grey/Line, and dark mode to neutral #0B0B0B/#161616/#262626, with no patchwork (hex duplicated in the bridge until 5.1). `color-scheme` set per theme in `tokens.css` (native scrollbars and controls follow the theme). Theme init and ThemeToggle wrap `localStorage` in try/catch. Scroll progress bar and back-to-top styles removed: no markup or script ever rendered them. Build passes; full 60-shot set re-run and compared · `src/styles/global.css`, `src/styles/tokens.css`, `src/layouts/Layout.astro`, `src/components/ThemeToggle.astro`
 
 - 2026-10-19 · 1.4 · Component layer rebuilt from tokens only: `.card` (+ `.card-interactive` hover lift), `.btn` (44 px, 15 px SemiBold, 10 px radius) with `.btn-primary`, `.btn-secondary` (green outline; Sprout outline + light text in dark), `.btn-on-navy`, `.link`, `.eyebrow`, `.section-title`, `.lead`, `.input` (textarea too), `.badge`/`.badge-brand`, `.brand-band` (children switch to on-navy colours through low-specificity `:where`). Global `:focus-visible` ring (Navy; Sky in dark and on bands); reduced-motion block turns off transitions/animations and shows reveal/AOS content. New tokens: button size, motion (`duration-fast`, `duration-reveal`, `ease-out`), `--color-btn-secondary-text`, `--color-btn-primary-ring`. Removed unused `.card-muted`, `.btn-brand`, `.btn-brand-outline`. Visible now: 2 existing cards lose their resting shadow; the homepage "View all" buttons are green outlines; the services-page button is the new navy primary. Guide gap: no error/danger colour, so the contact form keeps `red-500` until we agree one (3.7). Temporary preview page at `/kit-preview` (delete in 5.2). Build passes; checked light/dark with keyboard focus and hover; full screenshot set re-run · `src/styles/global.css`, `src/styles/tokens.css`, `tailwind.config.js`, `src/pages/kit-preview.astro`
 

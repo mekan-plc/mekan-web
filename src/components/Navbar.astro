@@ -17,107 +17,64 @@ const links = [
 	{ href: '/#blog', label: 'Blogs' },
 	{ href: '/#contact', label: 'Contact us' }
 ];
+
+// Tone (guide §14): over a navy hero the header is transparent and on-navy;
+// on a plain page it starts on Paper. Once scrolled it becomes the navy band.
+const scrolledClasses =
+	'data-[scrolled=true]:border-on-brand/10 data-[scrolled=true]:bg-brand-surface/95 data-[scrolled=true]:shadow-soft data-[scrolled=true]:backdrop-blur-md';
 ---
 
 <header
 	id="site-header"
 	data-overlay={overlay ? 'true' : 'false'}
-	class={
-		overlay
-			? 'group fixed inset-x-0 top-0 z-50 border-b border-transparent bg-transparent text-[hsl(var(--brand-foreground))] transition-all duration-300 data-[scrolled=true]:border-[hsl(var(--border))] data-[scrolled=true]:bg-[hsl(var(--background))]/95 data-[scrolled=true]:backdrop-blur-md data-[scrolled=true]:shadow-sm data-[scrolled=true]:text-[hsl(var(--foreground))]'
-			: 'group sticky top-0 z-50 border-b border-[hsl(var(--border))] bg-[hsl(var(--background))]/80 text-[hsl(var(--foreground))] backdrop-blur'
-	}
+	data-scrolled="false"
+	class:list={[
+		'inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,box-shadow,color] duration-fast ease-out',
+		overlay ? 'on-navy fixed border-transparent bg-transparent' : 'sticky border-line bg-page/85 text-ink backdrop-blur-md',
+		scrolledClasses
+	]}
 >
-	<div class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
-		<a href="/" class="flex items-center gap-2 text-sm font-medium">
-			<img 
-				src="/logo1.2.png" 
-				alt="Mekan Consultancy" 
-				class="h-10 w-auto object-contain"
-			/>
-			<span
-				class={
-					overlay
-						? 'hidden lg:inline text-[hsl(var(--brand-foreground))] group-data-[scrolled=true]:text-[hsl(var(--foreground))] font-semibold'
-						: 'hidden lg:inline font-semibold'
-				}
-			>
-				Mekan Consultancy
+	<div class="container flex items-center justify-between gap-4 py-3">
+		<a href="/" class="flex items-center gap-3 rounded-control">
+			<!-- Guide §5: the logo always sits on a white panel, never directly on navy. -->
+			<span class="flex h-11 items-center rounded-control bg-logo-panel px-1.5 ring-1 ring-line/60">
+				<img src="/logo1.2.png" alt="Mekan Consultancy" class="h-8 w-auto object-contain" />
 			</span>
+			<span class="hidden text-button font-semibold xl:inline">Mekan Consultancy</span>
 		</a>
 
-		<nav class="hidden items-center gap-6 text-sm font-semibold lg:flex">
-			{links.map((l) => (
-				<a
-					href={l.href}
-					class={
-						overlay
-							? 'text-[hsl(var(--brand-foreground))] opacity-80 hover:opacity-100 group-data-[scrolled=true]:text-[hsl(var(--foreground))] group-data-[scrolled=true]:opacity-80 group-data-[scrolled=true]:hover:opacity-100'
-							: 'text-[hsl(var(--foreground))] opacity-80 hover:opacity-100'
-					}
-				>
-					{l.label}
-				</a>
-			))}
+		<nav aria-label="Main" class="hidden items-center gap-0.5 lg:flex">
+			{links.map((l) => <a href={l.href} class="nav-link">{l.label}</a>)}
 		</nav>
 
-		<div class="flex items-center gap-3">
+		<div class="flex items-center gap-2">
+			<a href="/#contact" class="btn btn-primary hidden h-10 px-4 lg:inline-flex">Get in touch</a>
+			<ThemeToggle />
 			<button
 				type="button"
 				id="mobile-nav-toggle"
-				class={
-					overlay
-						? 'inline-flex items-center justify-center rounded-md p-2 text-[hsl(var(--brand-foreground))] opacity-90 hover:opacity-100 group-data-[scrolled=true]:text-[hsl(var(--foreground))] lg:hidden'
-						: 'inline-flex items-center justify-center rounded-md p-2 text-[hsl(var(--foreground))] opacity-90 hover:opacity-100 lg:hidden'
-				}
+				class="btn-icon lg:hidden"
 				aria-label="Open navigation menu"
 				aria-controls="mobile-nav"
 				aria-expanded="false"
 			>
-				<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-					<line x1="3" y1="6" x2="21" y2="6" />
-					<line x1="3" y1="12" x2="21" y2="12" />
-					<line x1="3" y1="18" x2="21" y2="18" />
+				<svg id="mobile-nav-icon-open" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<line x1="4" y1="7" x2="20" y2="7" />
+					<line x1="4" y1="12" x2="20" y2="12" />
+					<line x1="4" y1="17" x2="20" y2="17" />
+				</svg>
+				<svg id="mobile-nav-icon-close" class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<line x1="6" y1="6" x2="18" y2="18" />
+					<line x1="18" y1="6" x2="6" y2="18" />
 				</svg>
 			</button>
-
-			<a
-				href="/#contact"
-				class={
-					overlay
-						? 'hidden rounded-md border border-[hsl(var(--brand-border))] bg-[hsl(var(--brand))]/30 px-3 py-2 text-sm font-semibold text-[hsl(var(--brand-foreground))] group-data-[scrolled=true]:border-[hsl(var(--border))] group-data-[scrolled=true]:bg-[hsl(var(--primary))] group-data-[scrolled=true]:text-[hsl(var(--primary-foreground))] lg:inline-flex'
-						: 'hidden rounded-md bg-[hsl(var(--primary))] px-3 py-2 text-sm font-semibold text-[hsl(var(--primary-foreground))] lg:inline-flex'
-				}
-			>
-				Get in touch
-			</a>
-			<ThemeToggle />
 		</div>
 	</div>
 
-	<nav
-		id="mobile-nav"
-		class={
-			overlay
-				? 'hidden lg:hidden border-t border-white/10 bg-[hsl(var(--background))]/95 backdrop-blur-md'
-				: 'hidden lg:hidden border-t border-[hsl(var(--border))] bg-[hsl(var(--background))]/95 backdrop-blur-md'
-		}
-	>
-		<div class="mx-auto w-full max-w-6xl px-4 py-3">
-			<div class="flex flex-col gap-1 text-sm font-semibold">
-				{links.map((l) => (
-					<a
-						href={l.href}
-						class={
-							overlay
-								? 'rounded-md px-3 py-2 text-[hsl(var(--foreground))] opacity-90 hover:opacity-100 hover:bg-black/5'
-								: 'rounded-md px-3 py-2 text-[hsl(var(--foreground))] opacity-90 hover:opacity-100 hover:bg-black/5'
-						}
-					>
-						{l.label}
-					</a>
-				))}
-			</div>
+	<!-- The open menu forces the navy band, so the panel inherits the header's background. -->
+	<nav id="mobile-nav" aria-label="Main" class="hidden border-t border-on-brand/10 lg:hidden">
+		<div class="container flex flex-col gap-1 py-3">
+			{links.map((l) => <a href={l.href} class="nav-link py-3 text-body">{l.label}</a>)}
 		</div>
 	</nav>
 </header>
@@ -128,38 +85,46 @@ const links = [
 		if (!header) return;
 
 		const isOverlay = header.dataset.overlay === 'true';
-
-		const apply = () => {
-			const scrolled = window.scrollY > 8;
-			header.dataset.scrolled = scrolled ? 'true' : 'false';
-		};
-
 		const toggle = document.getElementById('mobile-nav-toggle');
 		const mobileNav = document.getElementById('mobile-nav');
+		const iconOpen = document.getElementById('mobile-nav-icon-open');
+		const iconClose = document.getElementById('mobile-nav-icon-close');
+		let menuOpen = false;
 
-		const setMobileOpen = (open) => {
-			if (!toggle || !mobileNav) return;
-			toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-			mobileNav.classList.toggle('hidden', !open);
+		const apply = () => {
+			const navy = window.scrollY > 8 || menuOpen;
+			header.dataset.scrolled = navy ? 'true' : 'false';
+			header.classList.toggle('on-navy', navy || isOverlay);
+			if (!isOverlay) header.classList.toggle('text-ink', !navy);
+		};
+
+		const setMenuOpen = (open) => {
+			menuOpen = open;
+			if (toggle && mobileNav) {
+				toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+				toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+				mobileNav.classList.toggle('hidden', !open);
+				iconOpen?.classList.toggle('hidden', open);
+				iconClose?.classList.toggle('hidden', !open);
+			}
+			apply();
 		};
 
 		apply();
 		window.addEventListener('scroll', apply, { passive: true });
 
 		if (toggle && mobileNav) {
-			let open = false;
-			setMobileOpen(open);
-
-			toggle.addEventListener('click', () => {
-				open = !open;
-				setMobileOpen(open);
-			});
+			toggle.addEventListener('click', () => setMenuOpen(!menuOpen));
 
 			mobileNav.addEventListener('click', (e) => {
 				const target = e.target;
-				if (target && target.closest && target.closest('a')) {
-					open = false;
-					setMobileOpen(open);
+				if (target && target.closest && target.closest('a')) setMenuOpen(false);
+			});
+
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape' && menuOpen) {
+					setMenuOpen(false);
+					toggle.focus();
 				}
 			});
 		}
