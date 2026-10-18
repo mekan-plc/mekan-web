@@ -132,35 +132,42 @@ function stripHtml(html: string) {
 	</section>
 
 	<!-- About: Same background, with top border -->
-	<section id="about" class="section bg-[hsl(var(--background))]">
+	<section id="about" class="section bg-page">
 		<div class="container">
-			<div class="grid gap-12 lg:grid-cols-12 items-center">
+			<div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
 				<div class="lg:col-span-7">
-					<p class="text-sm font-medium text-[hsl(var(--brand))] uppercase tracking-wide">About Us</p>
-					<h2 class="mt-4 text-3xl font-semibold tracking-tight">Your Technical Partner for World-Class Agribusiness</h2>
-					<p class="mt-4 text-base leading-relaxed text-[hsl(var(--muted-foreground))]">
-						Based in Addis Ababa, Mekan Quality Management and Training PLC is a leading consultancy committed to connecting Ethiopian agribusinesses with global markets. The firm focuses on strengthening agricultural value chains through technical expertise, regulatory insight, and forward-looking strategy.
-					</p>
-					<p class="mt-4 text-base leading-relaxed text-[hsl(var(--muted-foreground))]">
-						As an integrated technical partner, Mekan supports enterprises in meeting complex international requirements—ranging from EU market access and Global G.A.P. certification to ESG (Environmental, Social, and Governance) standards. By combining agronomic expertise with data-driven business strategy, the company enables clients to enhance value chain performance and achieve long-term, sustainable growth.
-					</p>
-					<a href="/about" class="inline-flex items-center gap-2 mt-8 text-sm font-semibold text-[hsl(var(--brand))] hover:opacity-80 transition-opacity">
+					<p class="eyebrow">About Us</p>
+					<h2 class="section-title mt-4">Your Technical Partner for World-Class Agribusiness</h2>
+					<div class="mt-6 max-w-prose space-y-4 text-ink/85">
+						<p>
+							Based in Addis Ababa, Mekan Quality Management and Training PLC is a leading consultancy committed to connecting Ethiopian agribusinesses with global markets. The firm focuses on strengthening agricultural value chains through technical expertise, regulatory insight, and forward-looking strategy.
+						</p>
+						<p>
+							As an integrated technical partner, Mekan supports enterprises in meeting complex international requirements—ranging from EU market access and Global G.A.P. certification to ESG (Environmental, Social, and Governance) standards. By combining agronomic expertise with data-driven business strategy, the company enables clients to enhance value chain performance and achieve long-term, sustainable growth.
+						</p>
+					</div>
+					<a href="/about" class="link mt-8 inline-flex items-center gap-2 text-button font-semibold">
 						Explore more about us
-						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+						<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 8l4 4m0 0l-4 4m4-4H3" />
 						</svg>
 					</a>
 				</div>
-				<!-- Stats - now on RIGHT -->
+
+				<!-- Key numbers: Source Serif 4 in brand colour (guide §7), split by thin rules -->
 				<div class="lg:col-span-5">
-					<div class="card p-8">
-						<div class="text-4xl font-bold text-[hsl(var(--brand))]">8+</div>
-						<p class="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Years of excellence (established 2018 GC)</p>
-						<div class="mt-6 text-4xl font-bold text-[hsl(var(--brand))]">50+</div>
-						<p class="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Clients served across agribusiness and supply chains</p>
-						<div class="mt-6 text-4xl font-bold text-[hsl(var(--brand))]">20+</div>
-						<p class="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Expert freelance consultants and trainers</p>
-					</div>
+					<dl class="card divide-y divide-line px-8 py-2">
+						{[
+							{ value: '8+', label: 'Years of excellence (established 2018 GC)' },
+							{ value: '50+', label: 'Clients served across agribusiness and supply chains' },
+							{ value: '20+', label: 'Expert freelance consultants and trainers' }
+						].map((stat) => (
+							<div class="grid grid-cols-[5.5rem_1fr] items-center gap-4 py-6 sm:grid-cols-[6.5rem_1fr]">
+								<dt class="order-2 text-small text-muted">{stat.label}</dt>
+								<dd class="order-1 font-heading text-stat font-semibold text-brand">{stat.value}</dd>
+							</div>
+						))}
+					</dl>
 				</div>
 			</div>
 		</div>

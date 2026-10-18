@@ -5,7 +5,7 @@
 
 ## Current status
 
-**Next step:** 3.2 · **Last updated:** 2026-10-19 · **Phase:** 3 · Homepage
+**Next step:** 3.3 · **Last updated:** 2026-10-19 · **Phase:** 3 · Homepage
 
 ---
 
@@ -69,7 +69,7 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 
 ### Phase 3 · Homepage (`src/pages/index.astro`), one section per step
 - [x] **3.1** Hero (navy, Sky highlight line, buttons) + `PartnersMarquee.astro`. Move the headline to `text-hero` (it is 48 px / 6 lines on phones now; the guide says 38–42 px). At 1024–1280 px the transparent header's white links cross the light middle of the hero photo, so the hero needs a calmer or darker area under the nav (guide §10) *(2026-10-19: done)*
-- [ ] **3.2** About + stats
+- [x] **3.2** About + stats *(2026-10-19: done)*
 - [ ] **3.3** Services cards
 - [ ] **3.4** Projects cards
 - [ ] **3.5** Testimonials (`Testimonials.astro`, `TestimonialMedia.astro`): replace gold accent and Fraunces with brand tokens, then delete `--accent`/`--accent-foreground` from `global.css` and Fraunces from the font link in `Layout.astro`
@@ -103,6 +103,8 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 ## Log
 
 Add one line per finished step, newest first: `YYYY-MM-DD · step · what changed · files`.
+
+- 2026-10-19 · 3.2 · About section on tokens: `bg-page`, Sprout/Green `.eyebrow`, `.section-title` (was 30px; now the H2 scale, Navy / light text in dark), body copy in `text-ink` at a readable `max-w-prose` (was grey), and the “Explore more” link is a green `.link` (Sprout in dark) with a 1.75px arrow. Stats are a `<dl>` in a `.card`: Source Serif 4 `text-stat` numbers in `text-brand` (Navy; Sky in dark) beside their labels, split by thin `divide-line` rules, so phones get a compact spec-sheet list instead of a tall stack. This fixes dark mode, where the bridge `--brand` painted the eyebrow, numbers and link navy on black (unreadable). Copy unchanged. Guide flags for the user (copy is out of scope for this refresh): “leading consultancy” and “World-Class” clash with §11, the heading is Title Case (§7), and the 50+/20+ claims need to be provable (§11). Build passes; checked at 1280/375 px, light and dark · `src/pages/index.astro`
 
 - 2026-10-19 · 3.1 · Hero is a `.brand-band`: solid navy in both modes (phones used to fade to transparent, so “Supply Chain” sat on Paper). From 1024 px the five project photos fill the right 54%, faded into the navy through a mask (no seam), with navy scrims at the top (calm area under the nav links, guide §10) and bottom (partner strip). Headline on `text-hero` Source Serif 4 Medium (40 px phone, 60 px desktop; was 48 px / 6 lines), highlight line in Sky (`text-on-brand-accent`), subtitle `.lead`, buttons `.btn-primary`/`.btn-secondary` at 48 px with 1.75 px icons, labels in sentence case like the CTA. Removed the glow blobs, the plus pattern, the `#0A1628`/`#0F2C59`/`#7EA2CE` gradients and the max-height font hacks. Photos hold still under reduced motion. Partners: the rAF JavaScript loop (it ignored reduced motion and duplicated the list in a script) is replaced by a CSS `.marquee` in the component layer: list ×4, slides half its width, pauses on hover or keyboard focus, edges fade through a mask, and becomes a still row you can scroll under reduced motion. Only the first copy is focusable and announced (8 links). Logo tiles on `bg-logo-panel` at the control radius; the hover name tooltip (clipped by the hero) is now a `title`. Label is a Sprout `.eyebrow`. Build passes; checked at 1280/1024/375 px, light and dark · `src/pages/index.astro`, `src/components/PartnersMarquee.astro`, `src/styles/global.css`
 
