@@ -1,0 +1,51 @@
+---
+// TEMPORARY: component preview for workflow step 1.4. Delete after review.
+import '../styles/global.css';
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width" />
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500..600&display=swap" rel="stylesheet" />
+	<title>Kit preview</title>
+	<script is:inline>if (location.hash === '#dark') document.documentElement.classList.add('dark');</script>
+</head>
+<body class="bg-page text-ink">
+	<main class="container section space-y-12">
+		<header class="max-w-2xl space-y-4">
+			<p class="eyebrow">Component kit</p>
+			<h1 class="text-h1 text-heading">Quality systems that hold up in an audit</h1>
+			<p class="lead">We prepare your team, your records and your site for a GLOBALG.A.P audit, then stay alongside you after it.</p>
+			<p>Body text in Inter. Read the <a class="link" href="#">GLOBALG.A.P checklist</a> before your first visit.</p>
+		</header>
+
+		<div class="flex flex-wrap gap-3">
+			<button class="btn btn-primary">Get in touch</button>
+			<button class="btn btn-secondary">View all projects</button>
+			<span class="badge">HACCP</span>
+			<span class="badge badge-brand">Since 2018</span>
+		</div>
+
+		<div class="grid gap-6 md:grid-cols-3">
+			<div class="card p-6"><h3 class="text-h3 text-heading">Static card</h3><p class="mt-2 text-small text-muted">White on Paper, 1px line, 16px radius.</p></div>
+			<a href="#" class="card card-interactive block p-6"><h3 class="text-h3 text-heading">Interactive card</h3><p class="mt-2 text-small text-muted">Soft lift on hover.</p></a>
+			<div class="card p-6 space-y-3">
+				<input class="input" placeholder="Your name" />
+				<textarea class="input" placeholder="Message"></textarea>
+			</div>
+		</div>
+
+		<section class="brand-band rounded-card p-10 space-y-4">
+			<p class="eyebrow">Brand band</p>
+			<h2 class="section-title">Ready for your next <span class="text-on-brand-accent">certification audit?</span></h2>
+			<p class="lead max-w-xl">Talk to Mekan's trainers about your crop, your market and your timeline.</p>
+			<div class="flex flex-wrap gap-3">
+				<button class="btn btn-on-navy">Book a call</button>
+				<button class="btn btn-secondary">Our services</button>
+				<a class="link self-center" href="#">See past projects</a>
+			</div>
+		</section>
+	</main>
+</body>
+</html>

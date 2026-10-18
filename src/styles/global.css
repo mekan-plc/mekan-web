@@ -1,3 +1,5 @@
+@import './tokens.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -62,7 +64,53 @@
   }
 
   body {
-    @apply min-h-dvh bg-[hsl(var(--background))] font-sans text-[hsl(var(--foreground))] antialiased;
+    @apply min-h-dvh bg-[hsl(var(--background))] font-body text-body text-[hsl(var(--foreground))] antialiased;
+  }
+
+  /* Headings: Source Serif 4 SemiBold, sizes from the type scale (guide §7).
+   * Colour is set per component as each one moves onto the role tokens. */
+  h1, h2, h3 {
+    @apply font-heading font-semibold;
+    letter-spacing: var(--mk-tracking-heading);
+    text-wrap: balance;
+  }
+  h1 { @apply text-h1; }
+  h2 { @apply text-h2; }
+  h3 { @apply text-h3; }
+
+  /* Visible keyboard focus everywhere (guide §15): Navy ring, Sky in dark mode and on navy bands. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--color-ring));
+    outline-offset: 2px;
+  }
+
+  .brand-band :focus-visible {
+    outline-color: rgb(var(--color-on-brand-accent));
+  }
+
+  /* Reduced motion (guide §9): switch animations off, show reveal content at once. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+
+    .reveal,
+    .reveal-left,
+    .reveal-right,
+    .reveal-scale,
+    [data-aos] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
   }
 }
 
@@ -79,32 +127,100 @@
     @apply py-16 md:py-20;
   }
 
+  /* ── Brand components (guide §9). Built from tokens only. ── */
+
+  /* Card: white on Paper (dark card in dark mode), 1px line, 16px radius, no resting shadow. */
   .card {
-    @apply rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-sm;
+    @apply rounded-card border border-line bg-surface;
   }
 
-  .card-muted {
-    @apply rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--muted))] shadow-sm;
+  /* Add to a card that is a link or button: soft lift on hover. */
+  .card-interactive {
+    @apply transition-[box-shadow,border-color,transform] duration-fast ease-out hover:-translate-y-0.5 hover:border-brand/25 hover:shadow-lift;
   }
 
+  /* Buttons: Inter SemiBold 15px, 10px radius, 44px touch height. */
   .btn {
-    @apply inline-flex h-10 items-center justify-center rounded-md px-4 text-sm font-medium transition-colors;
+    @apply inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-control px-5 font-body text-button font-semibold transition-[background-color,border-color,color,box-shadow] duration-fast ease-out disabled:pointer-events-none disabled:opacity-50;
   }
 
+  /* Navy fill, white text. Dark mode adds a Sky outline on hover. */
   .btn-primary {
-    @apply bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] hover:opacity-90;
+    @apply bg-brand-surface text-on-brand hover:bg-brand-surface/90 hover:ring-1 hover:ring-btn-primary;
   }
 
+  /* 1px Mekan Green outline (Sprout outline with light text in dark mode). */
   .btn-secondary {
-    @apply border border-[hsl(var(--border))] bg-transparent text-[hsl(var(--foreground))] hover:bg-[hsl(var(--muted))];
+    @apply border border-accent bg-transparent text-btn-secondary hover:bg-tint-accent;
   }
 
-  .btn-brand {
-    @apply bg-[hsl(var(--brand-foreground))] text-[hsl(var(--brand))] hover:opacity-90;
+  /* For navy surfaces: white fill, navy text. */
+  .btn-on-navy {
+    @apply bg-on-brand text-brand-surface hover:bg-on-brand/90;
   }
 
-  .btn-brand-outline {
-    @apply border border-[hsl(var(--brand-border))] bg-transparent text-[hsl(var(--brand-foreground))] hover:bg-black/10;
+  /* Text link: Mekan Green (Sprout in dark mode), underline on hover. */
+  .link {
+    @apply font-medium text-accent underline-offset-4 decoration-1 transition-colors duration-fast ease-out hover:underline;
+  }
+
+  /* Section label: Inter Medium, uppercase, 0.12em tracking, Mekan Green. */
+  .eyebrow {
+    @apply font-body text-eyebrow font-medium uppercase text-accent;
+    letter-spacing: var(--mk-tracking-eyebrow);
+  }
+
+  .section-title {
+    @apply font-heading text-h2 font-semibold text-heading;
+  }
+
+  .lead {
+    @apply text-lead text-muted;
+  }
+
+  /* Form field: white (dark card), 1px line, 10px radius, Navy / Sky focus ring. */
+  .input {
+    @apply block h-11 w-full rounded-control border border-line bg-surface px-4 font-body text-body text-ink transition-[border-color,box-shadow] duration-fast ease-out placeholder:text-muted focus:border-focus focus:outline-none focus:ring-2 focus:ring-focus/20;
+  }
+
+  textarea.input {
+    @apply h-auto min-h-32 py-3;
+  }
+
+  /* Badge / tag: fully rounded, tint background. */
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-tint-accent px-3 py-1 font-body text-eyebrow font-medium text-accent;
+  }
+
+  .badge-brand {
+    @apply bg-tint-brand text-brand;
+  }
+
+  /* Brand band: header, footer, hero, call to action. Always Navy, in both modes.
+   * Children switch to the on-navy colours automatically; :where keeps these
+   * overrides low-specificity, so a utility on the element still wins. */
+  .brand-band {
+    @apply bg-brand-surface text-on-brand;
+  }
+
+  .brand-band :where(h1, h2, h3, .section-title) {
+    @apply text-on-brand;
+  }
+
+  .brand-band :where(.eyebrow) {
+    @apply text-on-brand-mark;
+  }
+
+  .brand-band :where(.lead) {
+    @apply text-on-brand/80;
+  }
+
+  .brand-band :where(.link) {
+    @apply text-on-brand-accent;
+  }
+
+  .brand-band :where(.btn-secondary) {
+    @apply border-on-brand/40 text-on-brand hover:bg-on-brand/10;
   }
 
   /* Reveal animations */
