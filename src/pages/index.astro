@@ -253,6 +253,15 @@ function stripHtml(html: string) {
 				font-size: min(var(--mk-text-hero), 9vh);
 			}
 
+			/* Short windows (laptops with browser toolbars, about 640–740px tall) have room for a 3-line headline
+			 * only. Above about 57px, "Empowering Sustainable Growth" no longer fits the 36rem column and the
+			 * headline wraps to 4 lines, pushing the partner strip to the bottom edge or below it. */
+			@media (max-height: 739px) {
+				.hero-title {
+					font-size: min(var(--mk-text-hero), 9vh, 3.55rem);
+				}
+			}
+
 			/* Reduced motion (guide §9): hold the first photo instead of cycling. */
 			@media (prefers-reduced-motion: reduce) {
 				.hero-slide { animation: none; }
