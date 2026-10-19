@@ -44,7 +44,7 @@
     outline-color: rgb(var(--color-on-brand-accent));
   }
 
-  /* Reduced motion (guide §9): switch animations off, show reveal content at once. */
+  /* Reduced motion (guide §9): switch animations off, show scroll-reveal (AOS) content at once. */
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
@@ -59,10 +59,6 @@
       scroll-behavior: auto !important;
     }
 
-    .reveal,
-    .reveal-left,
-    .reveal-right,
-    .reveal-scale,
     [data-aos] {
       opacity: 1 !important;
       transform: none !important;
@@ -73,14 +69,6 @@
 @layer components {
   .container {
     @apply mx-auto w-full max-w-6xl px-4;
-  }
-
-  .section {
-    @apply py-20 md:py-24;
-  }
-
-  .section-tight {
-    @apply py-16 md:py-20;
   }
 
   /* ── Brand components (guide §9). Built from tokens only. ── */
@@ -108,11 +96,6 @@
   /* 1px Mekan Green outline (Sprout outline with light text in dark mode). */
   .btn-secondary {
     @apply border border-accent bg-transparent text-btn-secondary hover:bg-tint-accent;
-  }
-
-  /* For navy surfaces: white fill, navy text. */
-  .btn-on-navy {
-    @apply bg-on-brand text-brand-surface hover:bg-on-brand/90;
   }
 
   /* Text link: Mekan Green (Sprout in dark mode), underline on hover. */
@@ -294,61 +277,4 @@
       animation: none;
     }
   }
-
-  /* Reveal animations */
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .reveal.revealed {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .reveal-left {
-    opacity: 0;
-    transform: translateX(-40px);
-    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .reveal-left.revealed {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .reveal-right {
-    opacity: 0;
-    transform: translateX(40px);
-    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .reveal-right.revealed {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .reveal-scale {
-    opacity: 0;
-    transform: scale(0.95);
-    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  .reveal-scale.revealed {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  /* Stagger delays */
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
-  .reveal-delay-5 { transition-delay: 0.5s; }
-  .reveal-delay-6 { transition-delay: 0.6s; }
 }

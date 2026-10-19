@@ -5,7 +5,7 @@
 
 ## Current status
 
-**Next step:** 5.2 · **Last updated:** 2026-10-19 · **Phase:** 5 · Clean-up
+**Next step:** 5.3 · **Last updated:** 2026-10-19 · **Phase:** 5 · Clean-up
 
 ---
 
@@ -87,7 +87,7 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 
 ### Phase 5 · Clean-up
 - [x] **5.1** Delete the old HSL bridge variables from `global.css`. Search `src/` for leftover hex codes, `#7EA2CE`/`#0F2C59`, `slate-`/`gray-` colours and hand-written `dark:` colour classes. Target: **zero** outside `tokens.css`. *(2026-10-19: done; zero reached, build output identical apart from the removed variables)*
-- [ ] **5.2** Remove dead CSS (duplicate reveal styles in `Layout.astro` and `global.css`, unused Lenis styles, unused classes). Delete the temporary `src/pages/kit-preview.astro`.
+- [x] **5.2** Remove dead CSS (duplicate reveal styles in `Layout.astro` and `global.css`, unused Lenis styles, unused classes). Delete the temporary `src/pages/kit-preview.astro`. *(2026-10-19: done; only dead rules left the build)*
 - [ ] **5.3** Naming per guide §4 and §12: consistent company name and service names across nav, footer, titles and meta tags. Footer: the "Mekan PLC" label and "© Mekan Consultancy" should use the full legal name (§4).
 
 ### Phase 6 · Signature touches *(only after the user approves Phases 1–5)*
@@ -103,6 +103,8 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 ## Log
 
 Add one line per finished step, newest first: `YYYY-MM-DD · step · what changed · files`.
+
+- 2026-10-19 · 5.2 · Dead CSS removed. `Layout.astro`: the Lenis rules (Lenis is in `package.json` but never imported, so `html.lenis` never existed) and its copy of the reveal classes are gone; only the `html, body` reset stays. `global.css`: the second copy of `.reveal`, `.reveal-left/-right/-scale`, `.revealed` and `.reveal-delay-1…6` is gone (no element in `src/` ever had a `reveal` class; the scroll fade-ins are AOS `data-aos`, which stays), and the reduced-motion override now targets `[data-aos]` only. Also removed `.section`, `.section-tight` and `.btn-on-navy`, which only the kit preview used (on navy, `.btn-primary` already turns white-on-navy through the `.brand-band`/`.on-navy` context, guide §9). Deleted `src/pages/kit-preview.astro` (`/kit-preview` now 404s). Every class was checked across `src/` and every scoped `<style>` selector against its own file first. Proof: before/after `dist/` compared as sets of CSS rules. The only removals are the dead rules above plus three utilities only the kit preview used (`p-10`, `self-center`, `space-y-12`), and nothing was added except the narrower `[data-aos]` reduced-motion rule. In the HTML, each page lost only the inline `<style>` block of dead Layout CSS (about 1.8 KB a page); JS bundles are unchanged. Spot-checked the home and service pages at 1280/375 px, light and dark. **Found, not fixed (exists before this step, checked by stashing the changes):** AOS measures its trigger points before the page finishes laying out, so the homepage's About columns and the CTA band (the three `data-aos` blocks) can stay at opacity 0 when scrolled to; `AOS.refreshHard()` after load fixes it in the browser. Needs a decision: fix the AOS timing, or replace AOS with a small IntersectionObserver reveal on the motion tokens (and drop the unpkg script). **Flags for later:** `lenis`, `react`, `react-dom` and `@astrojs/react` are installed and React is registered in `astro.config.mjs`, but no React component exists; `public/` looks to hold duplicates (`testimonials/` has both spaced and hyphenated copies of three files, plus `logo1.jpg` and `og-image.png`), but some paths are built at runtime, so check each in the browser before deleting · `src/layouts/Layout.astro`, `src/styles/global.css`, `src/pages/kit-preview.astro` (deleted)
 
 - 2026-10-19 · 5.1 · Old HSL bridge deleted. Before removing it, `src/` was searched for every bridge name (`--background`, `--foreground`, `--card`, `--muted(-foreground)`, `--border`, `--ring`, `--primary(-foreground)`, `--brand(-foreground|-border)`), `hsl(`, old shadcn-style classes (`bg-background`, `text-muted-foreground`, `border-border`…), `dark:` classes, `slate-`/`gray-`/`zinc-` and other Tailwind palette colours, `rgb()`/`rgba()` literals and named CSS colours: **zero** uses left, so the `:root`/`.dark` bridge block in `global.css` was dead. Removed it, plus the two Astro starter files `src/assets/astro.svg` and `background.svg` (referenced nowhere; they held the only other hex values in `src/`). `#…` left in `src/lib/wp.ts` are HTML entity codes (`&#8217;`), not colours. **Hex outside `tokens.css`: zero.** Proof of no visual change: built before and after, then compared `dist/`. Every HTML page is identical once asset hashes are normalised, the JS bundles keep the same hashes, and the only CSS difference is the two removed variable blocks (in `global` and `PageHero` CSS). Spot-checked the homepage and About in the browser at 1280/375 px, light and dark · `src/styles/global.css`, `src/assets/` (deleted)
 
