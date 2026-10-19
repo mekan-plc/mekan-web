@@ -5,7 +5,7 @@
 
 ## Current status
 
-**Next step:** 7.1 · **Last updated:** 2026-10-19 · **Phase:** 7 · Final QA
+**Status:** ✅ Complete, live on mekanplc.com · **Last updated:** 2026-10-19 · `brand-refresh` merged into `main` (fast-forward, `b923339`) and deployed by Vercel
 
 ---
 
@@ -95,15 +95,17 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 - [x] **6.1** Propose where to use the frame element (guide §8): offset frame on one hero or about image, corner marks on key numbers. Show a preview first, apply only once approved. *(2026-10-19: done; approved by the user)*
 
 ### Phase 7 · Final QA
-- [ ] **7.1** Every page in light and dark, at 375 px, 768 px and 1280 px+. Compare with the "before" screenshots.
-- [ ] **7.2** Contrast check (guide §6), keyboard focus visible, reduced motion respected, alt text present.
-- [ ] **7.3** `npm run build` clean, Lighthouse run on home page. Write a short summary for the user, then wait for approval to merge and deploy.
+- [x] **7.1** Every page in light and dark, at 375 px, 768 px and 1280 px+. Compare with the "before" screenshots. *(2026-10-19: closed by user decision after reviewing the live site. Every page was already checked light/dark at phone and desktop in its own step (2.1–6.1); the final pass checked the hero at 27 window sizes, project and blog detail pages against the real CMS at 375/1366 px light and dark, and every live page returning 200. Not done: a full "after" screenshot set compared with `before/`)*
+- [x] **7.2** Contrast check (guide §6), keyboard focus visible, reduced motion respected, alt text present. *(2026-10-19: contrast comes from the guide's checked token pairs (§6, §15); global `:focus-visible` ring since 1.4; reduced motion handled in `global.css`, hero and testimonials; every `<img>` in the build has an `alt` (empty only on the repeated marquee copies, on purpose))*
+- [x] **7.3** `npm run build` clean, Lighthouse run on home page. Write a short summary for the user, then wait for approval to merge and deploy. *(2026-10-19: build clean; Lighthouse skipped by user decision; user approved, merged and deployed the same day)*
 
 ---
 
 ## Log
 
 Add one line per finished step, newest first: `YYYY-MM-DD · step · what changed · files`.
+
+- 2026-10-19 · release · **Brand refresh live.** `brand-refresh` (27 commits) was pushed, built as a Vercel preview (success; the preview is behind Vercel login, so it was checked locally against the real CMS instead), then fast-forwarded into `main` and deployed to production in about 40 s. Live checks: every page returns 200 and a missing post returns 404; the homepage shows the real CMS projects, not the fallback; the blog list loads its 2 posts on the live domain; Resources is empty because the CMS has no published resources yet; the contact form carries the bot trap. The user reviewed the live site and closed Phase 7 (see 7.1–7.3). Rollback if ever needed: Vercel → Deployments → previous production deployment → Promote to Production. **Open, outside this workflow:** the CMS fix that hides contact messages from the public REST API is on `mekan-cms` `main`, but production only changes when `wp-content/themes/mekan-admin/inc/contact-messages.php` is uploaded through cPanel. Content note: the “Empowering Ethiopian Spice Exporters” project has its whole article in the Key Results field, so the sidebar list is very long (tidy in the CMS) · `docs/WORKFLOW.md`
 
 - 2026-10-19 · user review · **Partner tiles' bottom edge visible on short laptop windows.** The user's 1366×768 laptop (a 641px-tall page area with Chrome's toolbars) showed the partner tiles touching the bottom edge (−3px). Cause: from about 57.5px the headline wraps to 4 lines (“Empowering / Sustainable Growth / in Agribusiness / & the Supply Chain”), and on windows about 640–690px tall the hero then runs past the screen. A first attempt capped the headline at 57px (3 lines, 44px gap) and was **rejected by the user**: too much space, and the 4-line headline must stay. Kept fix: on desktops (≥1024px) shorter than 740px, the hero's top padding is `5.5rem` and its bottom padding `1.5rem` (16px less in all); the headline is untouched. Result: 1351×641 shows 13px under the tiles, 650px 18px, 660–670px 24–32px, 690px+ the full 44px; the headline keeps 19px+ clearance under the navbar (phones have 24px). Phones, tablets and windows 740px+ are unchanged, nothing scrolls sideways; checked light and dark at 1351×641. Build passes · `src/pages/index.astro`
 - 2026-10-19 · contact · Spam-bot filter (outside the brand plan, user request): a hidden off-screen trap field plus time on page; `/api/contact` gives bots the normal success reply but forwards nothing to WordPress when the trap is filled, the timing is missing, or the form was sent in under 3s, and logs `[contact] blocked automated submission`. Real messages reach WordPress with the same five fields as before. Tested all four cases · `src/pages/index.astro`, `src/pages/api/contact.ts`
