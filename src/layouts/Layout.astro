@@ -115,6 +115,10 @@ const organizationLd = {
 				const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 				const theme = stored === 'light' || stored === 'dark' ? stored : systemDark ? 'dark' : 'light';
 				document.documentElement.classList.toggle('dark', theme === 'dark');
+
+				// Scroll reveal is opt-in: [data-reveal] content only starts hidden when it can be revealed again.
+				const canReveal = 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+				document.documentElement.classList.toggle('js-reveal', canReveal);
 			})();
 		</script>
 	</head>
@@ -127,30 +131,18 @@ const organizationLd = {
 		<Footer />
 
 		<script is:inline>
-			// Load AOS (Animate On Scroll) - the industry standard
-			(function() {
-				// Load CSS
-				const aosCss = document.createElement('link');
-				aosCss.href = 'https://unpkg.com/aos@2.3.1/dist/aos.css';
-				aosCss.rel = 'stylesheet';
-				document.head.appendChild(aosCss);
-				
-				// Load JS
-				const script = document.createElement('script');
-				script.src = 'https://unpkg.com/aos@2.3.1/dist/aos.js';
-				script.onload = function() {
-					AOS.init({
-						duration: 800,
-						easing: 'ease-out-cubic',
-						offset: 100,
-						delay: 0,
-						anchorPlacement: 'top-bottom',
-						startEvent: 'DOMContentLoaded',
-						animatedClassName: 'aos-animate',
-						mirror: false
-					});
-				};
-				document.head.appendChild(script);
+			// Scroll reveal (guide §9): fade and short rise, played once when the element enters the viewport.
+			// The observer checks live positions, so content that loads or grows later is still revealed.
+			(() => {
+				if (!document.documentElement.classList.contains('js-reveal')) return;
+				const observer = new IntersectionObserver((entries) => {
+					for (const entry of entries) {
+						if (!entry.isIntersecting) continue;
+						entry.target.classList.add('is-revealed');
+						observer.unobserve(entry.target);
+					}
+				}, { rootMargin: '0px 0px -10% 0px' });
+				document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
 			})();
 		</script>
 	</body>

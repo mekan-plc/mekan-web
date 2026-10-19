@@ -108,18 +108,12 @@ for (const theme of THEMES) {
         }
         scrollTo(0, 0);
       })()`);
-      // AOS loads async from a CDN and re-hides elements on init, so wait for it before forcing.
-      await evaluate(`(async () => {
-        for (let i = 0; i < 50 && typeof window.AOS === 'undefined'; i++) await new Promise(r => setTimeout(r, 100));
-        await new Promise(r => setTimeout(r, 600));
-      })()`);
-      // Force every reveal/AOS element into its final state so nothing is captured invisible.
+      // Force every scroll-reveal element into its final state so nothing is captured invisible.
       await evaluate(`(() => {
         const s = document.createElement('style');
-        s.textContent = '[data-aos],.reveal,.reveal-left,.reveal-right,.reveal-scale{opacity:1!important;transform:none!important;transition:none!important}';
+        s.textContent = '[data-reveal]{opacity:1!important;transform:none!important;transition:none!important}';
         document.head.appendChild(s);
-        document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(e => e.classList.add('revealed'));
-        document.querySelectorAll('[data-aos]').forEach(e => e.classList.add('aos-animate'));
+        document.querySelectorAll('[data-reveal]').forEach(e => e.classList.add('is-revealed'));
         // Pin viewport-height sections to their real pixel height so the full-page capture does not stretch them.
         for (const el of document.querySelectorAll('body *')) {
           const cs = getComputedStyle(el);

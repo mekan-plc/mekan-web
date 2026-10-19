@@ -44,7 +44,7 @@
     outline-color: rgb(var(--color-on-brand-accent));
   }
 
-  /* Reduced motion (guide §9): switch animations off, show scroll-reveal (AOS) content at once. */
+  /* Reduced motion (guide §9): switch animations off, show scroll-reveal content at once. */
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
@@ -59,7 +59,7 @@
       scroll-behavior: auto !important;
     }
 
-    [data-aos] {
+    [data-reveal] {
       opacity: 1 !important;
       transform: none !important;
     }
@@ -275,6 +275,29 @@
 
     .marquee-track {
       animation: none;
+    }
+  }
+
+  /* Scroll reveal (guide §9): a gentle fade and short rise, played once.
+   * Put data-reveal on a block; the observer in Layout.astro adds .is-revealed.
+   * Hidden only under html.js-reveal, which is not set without JS or under reduced motion. */
+  .js-reveal [data-reveal] {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition:
+      opacity var(--mk-duration-reveal) var(--mk-ease-out),
+      transform var(--mk-duration-reveal) var(--mk-ease-out);
+  }
+
+  .js-reveal [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media print {
+    .js-reveal [data-reveal] {
+      opacity: 1;
+      transform: none;
     }
   }
 }
