@@ -1,38 +1,55 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import BlogCard from '../../components/BlogCard.astro';
 ---
 
 <Layout title="Blog" description="Insights from Mekan PLC on quality management, compliance, certification readiness, and training for agribusiness in Ethiopia." overlayNav>
-	<div class="min-h-screen bg-[hsl(var(--background))]">
-		{/* Hero Section */}
-		<section class="relative text-white overflow-hidden">
-			<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/logo.png');"></div>
-			<div class="absolute inset-0 bg-[#0F2C59]/90"></div>
-			<div class="relative container pt-32 pb-28">
-				<h1 class="text-3xl md:text-5xl font-bold tracking-tight mb-4">Insights & Blog</h1>
-				<p class="text-lg md:text-xl text-white/80 max-w-3xl">
-					Latest thinking on quality standards, market access, sustainable agriculture, and agribusiness growth strategies.
-				</p>
-			</div>
-		</section>
+	<PageHero
+		title="Insights & Blog"
+		breadcrumbs={[{ label: 'Blog' }]}
+		lead="Latest thinking on quality standards, market access, sustainable agriculture, and agribusiness growth strategies."
+	/>
 
-		{/* Blog Grid */}
-		<section class="py-16 md:py-24">
-			<div class="container">
-				<div id="blogError" class="hidden mb-8 p-4 rounded-lg bg-red-50 text-red-600"></div>
-				<div id="blogGrid" class="grid gap-8 md:grid-cols-2 lg:grid-cols-3"></div>
+	<section class="section bg-page">
+		<div class="container">
+			<div id="blogError" class="alert-danger mb-8 hidden" role="alert"></div>
+			<div id="blogGrid" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" aria-live="polite" aria-busy="true">
+				{/* Loading skeletons, replaced once posts arrive */}
+				{Array.from({ length: 6 }).map(() => (
+					<div class="card overflow-hidden" aria-hidden="true">
+						<div class="aspect-[16/10] animate-pulse border-b border-line bg-tint-accent"></div>
+						<div class="space-y-3 p-6 md:p-7">
+							<div class="h-3 w-1/3 animate-pulse rounded-full bg-line"></div>
+							<div class="h-5 w-4/5 animate-pulse rounded-full bg-line"></div>
+							<div class="h-3 w-full animate-pulse rounded-full bg-line"></div>
+						</div>
+					</div>
+				))}
 			</div>
-		</section>
-	</div>
+		</div>
+	</section>
+
+	<template id="blogCardTemplate">
+		<BlogCard href="#" title="" category="Category" />
+	</template>
+
+	<template id="blogEmptyTemplate">
+		<p class="col-span-full py-16 text-center text-muted">No blog posts found. Check back soon!</p>
+	</template>
 
 	<script>
+		import { fillBlogCard, type BlogCardData } from '../../scripts/blog-card';
+
 		const CMS_BASE = (import.meta.env.PUBLIC_CMS_BASE_URL || 'http://localhost:8881').replace(/\/$/, '');
 		const grid = document.getElementById('blogGrid');
 		const errorEl = document.getElementById('blogError');
+		const cardTemplate = document.getElementById('blogCardTemplate') as HTMLTemplateElement | null;
+		const emptyTemplate = document.getElementById('blogEmptyTemplate') as HTMLTemplateElement | null;
 		const CACHE_TTL_MS = 5 * 60 * 1000;
 		const CACHE_PREFIX = 'mekan_cache_v1:';
 
-		function cacheGet(key) {
+		function cacheGet(key: string) {
 			try {
 				const raw = sessionStorage.getItem(CACHE_PREFIX + key);
 				if (!raw) return null;
@@ -46,7 +63,7 @@ import Layout from '../../layouts/Layout.astro';
 			}
 		}
 
-		function cacheSet(key, data) {
+		function cacheSet(key: string, data: unknown) {
 			try {
 				sessionStorage.setItem(CACHE_PREFIX + key, JSON.stringify({ ts: Date.now(), data }));
 			} catch {
@@ -54,56 +71,27 @@ import Layout from '../../layouts/Layout.astro';
 			}
 		}
 
-		function escapeHtml(str) {
-			return String(str)
-				.replace(/&/g, '&amp;')
-				.replace(/</g, '&lt;')
-				.replace(/>/g, '&gt;')
-				.replace(/"/g, '&quot;')
-				.replace(/'/g, '&#039;');
+		function setFallbackFlag(on: boolean) {
+			try {
+				if (on) localStorage.setItem('mekan_da_fallback', '1');
+				else localStorage.removeItem('mekan_da_fallback');
+			} catch {
+				// ignore
+			}
 		}
 
-		function renderSkeleton() {
-			if (!grid) return;
-			grid.innerHTML = Array.from({ length: 6 }).map(() => (
-				`<article class="group bg-[hsl(var(--card))] rounded-2xl overflow-hidden border border-[hsl(var(--border))]">
-					<div class="h-48 bg-[hsl(var(--muted))] animate-pulse"></div>
-					<div class="p-6 space-y-3">
-						<div class="h-3 w-1/3 bg-[hsl(var(--muted))] rounded animate-pulse"></div>
-						<div class="h-4 w-4/5 bg-[hsl(var(--muted))] rounded animate-pulse"></div>
-						<div class="h-3 w-full bg-[hsl(var(--muted))] rounded animate-pulse"></div>
-					</div>
-				</article>`
-			)).join('');
+		function renderBlogs(blogs: BlogCardData[]) {
+			if (!grid || !cardTemplate) return;
+			if (blogs.length === 0 && emptyTemplate) {
+				grid.replaceChildren(emptyTemplate.content.cloneNode(true));
+			} else {
+				grid.replaceChildren(...blogs.map((blog) => fillBlogCard(cardTemplate, blog)));
+			}
+			grid.setAttribute('aria-busy', 'false');
+			setupPrefetching();
 		}
 
-		function blogCard(blog) {
-			const img = blog.imageUrl
-				? `<img src="${escapeHtml(blog.imageUrl)}" alt="${escapeHtml(blog.title)}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />`
-				: `<div class="w-full h-full flex items-center justify-center"><span class="text-5xl">📝</span></div>`;
-
-			return `<article class="group bg-[hsl(var(--card))] rounded-2xl overflow-hidden border border-[hsl(var(--border))] transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-				<a href="/blog/${escapeHtml(blog.slug)}" class="block blog-link" data-slug="${escapeHtml(blog.slug)}">
-					<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] overflow-hidden">
-						${img}
-						<div class="absolute top-4 left-4">
-							<span class="px-3 py-1 rounded-full bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))] text-xs font-medium">${escapeHtml(blog.category || '')}</span>
-						</div>
-					</div>
-					<div class="p-6">
-						<p class="text-sm text-[hsl(var(--muted-foreground))] mb-2">${escapeHtml(blog.date || '')}</p>
-						<h2 class="text-xl font-semibold text-[hsl(var(--foreground))] mb-3 line-clamp-2 group-hover:text-[hsl(var(--brand))] transition-colors">${escapeHtml(blog.title || '')}</h2>
-						<p class="text-sm text-[hsl(var(--muted-foreground))] line-clamp-3">${escapeHtml(blog.excerpt || '')}</p>
-						<div class="mt-4 flex items-center gap-2 text-sm font-medium text-[hsl(var(--brand))]">
-							<span>Read More</span>
-							<svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-						</div>
-					</div>
-				</a>
-			</article>`;
-		}
-
-		async function prefetchBlogSlug(slug) {
+		async function prefetchBlogSlug(slug: string) {
 			const key = `blog:${slug}`;
 			if (cacheGet(key)) return;
 			try {
@@ -118,7 +106,7 @@ import Layout from '../../layouts/Layout.astro';
 		}
 
 		function setupPrefetching() {
-			const links = Array.from(document.querySelectorAll('a.blog-link'));
+			const links = Array.from(grid?.querySelectorAll<HTMLAnchorElement>('a[data-slug]') ?? []);
 			links.forEach((a) => {
 				a.addEventListener('mouseenter', () => {
 					const slug = a.dataset.slug;
@@ -134,7 +122,7 @@ import Layout from '../../layouts/Layout.astro';
 				const io = new IntersectionObserver((entries) => {
 					entries.forEach((entry) => {
 						if (!entry.isIntersecting) return;
-						const a = entry.target;
+						const a = entry.target as HTMLAnchorElement;
 						const slug = a.dataset.slug;
 						if (slug) prefetchBlogSlug(slug);
 						io.unobserve(a);
@@ -144,7 +132,7 @@ import Layout from '../../layouts/Layout.astro';
 			}
 		}
 
-		const STATIC_BLOGS = [
+		const STATIC_BLOGS: BlogCardData[] = [
 			{
 				slug: 'sample-1',
 				title: 'Introduction to GLOBALG.A.P Certification for Ethiopian Exporters',
@@ -172,12 +160,8 @@ import Layout from '../../layouts/Layout.astro';
 		];
 
 		async function loadBlogs() {
-			renderSkeleton();
 			const cached = cacheGet('blogs:index');
-			if (cached && Array.isArray(cached)) {
-				if (grid) grid.innerHTML = cached.length ? cached.map(blogCard).join('') : `<div class="text-center py-16"><p class="text-[hsl(var(--muted-foreground))]">No blog posts found. Check back soon!</p></div>`;
-				setupPrefetching();
-			}
+			if (cached && Array.isArray(cached)) renderBlogs(cached);
 			try {
 				const url = `${CMS_BASE}/wp-json/mekan/v1/blogs?per_page=12`;
 				const res = await fetch(url, { headers: { Accept: 'application/json' } });
@@ -185,14 +169,13 @@ import Layout from '../../layouts/Layout.astro';
 				const blogs = await res.json();
 				if (!Array.isArray(blogs)) throw new Error('Invalid blogs response.');
 				cacheSet('blogs:index', blogs);
-				localStorage.removeItem('mekan_da_fallback');
-				if (grid) grid.innerHTML = blogs.length ? blogs.map(blogCard).join('') : `<div class="text-center py-16"><p class="text-[hsl(var(--muted-foreground))]">No blog posts found. Check back soon!</p></div>`;
-				setupPrefetching();
-			} catch (e) {
+				setFallbackFlag(false);
+				renderBlogs(blogs);
+			} catch {
 				if (!cached) {
-					localStorage.setItem('mekan_da_fallback', '1');
-					if (grid) grid.innerHTML = STATIC_BLOGS.map(blogCard).join('');
-					if (errorEl) errorEl.classList.add('hidden');
+					setFallbackFlag(true);
+					renderBlogs(STATIC_BLOGS);
+					errorEl?.classList.add('hidden');
 				}
 			}
 		}
