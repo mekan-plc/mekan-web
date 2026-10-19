@@ -16,6 +16,7 @@
  * - image: Custom OG image path (defaults to /logo1.2.png)
  * - canonical: Override canonical URL (auto-generated from current path if not provided)
  * - overlayNav: Whether navbar should overlay hero content (transparent background)
+ * - showCta: Whether to show the closing call-to-action band (default true; error pages turn it off)
  */
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
@@ -28,9 +29,10 @@ interface Props {
 	image?: string;
 	canonical?: string;
 	overlayNav?: boolean;
+	showCta?: boolean;
 }
 
-const { title, description, image, canonical, overlayNav = false } = Astro.props;
+const { title, description, image, canonical, overlayNav = false, showCta = true } = Astro.props;
 
 const DEFAULT_TITLE = 'Mekan PLC | Quality Management, Compliance & Training';
 const DEFAULT_DESCRIPTION = 'Mekan PLC provides quality management consulting, compliance support, certification readiness, and training services for agribusiness and related sectors in Ethiopia.';
@@ -121,7 +123,7 @@ const organizationLd = {
 		<main>
 			<slot />
 		</main>
-		<CTASection />
+		{showCta && <CTASection />}
 		<Footer />
 
 		<script is:inline>

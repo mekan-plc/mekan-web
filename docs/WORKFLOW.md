@@ -5,7 +5,7 @@
 
 ## Current status
 
-**Next step:** 4.7 · **Last updated:** 2026-10-19 · **Phase:** 4 · Inner pages
+**Next step:** 5.1 · **Last updated:** 2026-10-19 · **Phase:** 5 · Clean-up
 
 ---
 
@@ -83,7 +83,7 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 - [x] **4.4** `blog/index.astro` + `blog/[slug].astro` (prose styles from tokens) *(2026-10-19: done; new shared `BlogCard.astro` + `src/scripts/blog-card.ts`)*
 - [x] **4.5** `resources/index.astro` *(2026-10-19: done; new `.chip` filter component)*
 - [x] **4.6** `privacy-policy.astro` + `terms-of-service.astro` (dark mode section cards are hard-coded slate, blue-grey on the neutral black page) *(2026-10-19: done; new shared `LegalPage.astro` + `LegalSection.astro`)*
-- [ ] **4.7** `404.astro` + `500.astro`
+- [x] **4.7** `404.astro` + `500.astro` *(2026-10-19: done; new shared `ErrorPage.astro`, Layout `showCta` prop)*
 
 ### Phase 5 · Clean-up
 - [ ] **5.1** Delete the old HSL bridge variables from `global.css`. Search `src/` for leftover hex codes, `#7EA2CE`/`#0F2C59`, `slate-`/`gray-` colours and hand-written `dark:` colour classes. Target: **zero** outside `tokens.css`.
@@ -103,6 +103,8 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 ## Log
 
 Add one line per finished step, newest first: `YYYY-MM-DD · step · what changed · files`.
+
+- 2026-10-19 · 4.7 · Error pages on tokens. **New shared `ErrorPage.astro`** and a **`showCta` prop on `Layout.astro`** (default `true`, so every other page is unchanged). The error pages are now a calm Paper page under the solid navbar (`overlayNav` off: the sticky Paper bar kept since 2.2, used here for the first time and checked in both modes), centred: a large Source Serif status code in `text-brand/15` (decorative, `aria-hidden`), an `Error 404`/`Error 500` `.eyebrow`, `text-h1` heading, `.lead` message and 48px `.btn-primary`/`.btn-secondary` actions; the closing CTA band is turned off, because the page's own actions already say where to go and a navy hero over the navy CTA over the navy footer read as one block. Gone: the navy gradient, `logo.png` tiled as wallpaper at 5% (404) or as a background (500) (guide §5), the Sky blur blobs, the frosted icon tiles and the `hover:-translate-y-0.5` lift. 500: the Refresh button's inline `onclick` moved to a script, and **“Call Us Now” is now a real `tel:` link** (it pointed to `/#contact` despite its phone icon; a phone call still works when the site is failing). Copy unchanged; flag for the user: “Oops!” and “Don't worry” are casual and use an exclamation mark (§11), and headings are Title Case (§7). Build passes; checked at 1440/375 px, light and dark · `src/pages/404.astro`, `src/pages/500.astro`, `src/components/ErrorPage.astro`, `src/layouts/Layout.astro`
 
 - 2026-10-19 · 4.6 · Legal pages on tokens. **New shared `LegalPage.astro` + `LegalSection.astro`**: both pages are now only their text (privacy 321 → 74 lines, terms 421 → 103), and the six and nine hand-copied section shells are gone. Hero is `PageHero` with a “Legal” eyebrow, the subtitle as lead and “Last updated” as a meta row in a `<time datetime>`; the old hero's Sky-coloured H1 (not white, against guide §6 and §7), the pill breadcrumbs, the `-mt-[72px]` hack and the shield icon are gone. The “Quick Navigation” card grid became an **“On this page” list**: numbered links on a `border-line` rail, sticky beside the text from `lg`, a card above it on phones; the section being read gets a brand-coloured rule (`aria-current`), worked out from scroll position (the last section whose top has passed 30% of the viewport; the first at the top, the last at the bottom). Sections are document sections on Paper rather than cards: a `Section N` `.eyebrow`, `text-h3` title (section `id` + `aria-labelledby`), `border-line` dividers, body in token `prose` at `max-w-prose` (green bullets, green mail link), replacing white/`slate-100`/`#1F2937` cards (the first two sections were white and the rest grey, so they didn't match) with 4px side bars, shadows and decorative icon tiles. The intellectual-property `<br><br>` became two paragraphs (same words). The closing CTA is a `bg-tint-brand` callout with `.btn-primary` email and `.btn-secondary` Contact Us, so it no longer stacks a navy card on top of the navy CTA band that follows. Fixes the issue noted in the plan: dark mode no longer shows blue-grey slate cards on the neutral black page. Copy unchanged, checked by script (every old paragraph, list item and heading is in the new HTML; only the nav label changed, “Quick Navigation” → “On this page”). Flag for the user: these pages say “Mekan Consultancy” and “Mekan Consultancy PLC”, but guide §4 wants the full legal name on legal pages (and “Mekan Consultancy PLC” is not a valid form); headings are Title Case (§7); this is step 5.3 or a copy pass. Build passes; checked at 1440/375 px, light and dark, including the current-section marker at the top of the page · `src/pages/privacy-policy.astro`, `src/pages/terms-of-service.astro`, `src/components/LegalPage.astro`, `src/components/LegalSection.astro`
 
