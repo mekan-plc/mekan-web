@@ -1,0 +1,21 @@
+---
+/**
+ * One numbered section of a legal page (see LegalPage.astro). The body goes in the
+ * default slot as plain paragraphs and lists; the page's prose styles format it.
+ */
+interface Props {
+	id: string;
+	num: string;
+	title: string;
+}
+
+const { id, num, title } = Astro.props;
+---
+
+<section id={id} aria-labelledby={`${id}-title`} class="legal-section border-t border-line pt-10 first:border-t-0 first:pt-0">
+	<p class="eyebrow">Section {num}</p>
+	<h2 id={`${id}-title`} class="mt-2 text-h3 text-heading">{title}</h2>
+	<div class="prose mt-5 max-w-none">
+		<slot />
+	</div>
+</section>

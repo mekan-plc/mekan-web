@@ -1,0 +1,121 @@
+---
+/**
+ * Shell for the legal pages (privacy policy, terms of service): navy PageHero with
+ * the last-updated date, an "On this page" list (sticky beside the text on desktop,
+ * a card above it on phones) and a closing contact callout. The page passes its
+ * LegalSection blocks in the default slot.
+ */
+import Layout from '../layouts/Layout.astro';
+import PageHero from './PageHero.astro';
+
+interface Section {
+	id: string;
+	num: string;
+	title: string;
+}
+
+interface Props {
+	title: string;
+	description: string;
+	lead: string;
+	lastUpdated: string;
+	sections: Section[];
+	cta: {
+		title: string;
+		text: string;
+		emailLabel: string;
+	};
+}
+
+const { title, description, lead, lastUpdated, sections, cta } = Astro.props;
+const updatedIso = new Date(lastUpdated).toISOString().slice(0, 10);
+---
+
+<Layout title={title} description={description} overlayNav>
+	<PageHero title={title} eyebrow="Legal" lead={lead} breadcrumbs={[{ label: title }]}>
+		<p class="mt-6 flex items-center gap-2 text-small text-on-brand/80">
+			<svg class="h-4 w-4 text-on-brand-accent" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+			</svg>
+			Last updated: <time datetime={updatedIso}>{lastUpdated}</time>
+		</p>
+	</PageHero>
+
+	<section class="section bg-page">
+		<div class="container">
+			<div class="grid gap-10 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-16">
+				<nav aria-labelledby="toc-title" class="lg:sticky lg:top-28 lg:self-start">
+					<div class="card p-6 lg:border-0 lg:bg-transparent lg:p-0">
+						<p id="toc-title" class="eyebrow">On this page</p>
+						<ol class="mt-4 space-y-1 border-l border-line">
+							{sections.map((section) => (
+								<li>
+									<a href={`#${section.id}`} class="toc-link -ml-px flex gap-3 border-l-2 border-transparent py-1.5 pl-4 text-small text-ink/75 transition-colors duration-fast ease-out hover:text-brand">
+										<span class="tabular-nums text-muted">{section.num}</span>
+										<span>{section.title}</span>
+									</a>
+								</li>
+							))}
+						</ol>
+					</div>
+				</nav>
+
+				<div class="max-w-prose space-y-10">
+					<slot />
+
+					<div class="rounded-card bg-tint-brand p-8 md:p-10">
+						<h2 class="text-h3 text-heading">{cta.title}</h2>
+						<p class="mt-3 text-ink/85">{cta.text}</p>
+						<div class="mt-6 flex flex-wrap gap-3">
+							<a href="mailto:biniam@mekanplc.com" class="btn btn-primary">
+								<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+									<path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+								</svg>
+								{cta.emailLabel}
+							</a>
+							<a href="/#contact" class="btn btn-secondary">Contact Us</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<style>
+		/* The section being read gets a brand-coloured rule in the list. */
+		.toc-link[aria-current='true'] {
+			border-left-color: rgb(var(--color-brand));
+			color: rgb(var(--color-brand));
+			font-weight: 500;
+		}
+	</style>
+
+	<script>
+		// Mark the section being read as current in the list: the last one whose top has
+		// passed 30% of the viewport, or the first while the page is above them all.
+		const links = new Map(
+			Array.from(document.querySelectorAll<HTMLAnchorElement>('.toc-link')).map((a) => [a.hash.slice(1), a])
+		);
+		const sections = Array.from(document.querySelectorAll<HTMLElement>('.legal-section'));
+		let frame = 0;
+
+		function updateCurrent() {
+			frame = 0;
+			const line = window.innerHeight * 0.3;
+			const passed = sections.filter((s) => s.getBoundingClientRect().top <= line);
+			const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+			const current = (atBottom ? sections[sections.length - 1] : passed[passed.length - 1] ?? sections[0])?.id;
+			links.forEach((a, id) => {
+				if (id === current) a.setAttribute('aria-current', 'true');
+				else a.removeAttribute('aria-current');
+			});
+		}
+
+		if (sections.length > 0) {
+			window.addEventListener('scroll', () => {
+				if (!frame) frame = requestAnimationFrame(updateCurrent);
+			}, { passive: true });
+			updateCurrent();
+		}
+	</script>
+</Layout>
