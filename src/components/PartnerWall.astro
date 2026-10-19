@@ -1,0 +1,55 @@
+---
+/**
+ * Partner wall (homepage, after Featured Work): the organisations behind the work, as large
+ * logo tiles. Proof over adjectives (guide §11). Logos always sit on a white panel (guide §5).
+ * The wall sits in its own rounded panel inside the page margins, like the testimonial stage:
+ * the card surface (White; Dark card in dark mode), with the normal page showing either side.
+ * Tiles fade up in turn as the panel scrolls in.
+ */
+import { partners } from '../data/partners';
+---
+
+<section id="partners" class="section border-t border-line bg-page" aria-labelledby="partners-title">
+	<div class="container">
+		<div class="rounded-card border border-line bg-surface px-5 py-12 sm:px-10 md:py-16 lg:px-14">
+			<div class="mx-auto max-w-2xl text-center">
+				<p class="eyebrow">Our partners</p>
+				<h2 id="partners-title" class="section-title mt-4">The organisations behind the work</h2>
+				<p class="lead mt-4 text-balance">
+					Farms, processors, investors and development programmes Mekan has worked with.
+				</p>
+			</div>
+
+			<ul class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
+				{partners.map((partner, i) => (
+					<li data-reveal style={`transition-delay: ${i * 70}ms`}>
+						<a
+							href={partner.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="group flex h-full flex-col gap-3 rounded-card focus-visible:outline-offset-4"
+						>
+							<span class="relative block aspect-[3/2] overflow-hidden rounded-card border border-line bg-logo-panel transition-[box-shadow,border-color,transform] duration-fast ease-out group-hover:-translate-y-0.5 group-hover:border-brand/25 group-hover:shadow-lift">
+								{/* Every logo gets the same box, centred, so square and wide logos carry equal weight. */}
+								<img
+									src={partner.logo}
+									alt=""
+									class="absolute inset-0 m-auto h-[58%] w-[70%] object-contain"
+									loading="lazy"
+									decoding="async"
+								/>
+							</span>
+							<span class="flex items-start justify-center gap-1.5 px-1 text-center text-small font-medium text-ink transition-colors duration-fast ease-out group-hover:text-brand">
+								{partner.name}
+								<svg class="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-0 transition-opacity duration-fast ease-out group-hover:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7 17L17 7M9 7h8v8" />
+								</svg>
+								<span class="sr-only">(opens in a new tab)</span>
+							</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</div>
+	</div>
+</section>

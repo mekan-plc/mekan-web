@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import BlogCard from '../components/BlogCard.astro';
 import PartnersMarquee from '../components/PartnersMarquee.astro';
+import PartnerWall from '../components/PartnerWall.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Testimonials from '../components/Testimonials.astro';
 import { testimonials } from '../data/testimonials';
@@ -182,7 +183,8 @@ function stripHtml(html: string) {
 
 <Layout title="Mekan PLC | Quality Management, Compliance & Training" description="Mekan PLC provides quality management consulting, compliance support, certification readiness, and training services for agribusiness and related sectors in Ethiopia." overlayNav>
 	<!-- Hero: navy brand band, project photos on the right from lg (guide §10, §14) -->
-	<section id="home" class="brand-band relative isolate flex min-h-[100svh] flex-col overflow-hidden lg:min-h-screen">
+	{/* One screen tall; on very tall desktop monitors capped at 60rem so the content does not float in empty navy. */}
+	<section id="home" class="brand-band relative isolate flex min-h-[100svh] flex-col overflow-hidden lg:min-h-[min(100vh,60rem)]">
 		{/* Photos fade in turn. Navy scrims keep the nav, the headline edge and the partner strip on calm, dark areas (guide §10). */}
 		<div class="absolute inset-y-0 right-0 -z-10 hidden w-[54%] lg:block" aria-hidden="true">
 			{/* The mask fades the photos into the navy band, so there is no seam at the panel edge. */}
@@ -198,9 +200,12 @@ function stripHtml(html: string) {
 			<div class="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-brand-surface via-brand-surface/70 to-transparent"></div>
 		</div>
 
-		<div class="container relative flex flex-1 items-center pb-10 pt-28 lg:pb-16 lg:pt-32">
+		{/* Height-aware spacing: on short screens (a 1366×768 laptop shows ~630px) the space above and below
+		    the content shrinks, so the headline, buttons and partner strip share the first screen. Never less
+		    than the navbar needs; on tall screens the original 7rem / 8rem tops are kept. */}
+		<div class="container relative flex flex-1 items-center pb-[clamp(1.5rem,4vh,2.5rem)] pt-[clamp(5.5rem,13vh,7rem)] lg:pb-[clamp(1.5rem,5vh,4rem)] lg:pt-[clamp(6rem,15vh,8rem)]">
 			<div class="max-w-xl lg:max-w-[36rem]">
-				<h1 class="text-hero font-medium">
+				<h1 class="text-hero hero-title font-medium">
 					Empowering Sustainable Growth in Agribusiness
 					<span class="block text-on-brand-accent">& the Supply Chain</span>
 				</h1>
@@ -226,8 +231,8 @@ function stripHtml(html: string) {
 			</div>
 		</div>
 
-		<div class="relative pb-6 lg:pb-8">
-			<p class="eyebrow mb-4 text-center">Trusted by industry leaders</p>
+		<div class="relative pb-8 lg:pb-11">
+			<p class="eyebrow mb-4 text-center">Who we work with</p>
 			<PartnersMarquee />
 		</div>
 
@@ -240,6 +245,12 @@ function stripHtml(html: string) {
 				0%, 16% { opacity: 1; }
 				20%, 96% { opacity: 0; }
 				100% { opacity: 1; }
+			}
+
+			/* The hero headline also scales with the screen height, so it never pushes the partner
+			 * strip below the fold on short screens. On tall screens the type scale wins (guide §7). */
+			.hero-title {
+				font-size: min(var(--mk-text-hero), 9vh);
 			}
 
 			/* Reduced motion (guide §9): hold the first photo instead of cycling. */
@@ -358,6 +369,9 @@ function stripHtml(html: string) {
 			</div>
 		</div>
 	</section>
+
+	<!-- Partners: the organisations behind the work, as a logo wall on the navy tint -->
+	<PartnerWall />
 
 	<!-- Testimonials: Same background, with top border -->
 	<Testimonials items={testimonials} />
