@@ -1,0 +1,43 @@
+---
+/**
+ * Project card: photo (or folder icon on the navy tint) over a line, client as an
+ * eyebrow, title and a clamped description. A link card when `href` is given,
+ * a plain card otherwise (offline fallback content has no detail page).
+ */
+interface Props {
+	title: string;
+	client?: string;
+	description?: string;
+	imageUrl?: string | null;
+	href?: string;
+	class?: string;
+}
+
+const { title, client, description, imageUrl, href, class: className } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag
+	href={href}
+	class:list={['card group flex flex-col overflow-hidden', href && 'card-interactive', className]}
+>
+	<div class="relative aspect-[16/10] overflow-hidden border-b border-line bg-tint-brand">
+		{imageUrl ? (
+			<img src={imageUrl} alt={title} class="absolute inset-0 h-full w-full object-cover" loading="lazy" decoding="async" />
+		) : (
+			<div class="flex h-full items-center justify-center text-brand/40" aria-hidden="true">
+				<svg class="h-10 w-10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+					<path d="M3.5 7.5A1.5 1.5 0 0 1 5 6h4l2 2h8a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 19H5a1.5 1.5 0 0 1-1.5-1.5v-10Z" />
+				</svg>
+			</div>
+		)}
+	</div>
+
+	<div class="flex flex-grow flex-col p-6 md:p-7">
+		{client && <p class="eyebrow">{client}</p>}
+		<h3 class:list={['mt-3 text-h3 text-heading', href && 'transition-colors duration-fast ease-out group-hover:text-brand']}>
+			{title}
+		</h3>
+		{description && <p class="mt-3 line-clamp-3 text-small text-muted">{description}</p>}
+	</div>
+</Tag>

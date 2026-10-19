@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
 import { getProjectBySlug } from '../../lib/wp';
 
 export const prerender = false;
@@ -41,219 +42,137 @@ const projectLd = {
 		name: project.location || 'Ethiopia'
 	}
 };
+
+// Line icons (24px grid, 1.75px stroke, guide §9).
+const icons = {
+	location: ['M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z', 'M15 11a3 3 0 11-6 0 3 3 0 016 0z'],
+	duration: ['M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z'],
+	check: ['M5 13l4 4L19 7']
+};
+
+const meta = [
+	{ label: 'Location', value: project.location, icon: icons.location },
+	{ label: 'Duration', value: project.duration, icon: icons.duration }
+].filter((item) => item.value);
 ---
 
 <Layout title={project.title} description={(project.description || '').slice(0, 160)} overlayNav>
 	<script type="application/ld+json" set:html={JSON.stringify(projectLd)} />
-	<div class="min-h-screen bg-[hsl(var(--background))]">
-		{/* Hero Banner */}
-		<section class="relative text-white overflow-hidden">
-			<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style={`background-image: url('${project.imageUrl || '/logo.png'}');`}></div>
-			<div class="absolute inset-0 bg-[#0F2C59]/90"></div>
-			<div class="relative container pt-32 pb-20">
-				{/* Breadcrumb */}
-				<nav class="flex items-center gap-2 text-sm text-white/70 mb-6">
-					<a href="/" class="hover:text-white transition-colors flex items-center gap-1">
-						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+	<PageHero
+		title={project.title}
+		eyebrow={project.client}
+		breadcrumbs={[{ label: 'Projects', href: '/projects' }, { label: project.title }]}
+	>
+		{meta.length > 0 && (
+			<ul class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-small text-on-brand/80">
+				{meta.map((item) => (
+					<li class="flex items-center gap-2">
+						<svg class="h-4 w-4 text-on-brand-accent" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+							{item.icon.map((d) => <path d={d} />)}
 						</svg>
-						Home
-					</a>
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-					</svg>
-					<a href="/projects" class="hover:text-white transition-colors">Projects</a>
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-					</svg>
-					<span class="text-white font-medium truncate max-w-[200px]">{project.title}</span>
-				</nav>
+						<span class="sr-only">{item.label}:</span>
+						{item.value}
+					</li>
+				))}
+			</ul>
+		)}
+	</PageHero>
 
-				{/* Title */}
-				<h1 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-3 max-w-3xl">{project.title}</h1>
+	<section class="section bg-page">
+		<div class="container">
+			<div class="mx-auto max-w-5xl">
+				{project.imageUrl && (
+					<div class="mb-12 aspect-video overflow-hidden rounded-card border border-line bg-tint-brand">
+						<img src={project.imageUrl} alt={project.title} class="h-full w-full object-cover" loading="eager" decoding="async" />
+					</div>
+				)}
 
-				{/* Client Badge */}
-				<div class="mb-4">
-					<span class="inline-block px-3 py-1 rounded-full bg-white/15 text-white/90 text-xs font-medium backdrop-blur-sm border border-white/20">
-						{project.client}
-					</span>
-				</div>
+				<div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-12">
+					<div>
+						{project.description && (
+							<div class="rounded-card bg-tint-brand p-6 md:p-8">
+								<p class="eyebrow">Project Overview</p>
+								<p class="mt-3 text-lead text-ink">{project.description}</p>
+							</div>
+						)}
 
-				{/* Location & Duration */}
-				<div class="flex items-center gap-4 text-sm text-white/70">
-					{project.location && (
-						<div class="flex items-center gap-2">
-							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+						{project.content && (
+							<article class="prose prose-lg mt-10 max-w-none prose-img:border prose-img:border-line">
+								<div set:html={project.content}></div>
+							</article>
+						)}
+
+						<a href="/projects" class="link mt-12 inline-flex items-center gap-2">
+							<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
 							</svg>
-							<span>{project.location}</span>
-						</div>
-					)}
-					{project.location && project.duration && <span>•</span>}
-					{project.duration && (
-						<div class="flex items-center gap-2">
-							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-							</svg>
-							<span>{project.duration}</span>
-						</div>
-					)}
-				</div>
-			</div>
-		</section>
-
-		{/* Main Content Area */}
-		<section class="py-12 md:py-16">
-			<div class="container">
-				<div class="max-w-4xl mx-auto">
-					{/* Featured Image */}
-					<div class:list={["mb-10", !project.imageUrl && "hidden"]}>
-						<div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-video bg-[hsl(var(--muted))]">
-							<img src={project.imageUrl} alt={project.title} class="w-full h-full object-cover" loading="eager" />
-							<div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/20 to-transparent"></div>
-						</div>
+							Back to all projects
+						</a>
 					</div>
 
-					<div class="grid gap-8 lg:grid-cols-[1fr,320px]">
-						{/* Left Column - Content */}
-						<div>
-							{/* Project Overview Card */}
-							<div class="relative rounded-2xl bg-slate-100 dark:bg-[#1F2937] p-6 md:p-8 mb-8 overflow-hidden">
-								<div class="absolute left-0 top-0 bottom-0 w-1 bg-[#0F2C59] dark:bg-[#7EA2CE]"></div>
-								<div class="relative">
-									<div class="flex items-center gap-2 mb-3">
-										<svg class="w-5 h-5 text-[#0F2C59] dark:text-[#7EA2CE]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-										</svg>
-										<span class="text-sm font-semibold text-[#0F2C59] dark:text-[#7EA2CE] uppercase tracking-wide">Project Overview</span>
-									</div>
-									<p class="text-lg text-slate-700 dark:text-white/90 leading-relaxed italic">{project.description}</p>
-								</div>
-							</div>
+					{/* Details and contact: beside the story on desktop, below it on phones */}
+					<aside class="space-y-6 lg:sticky lg:top-28 lg:self-start">
+						<div class="card p-6">
+							<h2 class="text-h3 text-heading">Project Details</h2>
 
-							{/* Full Content */}
-							{project.content && (
-								<article class="prose prose-lg max-w-none
-									prose-headings:text-[hsl(var(--foreground))]
-									prose-headings:font-semibold
-									prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4
-									prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3
-									prose-p:text-[hsl(var(--muted-foreground))] prose-p:leading-relaxed
-									prose-li:text-[hsl(var(--muted-foreground))]
-									prose-strong:text-[hsl(var(--foreground))] prose-strong:font-semibold
-									prose-a:text-[hsl(var(--brand))] prose-a:no-underline hover:prose-a:underline
-									prose-blockquote:border-l-4 prose-blockquote:border-[hsl(var(--brand))] prose-blockquote:bg-[hsl(var(--muted))] prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg
-									prose-img:rounded-xl prose-img:shadow-lg">
-									<div set:html={project.content}></div>
-								</article>
+							{meta.length > 0 && (
+								<dl class="mt-5 space-y-4">
+									{meta.map((item) => (
+										<div class="flex items-start gap-3">
+											<svg class="mt-0.5 h-5 w-5 shrink-0 text-brand" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+												{item.icon.map((d) => <path d={d} />)}
+											</svg>
+											<div>
+												<dt class="text-small text-muted">{item.label}</dt>
+												<dd class="text-small font-medium text-ink">{item.value}</dd>
+											</div>
+										</div>
+									))}
+								</dl>
 							)}
 
-							{/* Back Link */}
-							<div class="mt-10 flex items-center justify-between">
-								<a
-									href="/projects"
-									class="group inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[hsl(var(--muted))] hover:bg-[hsl(var(--brand))] text-[hsl(var(--foreground))] hover:text-[hsl(var(--brand-foreground))] transition-all duration-300 font-medium"
-								>
-									<span class="flex items-center justify-center w-8 h-8 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
-										<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-										</svg>
-									</span>
-									<span>Back to all projects</span>
-								</a>
-							</div>
+							{project.services && project.services.length > 0 && (
+								<div class="mt-6 border-t border-line pt-5">
+									<h3 class="font-body text-small font-medium text-muted">Services</h3>
+									<ul class="mt-3 flex flex-wrap gap-2">
+										{project.services.map((service) => (
+											<li class="badge badge-brand">{service}</li>
+										))}
+									</ul>
+								</div>
+							)}
+
+							{project.results && project.results.length > 0 && (
+								<div class="mt-6 border-t border-line pt-5">
+									<h3 class="font-body text-small font-medium text-muted">Key Results</h3>
+									<ul class="mt-3 space-y-2.5">
+										{project.results.map((result) => (
+											<li class="flex items-start gap-2.5 text-small text-ink">
+												<svg class="mt-0.5 h-4 w-4 shrink-0 text-accent" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+													{icons.check.map((d) => <path d={d} />)}
+												</svg>
+												<span>{result}</span>
+											</li>
+										))}
+									</ul>
+								</div>
+							)}
 						</div>
 
-						{/* Right Column - Sidebar */}
-						<aside class="hidden lg:block">
-							<div class="sticky top-24 space-y-6">
-								{/* Project Details Card */}
-								<div class="relative rounded-2xl bg-gradient-to-br from-[#0F2C59] to-[#1a3a6e] dark:from-[#1a3a6e] dark:to-[#0F2C59] p-6 text-white shadow-lg overflow-hidden">
-									<div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-									<div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
-									<div class="relative">
-										<h3 class="font-bold text-lg mb-5">Project Details</h3>
-
-										{project.location && (
-											<div class="flex items-start gap-3 mb-4">
-												<svg class="w-5 h-5 text-[#7EA2CE] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-												</svg>
-												<div>
-													<p class="text-xs text-white/60 uppercase tracking-wide">Location</p>
-													<p class="text-sm font-medium">{project.location}</p>
-												</div>
-											</div>
-										)}
-
-										{project.duration && (
-											<div class="flex items-start gap-3 mb-4">
-												<svg class="w-5 h-5 text-[#7EA2CE] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-												</svg>
-												<div>
-													<p class="text-xs text-white/60 uppercase tracking-wide">Duration</p>
-													<p class="text-sm font-medium">{project.duration}</p>
-												</div>
-											</div>
-										)}
-
-										{project.services && project.services.length > 0 && (
-											<div class="mb-4">
-												<p class="text-xs text-white/60 uppercase tracking-wide mb-2">Services</p>
-												<div class="flex flex-wrap gap-2">
-													{project.services.map((service) => (
-														<span class="text-xs px-2.5 py-1 rounded-full bg-white/10 border border-white/20">{service}</span>
-													))}
-												</div>
-											</div>
-										)}
-
-										{project.results && project.results.length > 0 && (
-											<div>
-												<p class="text-xs text-white/60 uppercase tracking-wide mb-2">Key Results</p>
-												<ul class="space-y-2">
-													{project.results.map((result) => (
-														<li class="flex items-start gap-2 text-sm text-white/90">
-															<svg class="w-4 h-4 text-[#7EA2CE] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-																<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
-															</svg>
-															<span>{result}</span>
-														</li>
-													))}
-												</ul>
-											</div>
-										)}
-									</div>
-								</div>
-
-								{/* CTA Card */}
-								<div class="rounded-2xl bg-gradient-to-br from-[#0F2C59] to-[#1a3a6e] dark:from-[#1a3a6e] dark:to-[#0F2C59] p-6 text-white shadow-lg relative overflow-hidden">
-									<div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-									<div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
-									<div class="relative">
-										<div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-4">
-											<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-											</svg>
-										</div>
-										<h3 class="font-bold text-lg mb-2">Need Expert Help?</h3>
-										<p class="text-sm text-white/80 mb-5 leading-relaxed">Our consultants can help you implement these strategies in your business.</p>
-										<a href="/#contact" class="inline-flex items-center gap-2 text-sm font-semibold bg-white text-[#0F2C59] px-5 py-2.5 rounded-xl hover:bg-white/90 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5">
-											Contact Us
-											<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-											</svg>
-										</a>
-									</div>
-								</div>
-							</div>
-						</aside>
-					</div>
+						{/* No frame grid here: the hero already has one (guide §8, one frame treatment per view) */}
+						<div class="brand-band rounded-card p-6">
+							<h2 class="text-h3">Need Expert Help?</h2>
+							<p class="mt-2 text-small text-on-brand/80">Our consultants can help you implement these strategies in your business.</p>
+							<a href="/#contact" class="btn btn-primary mt-5">
+								Contact Us
+								<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+								</svg>
+							</a>
+						</div>
+					</aside>
 				</div>
 			</div>
-		</section>
-	</div>
+		</div>
+	</section>
 </Layout>

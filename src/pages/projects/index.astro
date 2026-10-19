@@ -1,5 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
 import { listProjects } from '../../lib/wp';
 
 const { projects } = await listProjects({ perPage: 100 }).catch(() => ({ projects: [] }));
@@ -30,78 +32,33 @@ const staticProjects = [
 ---
 
 <Layout title="Projects" description="Case studies and consulting projects by Mekan PLC in quality management, compliance, certification readiness, and training across Ethiopia." overlayNav>
-	<section class="relative text-white overflow-hidden">
-		<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/logo.png');"></div>
-		<div class="absolute inset-0 bg-[#0F2C59]/90"></div>
-		<div class="relative container pt-32 pb-28">
-			<nav class="flex items-center gap-2 text-sm text-white/70 mb-6">
-				<a href="/" class="hover:text-white transition-colors flex items-center gap-1">
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-					</svg>
-					Home
-				</a>
-				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-				</svg>
-				<span class="text-white font-medium">Projects</span>
-			</nav>
-			<h1 class="text-3xl md:text-4xl font-semibold tracking-tight">Our Projects</h1>
-			<p class="mt-4 text-lg text-white/80 max-w-2xl">
-				Real results for real clients. Explore our portfolio of successful agribusiness consulting projects across Ethiopia and East Africa.
-			</p>
-		</div>
-	</section>
+	<PageHero
+		title="Our Projects"
+		breadcrumbs={[{ label: 'Projects' }]}
+		lead="Real results for real clients. Explore our portfolio of successful agribusiness consulting projects across Ethiopia and East Africa."
+	/>
 
-	<section class="section bg-[hsl(var(--background))] border-t border-white/10">
+	<section class="section bg-page">
 		<div class="container">
-			<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-				{projects.length > 0 ? projects.map((project) => (
-					<a
-						href={`/projects/${project.slug}`}
-						class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2"
-					>
-						<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
-						<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
-							{project.imageUrl ? (
-								<img src={project.imageUrl} alt={project.title} class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
-							) : (
-								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
-							)}
-							<div class="absolute inset-0 bg-gradient-to-t from-[hsl(var(--brand))]/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-						</div>
-						<div class="relative p-6 flex flex-col flex-grow">
-							<p class="text-xs font-medium text-[hsl(var(--brand))] uppercase tracking-wide">{project.client}</p>
-							<h3 class="mt-2 text-lg font-semibold text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">
-								{project.title}
-							</h3>
-							<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">
-								{project.description}
-							</p>
-						</div>
-					</a>
-				)) : staticProjects.map((project) => (
-					<div class="group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2">
-						<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100" />
-						<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
-							{project.imageUrl ? (
-								<img src={project.imageUrl} alt={project.title} class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
-							) : (
-								<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">📁</div>
-							)}
-							<div class="absolute inset-0 bg-gradient-to-t from-[hsl(var(--brand))]/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-						</div>
-						<div class="relative p-6 flex flex-col flex-grow">
-							<p class="text-xs font-medium text-[hsl(var(--brand))] uppercase tracking-wide">{project.client}</p>
-							<h3 class="mt-2 text-lg font-semibold text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">
-								{project.title}
-							</h3>
-							<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">
-								{project.description}
-							</p>
-						</div>
-					</div>
-				))}
+			<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{projects.length > 0
+					? projects.map((project) => (
+						<ProjectCard
+							href={`/projects/${project.slug}`}
+							title={project.title}
+							client={project.client}
+							description={project.description}
+							imageUrl={project.imageUrl}
+						/>
+					))
+					: staticProjects.map((project) => (
+						<ProjectCard
+							title={project.title}
+							client={project.client}
+							description={project.description}
+							imageUrl={project.imageUrl}
+						/>
+					))}
 			</div>
 		</div>
 	</section>

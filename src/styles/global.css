@@ -219,13 +219,14 @@
     @apply rounded-control px-3 py-2 text-small font-semibold text-ink/75 transition-colors duration-fast ease-out hover:bg-tint-brand hover:text-brand;
   }
 
-  /* Badge / tag: fully rounded, tint background. */
+  /* Badge / tag: fully rounded, tint background. The faint ring keeps the pill shape in
+   * dark mode, where the tints fall back to the card surface. */
   .badge {
-    @apply inline-flex items-center gap-1.5 rounded-full bg-tint-accent px-3 py-1 font-body text-eyebrow font-medium text-accent;
+    @apply inline-flex items-center gap-1.5 rounded-full bg-tint-accent px-3 py-1 font-body text-eyebrow font-medium text-accent ring-1 ring-inset ring-accent/20;
   }
 
   .badge-brand {
-    @apply bg-tint-brand text-brand;
+    @apply bg-tint-brand text-brand ring-brand/20;
   }
 
   /* Brand band: header, footer, hero, call to action. Always Navy, in both modes.
