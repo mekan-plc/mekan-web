@@ -5,7 +5,7 @@
 
 ## Current status
 
-**Next step:** 4.2 · **Last updated:** 2026-10-19 · **Phase:** 4 · Inner pages
+**Next step:** 4.3 · **Last updated:** 2026-10-19 · **Phase:** 4 · Inner pages
 
 ---
 
@@ -78,7 +78,7 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 
 ### Phase 4 · Inner pages
 - [x] **4.1** `about.astro` *(2026-10-19: done; new shared `PageHero.astro` for 4.2–4.7)*
-- [ ] **4.2** `services/[id].astro`
+- [x] **4.2** `services/[id].astro` *(2026-10-19: done; all six service pages share the template)*
 - [ ] **4.3** `projects/index.astro` + `projects/[slug].astro`
 - [ ] **4.4** `blog/index.astro` + `blog/[slug].astro` (prose styles from tokens)
 - [ ] **4.5** `resources/index.astro`
@@ -103,6 +103,8 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 ## Log
 
 Add one line per finished step, newest first: `YYYY-MM-DD · step · what changed · files`.
+
+- 2026-10-19 · 4.2 · Service detail pages (all six share one template) on tokens. Hero is now the shared `PageHero` (Home › Services › title, `text-h1`, description as `.lead`); the old hero used `logo.png` as a background under a navy/90 overlay (guide §5) and a 2px home icon. About: `.section-title`, body `text-ink/85` at `max-w-prose`. What we offer is a `<ul>` of `.card` items with a green check tile (`bg-tint-accent text-accent`, faint `ring-accent/20` so it stays visible in dark, where the tint falls back to the card colour); the 4px navy/Sky side bars and `slate-700` text are gone. Key benefits: a `.card` aside, sticky from `lg` only (it no longer sticks on phones), checks instead of → arrows, `.btn-primary` Get started, and Call/Email as `.btn-secondary` from a `contactActions` array (was `slate-200/700` grey buttons). Delivery: `.eyebrow` (was navy on black in dark) + `.section-title` + `.lead`; one `<ul>` and one card template (was two copied loops) keeps the 4 + 3 desktop layout, with the green 2px rule from the About values cards. Our work: the navy/Sky pill with `hover:scale-105`/`shadow-xl` is now a 48px `.btn-secondary` with `aria-expanded`/`aria-controls`; the gallery opens through an `.is-open` class (token duration and easing, so reduced motion applies) and is `inert` while closed, so hidden photos are out of the tab order; tiles are `rounded-card` with a `border-line` edge; the `scale-110` zoom, the navy hover wash, the meaningless “Project N” caption and `cursor-pointer` (they are not links) are gone. 1.75px strokes throughout; zero hex, `slate-`, `hsl()` or `dark:` classes left in the file. Copy unchanged; flag for the user: “About The Service”, “Key Benefits”, “Our Work” are Title Case (§7), and “world-class accreditation” (Global Standards) clashes with §11. Build passes; checked with headless shots at 1440/375 px, light and dark, including the opened gallery · `src/pages/services/[id].astro`
 
 - 2026-10-19 · 4.1 · About page on tokens. **New shared `PageHero.astro`**: a navy `.brand-band` with `.frame-grid` lines (guide §8), an accessible breadcrumb (`nav aria-label=Breadcrumb`, `ol`, `aria-current=page`, `.link-quiet` links, 1.75px chevrons), `text-h1` title, optional eyebrow/lead/slot, left or centred. It replaces the hero that put `logo.png` behind a navy/90 overlay (guide §5: the logo is never a background or decoration); services, projects/[slug], blog/[slug], 404 and 500 use the same pattern and can adopt it in 4.2–4.7. Story: `.section-title`, body `text-ink/85` at `max-w-prose`; “By the Numbers” is a `<dl>` card, Source Serif 4 `text-stat` numbers in `text-brand` over thin `border-line` rules, 2×2. Mission/Vision: `bg-tint-brand` callouts (guide §6) with navy icon tiles, from a `statements` array; the 4px coloured side bars, `slate-100`/`#1F2937`/`#0F2C59`/`#7EA2CE` and every `dark:` colour are gone. Values: `.card` with a short 2px green rule above each title (guide §8 “the rule”). Team: `.card` with a 4:3 photo over a `border-line` rule, name `text-h3 text-heading`, role green, bio muted; lazy-loaded; the 5-card centring is kept. Section dividers were `border-white/10` (invisible on Paper), now `border-line`. Copy unchanged; flag for the user: “visionary”, “pioneering”, “at the forefront” clash with §11, and the 50+ clients / 50+ projects / 20+ consultants figures need to be provable (§11). Build passes; checked with headless shots at 1280/375 px, light and dark, and all 5 team photos load in the browser · `src/pages/about.astro`, `src/components/PageHero.astro`
 
