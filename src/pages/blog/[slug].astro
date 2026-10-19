@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { LEGAL_NAME } from '../../data/company';
 import PageHero from '../../components/PageHero.astro';
 import BlogCard from '../../components/BlogCard.astro';
 import { getBlogBySlug } from '../../lib/wp';
@@ -42,12 +43,12 @@ const blogPostingLd = {
 	datePublished: blog.date ? new Date(blog.date).toISOString() : new Date().toISOString(),
 	author: {
 		'@type': 'Organization',
-		name: 'Mekan PLC',
+		name: LEGAL_NAME,
 		url: siteUrl || undefined
 	},
 	publisher: {
 		'@type': 'Organization',
-		name: 'Mekan PLC',
+		name: LEGAL_NAME,
 		logo: {
 			'@type': 'ImageObject',
 			url: siteUrl ? new URL('/logo1.2.png', siteUrl).toString() : '/logo1.2.png'

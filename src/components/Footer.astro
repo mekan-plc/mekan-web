@@ -1,4 +1,6 @@
 ---
+import { LEGAL_NAME } from '../data/company';
+
 const year = new Date().getFullYear();
 
 const links = [
@@ -44,10 +46,10 @@ const emailPath = 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 
 	<div class="container grid grid-cols-1 gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12 lg:py-16">
 		{/* Brand Column */}
 		<div class="space-y-5 sm:pr-4">
-			<p class="eyebrow">Mekan PLC</p>
+			<p class="eyebrow">{LEGAL_NAME}</p>
 			<!-- Guide §5: on navy the full logo sits on a white panel, never directly on the colour. -->
 			<span class="inline-flex rounded-control bg-logo-panel px-3 py-2">
-				<img src="/logo.png" alt="Mekan Consultancy" class="h-12 w-auto object-contain" />
+				<img src="/logo.png" alt={LEGAL_NAME} class="h-12 w-auto object-contain" />
 			</span>
 			<p class="max-w-xs text-small text-on-brand/75">
 				Empowering sustainable growth in global agribusiness.
@@ -161,7 +163,7 @@ const emailPath = 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 
 					</div>
 				</div>
 				<div id="mekan-copyright" class="hidden text-small text-on-brand/60 lg:block">
-					© {year} Mekan Consultancy. All rights reserved.
+					© {year} {LEGAL_NAME}. All rights reserved.
 				</div>
 				<div class="flex flex-wrap items-center justify-center gap-4 text-small">
 					<a href="/privacy-policy" class="link-quiet">Privacy Policy</a>

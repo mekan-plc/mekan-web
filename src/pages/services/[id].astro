@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { LEGAL_NAME } from '../../data/company';
 import PageHero from '../../components/PageHero.astro';
 
 export function getStaticPaths() {
@@ -246,7 +247,7 @@ const serviceLd = {
 	url: pageUrl,
 	provider: {
 		'@type': 'Organization',
-		name: 'Mekan PLC',
+		name: LEGAL_NAME,
 		url: siteUrl || undefined,
 		logo: siteUrl ? new URL('/logo1.2.png', siteUrl).toString() : '/logo1.2.png',
 		contactPoint: {
