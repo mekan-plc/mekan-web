@@ -1,109 +1,162 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+
+// Line icons (24px grid, 1.75px stroke, guide §9).
+const icons = {
+	document: ['M6.5 3.5h7l4 4v12a1 1 0 0 1-1 1h-10a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1Z', 'M13.5 3.5v4h4M8.5 12h7M8.5 15.5h7'],
+	check: ['M5 13l4 4L19 7'],
+	download: ['M12 4v11m0 0l-4-4m4 4l4-4M5 20h14'],
+	phone: ['M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z'],
+	mail: ['M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'],
+	archive: ['M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10']
+};
 ---
 
 <Layout title="Resources" description="Free resources from Mekan PLC on quality management systems, compliance, certification readiness, and training for agribusiness in Ethiopia." overlayNav>
-	{/* Hero with logo background */}
-	<section class="relative text-white overflow-hidden">
-		<div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('/logo.png');"></div>
-		<div class="absolute inset-0 bg-[#0F2C59]/90"></div>
-		<div class="relative container pt-32 pb-28">
-			{/* Breadcrumb */}
-			<nav class="flex items-center gap-2 text-sm text-white/70 mb-6">
-				<a href="/" class="hover:text-white transition-colors flex items-center gap-1">
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-					</svg>
-					Home
-				</a>
-				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-				</svg>
-				<span class="text-white font-medium">Resources</span>
-			</nav>
-			<h1 class="text-3xl md:text-4xl font-semibold tracking-tight">Free Resources</h1>
-			<p class="mt-4 text-lg text-white/80 max-w-2xl">
-				Downloadable guides, checklists, and practical tools designed to support agribusiness growth, complemented by expert insights available at no cost.
-			</p>
-		</div>
-	</section>
+	<PageHero
+		title="Free Resources"
+		breadcrumbs={[{ label: 'Resources' }]}
+		lead="Downloadable guides, checklists, and practical tools designed to support agribusiness growth, complemented by expert insights available at no cost."
+	/>
 
-	{/* Resources Grid */}
-	<section class="section bg-[hsl(var(--background))] border-t border-white/10">
+	<section class="section bg-page">
 		<div class="container">
-			{/* Filters */}
-			<p id="resourcesError" class="hidden text-sm text-red-500 mb-6"></p>
-			
-			<div class="flex flex-wrap items-center gap-3 mb-10">
-				<span class="text-sm text-[hsl(var(--muted-foreground))]">Filter by category:</span>
-				<div class="flex flex-wrap gap-2" id="category-filters">
-				</div>
+			<p id="resourcesError" class="alert-danger mb-6 hidden" role="alert"></p>
+
+			<div id="filterBar" class="mb-10 hidden flex-wrap items-center gap-3">
+				<span id="filterLabel" class="text-small text-muted">Filter by category:</span>
+				<div id="category-filters" class="flex flex-wrap gap-2" role="group" aria-labelledby="filterLabel"></div>
 			</div>
 
-			{/* Active filter indicator */}
-			<div id="active-filter" class="hidden mb-6 text-sm">
-				<span class="text-[hsl(var(--muted-foreground))]">Showing: </span>
-				<span id="active-filter-name" class="font-medium text-[hsl(var(--brand))]">All</span>
-				<button id="clear-filter" class="ml-2 text-xs text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--brand))] underline">Clear filter</button>
+			<div id="active-filter" class="mb-6 hidden text-small" aria-live="polite">
+				<span class="text-muted">Showing: </span>
+				<span id="active-filter-name" class="font-medium text-brand">All</span>
+				<button id="clear-filter" type="button" class="link ml-2 text-small">Clear filter</button>
 			</div>
 
-			{/* Resources Cards */}
-			<div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3" id="resources-grid">
+			<div id="resources-grid" class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3" aria-busy="true">
+				{/* Loading skeletons, replaced once resources arrive */}
+				{Array.from({ length: 6 }).map(() => (
+					<div class="card overflow-hidden" aria-hidden="true">
+						<div class="aspect-[16/10] animate-pulse border-b border-line bg-tint-brand"></div>
+						<div class="space-y-3 p-6 md:p-7">
+							<div class="h-5 w-4/5 animate-pulse rounded-full bg-line"></div>
+							<div class="h-3 w-full animate-pulse rounded-full bg-line"></div>
+							<div class="h-3 w-5/6 animate-pulse rounded-full bg-line"></div>
+						</div>
+					</div>
+				))}
 			</div>
 
-			{/* Contact CTA */}
-			<div class="mt-16 relative rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-[#1F2937] dark:to-[#0F172A] p-8 overflow-hidden">
-				{/* Decorative elements */}
-				<div class="absolute top-0 right-0 w-32 h-32 bg-[#0F2C59]/5 dark:bg-[#7EA2CE]/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-				<div class="absolute bottom-0 left-0 w-24 h-24 bg-[#0F2C59]/5 dark:bg-[#7EA2CE]/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
-				
-				<div class="relative text-center">
-					<div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#0F2C59] dark:bg-[#7EA2CE] text-white mb-4">
-						<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+			{/* Contact callout */}
+			<div class="mt-16 rounded-card bg-tint-brand p-8 text-center md:p-10">
+				<h2 class="text-h3 text-heading">Need custom resources?</h2>
+				<p class="mx-auto mt-2 max-w-prose text-muted">Why don't you reach out to us directly? We're here to help.</p>
+				<div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+					<a href="tel:+251911454671" class="btn btn-primary">
+						<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+							{icons.phone.map((d) => <path d={d} />)}
 						</svg>
-					</div>
-					<h3 class="text-xl font-semibold text-[hsl(var(--foreground))] mb-2">Need custom resources?</h3>
-					<p class="text-sm text-[hsl(var(--muted-foreground))] mb-6">Why don't you reach out to us directly? We're here to help.</p>
-					
-					<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-						<a 
-							href="tel:+251911454671"
-							class="group flex items-center gap-3 px-6 py-3 rounded-xl bg-[#0F2C59] hover:bg-[#0a1f3d] dark:bg-[#7EA2CE] dark:hover:bg-[#6b8ab0] text-white transition-all hover:scale-105 hover:shadow-lg"
-						>
-							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-							</svg>
-							<span class="font-medium">Call us</span>
-						</a>
-						
-						<a 
-							href="mailto:biniam@mekanplc.com"
-							class="group flex items-center gap-3 px-6 py-3 rounded-xl bg-slate-600 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white transition-all hover:scale-105 hover:shadow-lg"
-						>
-							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-							</svg>
-							<span class="font-medium">Email us</span>
-						</a>
-					</div>
+						Call us
+					</a>
+					<a href="mailto:biniam@mekanplc.com" class="btn btn-secondary">
+						<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+							{icons.mail.map((d) => <path d={d} />)}
+						</svg>
+						Email us
+					</a>
 				</div>
 			</div>
 		</div>
 	</section>
+
+	{/* Blueprints the script clones (data-field hooks). Hidden divs, not <template>: the Astro
+	     compiler re-opens an <a> nested inside a <template> after it closes, leaking a stray link. */}
+	<div id="resourceCardTemplate" hidden>
+		<article class="card flex flex-col overflow-hidden">
+			<div class="relative aspect-[16/10] overflow-hidden border-b border-line bg-tint-brand" data-field="media">
+				<div class="flex h-full items-center justify-center text-brand/40" aria-hidden="true" data-field="placeholder">
+					<svg class="h-10 w-10" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+						{icons.document.map((d) => <path d={d} />)}
+					</svg>
+				</div>
+				<span class="badge badge-brand absolute left-4 top-4" data-field="category"></span>
+			</div>
+			<div class="flex flex-grow flex-col p-6 md:p-7">
+				<h3 class="text-h3 text-heading" data-field="title"></h3>
+				<p class="mt-3 flex-grow text-small text-muted" data-field="description"></p>
+				<ul class="mt-5 space-y-2 border-t border-line pt-5" data-field="features"></ul>
+				<div class="mt-6 flex items-center justify-between gap-4 border-t border-line pt-5">
+					<span class="text-small text-muted" data-field="meta"></span>
+					<a class="btn btn-primary h-10 px-4" target="_blank" rel="noopener noreferrer" data-field="download">
+						<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+							{icons.download.map((d) => <path d={d} />)}
+						</svg>
+						Download PDF
+					</a>
+					<span class="text-small text-muted" data-field="no-file">No file available</span>
+				</div>
+			</div>
+		</article>
+	</div>
+
+	<div id="resourceFeatureTemplate" hidden>
+		<li class="flex items-start gap-2 text-small text-ink">
+			<svg class="mt-0.5 h-4 w-4 shrink-0 text-accent" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+				{icons.check.map((d) => <path d={d} />)}
+			</svg>
+			<span></span>
+		</li>
+	</div>
+
+	<div id="resourcesEmptyTemplate" hidden>
+		<div class="col-span-full px-4 py-16 text-center">
+			<span class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-card bg-tint-brand text-brand" aria-hidden="true">
+				<svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+					{icons.archive.map((d) => <path d={d} />)}
+				</svg>
+			</span>
+			<h2 class="text-h3 text-heading">Resources Coming Soon</h2>
+			<p class="mx-auto mt-2 max-w-md text-muted">
+				We're curating valuable resources for you. Check back soon for guides, templates, and industry insights!
+			</p>
+			<a href="/#contact" class="btn btn-primary mt-6">
+				<svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+					{icons.mail.map((d) => <path d={d} />)}
+				</svg>
+				Contact Us
+			</a>
+		</div>
+	</div>
 
 	<script>
+		type Resource = {
+			title?: string;
+			description?: string;
+			category?: string;
+			imageUrl?: string | null;
+			features?: string[];
+			downloadUrl?: string;
+			fileSize?: string;
+		};
+
 		const CMS_BASE = (import.meta.env.PUBLIC_CMS_BASE_URL || 'http://localhost:8881').replace(/\/$/, '');
+		const filterBar = document.getElementById('filterBar');
 		const filtersWrap = document.getElementById('category-filters');
 		const grid = document.getElementById('resources-grid');
 		const errorEl = document.getElementById('resourcesError');
 		const activeFilterDiv = document.getElementById('active-filter');
 		const activeFilterName = document.getElementById('active-filter-name');
 		const clearFilterBtn = document.getElementById('clear-filter');
+		const cardTemplate = document.getElementById('resourceCardTemplate') as HTMLElement | null;
+		const featureTemplate = document.getElementById('resourceFeatureTemplate') as HTMLElement | null;
+		const emptyTemplate = document.getElementById('resourcesEmptyTemplate') as HTMLElement | null;
 		const CACHE_TTL_MS = 5 * 60 * 1000;
 		const CACHE_PREFIX = 'mekan_cache_v1:';
+		const DEFAULT_CATEGORIES = ['Certification', 'Compliance', 'Sustainability', 'Strategy', 'Coffee', 'Finance'];
 
-		function cacheGet(key) {
+		function cacheGet(key: string) {
 			try {
 				const raw = sessionStorage.getItem(CACHE_PREFIX + key);
 				if (!raw) return null;
@@ -117,7 +170,7 @@ import Layout from '../../layouts/Layout.astro';
 			}
 		}
 
-		function cacheSet(key, data) {
+		function cacheSet(key: string, data: unknown) {
 			try {
 				sessionStorage.setItem(CACHE_PREFIX + key, JSON.stringify({ ts: Date.now(), data }));
 			} catch {
@@ -125,130 +178,106 @@ import Layout from '../../layouts/Layout.astro';
 			}
 		}
 
-		function escapeHtml(str) {
-			return String(str)
-				.replace(/&/g, '&amp;')
-				.replace(/</g, '&lt;')
-				.replace(/>/g, '&gt;')
-				.replace(/"/g, '&quot;')
-				.replace(/'/g, '&#039;');
-		}
+		// Text goes in through textContent, so CMS strings never become markup.
+		function resourceCard(resource: Resource): HTMLElement {
+			const card = (cardTemplate!.firstElementChild as HTMLElement).cloneNode(true) as HTMLElement;
+			const field = <T extends HTMLElement = HTMLElement>(name: string) => card.querySelector<T>(`[data-field="${name}"]`);
+			const category = resource.category || 'General';
+			card.dataset.category = category;
 
-		function renderSkeleton() {
-			if (!grid) return;
-			grid.innerHTML = Array.from({ length: 6 }).map(() => (
-				`<div class="resource-card group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden">
-					<div class="relative h-48 bg-[hsl(var(--muted))] animate-pulse"></div>
-					<div class="relative p-6 space-y-3">
-						<div class="h-4 w-4/5 bg-[hsl(var(--muted))] rounded animate-pulse"></div>
-						<div class="h-3 w-full bg-[hsl(var(--muted))] rounded animate-pulse"></div>
-						<div class="h-3 w-5/6 bg-[hsl(var(--muted))] rounded animate-pulse"></div>
-					</div>
-				</div>`
-			)).join('');
-		}
+			field('category')!.textContent = category;
+			field('title')!.textContent = resource.title || '';
+			field('description')!.textContent = resource.description || '';
+			// File type and size only when there is a file to download.
+			field('meta')!.textContent = resource.downloadUrl ? ['PDF', resource.fileSize].filter(Boolean).join(' · ') : '';
 
-		function renderFilters(categories) {
-			if (!filtersWrap) return;
-			filtersWrap.innerHTML = categories.map((cat, i) => (
-				`<button class="category-btn px-4 py-2 rounded-full text-sm font-medium transition-all ${i === 0 ? 'bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))]' : 'bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--brand))] hover:text-[hsl(var(--brand-foreground))]'}" data-category="${escapeHtml(cat)}">${escapeHtml(cat)}</button>`
-			)).join('');
-		}
-
-		function resourceCard(resource) {
-			const thumb = resource.imageUrl
-				? `<img src="${escapeHtml(resource.imageUrl)}" alt="${escapeHtml(resource.title)}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />`
-				: `<div class="text-6xl text-[hsl(var(--muted-foreground))]/30 transition-transform duration-500 group-hover:scale-110">${escapeHtml(resource.icon || '📄')}</div>`;
-
-			const features = Array.isArray(resource.features)
-				? resource.features.map((f) => (`<li class="flex items-start gap-2 text-xs text-[hsl(var(--muted-foreground))]"><svg class="w-4 h-4 text-[hsl(var(--brand))] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg><span>${escapeHtml(f)}</span></li>`)).join('')
-				: '';
-
-			const download = resource.downloadUrl
-				? `<a href="${escapeHtml(resource.downloadUrl)}" target="_blank" rel="noopener noreferrer" class="download-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))] text-sm font-medium transition-all hover:bg-[hsl(var(--brand))]/90 hover:scale-105 hover:shadow-lg" download="${escapeHtml(String(resource.title || 'resource').replace(/\s+/g, '_'))}.pdf"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>Download PDF</a>`
-				: `<span class="text-xs text-[hsl(var(--muted-foreground))]">No file available</span>`;
-
-			return `<div class="resource-card group relative flex flex-col bg-gradient-to-br from-[hsl(var(--card))] to-[hsl(var(--background))] rounded-2xl border border-[hsl(var(--border))] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[hsl(var(--brand))]/10 hover:border-[hsl(var(--brand))]/50 hover:-translate-y-2" data-category="${escapeHtml(resource.category || 'General')}">
-				<div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-[hsl(var(--brand))]/0 via-[hsl(var(--brand))]/0 to-[hsl(var(--brand))]/0 opacity-0 transition-all duration-500 group-hover:from-[hsl(var(--brand))]/5 group-hover:via-[hsl(var(--brand))]/3 group-hover:to-[hsl(var(--brand))]/5 group-hover:opacity-100"></div>
-				<div class="relative h-48 bg-gradient-to-br from-[hsl(var(--muted))] to-[hsl(var(--card))] flex items-center justify-center overflow-hidden">
-					${thumb}
-					<div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-[hsl(var(--brand))]/90 text-[hsl(var(--brand-foreground))] text-xs font-medium">${escapeHtml(resource.category || 'General')}</div>
-					<div class="absolute top-4 right-4 px-2 py-1 rounded bg-red-500/90 text-white text-xs font-semibold">PDF</div>
-				</div>
-				<div class="relative p-6 flex flex-col flex-grow">
-					<h3 class="text-lg font-semibold text-[hsl(var(--foreground))] transition-colors duration-300 group-hover:text-[hsl(var(--brand))]">${escapeHtml(resource.title || '')}</h3>
-					<p class="mt-3 text-sm leading-relaxed text-[hsl(var(--muted-foreground))] flex-grow">${escapeHtml(resource.description || '')}</p>
-					<div class="mt-4 pt-4 border-t border-[hsl(var(--border))]">
-						<ul class="space-y-2">${features}</ul>
-					</div>
-					<div class="mt-6 flex items-center justify-between">
-						<span class="text-xs text-[hsl(var(--muted-foreground))]">${escapeHtml(resource.fileSize || '')}</span>
-						${download}
-					</div>
-				</div>
-			</div>`;
-		}
-
-		function setupFiltering() {
-			const filterButtons = document.querySelectorAll('.category-btn');
-			const resourceCards = document.querySelectorAll('.resource-card');
-
-			function filterResources(category) {
-				filterButtons.forEach((btn) => {
-					if (btn.dataset.category === category) {
-						btn.classList.remove('bg-[hsl(var(--muted))]', 'text-[hsl(var(--muted-foreground))]');
-						btn.classList.add('bg-[hsl(var(--brand))]', 'text-[hsl(var(--brand-foreground))]');
-					} else {
-						btn.classList.remove('bg-[hsl(var(--brand))]', 'text-[hsl(var(--brand-foreground))]');
-						btn.classList.add('bg-[hsl(var(--muted))]', 'text-[hsl(var(--muted-foreground))]');
-					}
-				});
-
-				resourceCards.forEach((card) => {
-					if (category === 'All' || card.dataset.category === category) {
-						card.style.display = 'flex';
-						card.style.opacity = '1';
-						card.style.transform = 'none';
-						card.style.visibility = 'visible';
-						card.style.animation = 'fadeIn 0.3s ease-out';
-					} else {
-						card.style.display = 'none';
-					}
-				});
-
-				if (activeFilterDiv && activeFilterName) {
-					if (category !== 'All') {
-						activeFilterDiv.classList.remove('hidden');
-						activeFilterName.textContent = category;
-					} else {
-						activeFilterDiv.classList.add('hidden');
-					}
-				}
+			if (resource.imageUrl) {
+				const img = document.createElement('img');
+				img.src = resource.imageUrl;
+				img.alt = resource.title || '';
+				img.loading = 'lazy';
+				img.decoding = 'async';
+				img.className = 'absolute inset-0 h-full w-full object-cover';
+				field('placeholder')?.replaceWith(img);
 			}
 
-			filterButtons.forEach((btn) => {
-				btn.addEventListener('click', () => {
-					filterResources(btn.dataset.category);
-				});
-			});
+			const features = field('features')!;
+			if (Array.isArray(resource.features) && resource.features.length > 0 && featureTemplate) {
+				features.replaceChildren(...resource.features.map((text) => {
+					const item = featureTemplate.firstElementChild!.cloneNode(true) as HTMLElement;
+					item.querySelector('span')!.textContent = text;
+					return item;
+				}));
+			} else {
+				features.remove();
+			}
 
-			clearFilterBtn?.addEventListener('click', () => {
-				filterResources('All');
+			const download = field<HTMLAnchorElement>('download')!;
+			if (resource.downloadUrl) {
+				download.href = resource.downloadUrl;
+				download.download = `${String(resource.title || 'resource').replace(/\s+/g, '_')}.pdf`;
+				field('no-file')?.remove();
+			} else {
+				download.remove();
+			}
+
+			return card;
+		}
+
+		function renderFilters(categories: string[]) {
+			if (!filtersWrap) return;
+			filtersWrap.replaceChildren(...categories.map((cat, i) => {
+				const btn = document.createElement('button');
+				btn.type = 'button';
+				btn.className = 'chip';
+				btn.dataset.category = cat;
+				btn.textContent = cat;
+				btn.setAttribute('aria-pressed', String(i === 0));
+				return btn;
+			}));
+			filterBar?.classList.replace('hidden', 'flex');
+		}
+
+		function filterResources(category: string) {
+			filtersWrap?.querySelectorAll<HTMLButtonElement>('.chip').forEach((btn) => {
+				btn.setAttribute('aria-pressed', String(btn.dataset.category === category));
 			});
+			grid?.querySelectorAll<HTMLElement>('article[data-category]').forEach((card) => {
+				card.classList.toggle('hidden', !(category === 'All' || card.dataset.category === category));
+			});
+			if (activeFilterDiv && activeFilterName) {
+				activeFilterDiv.classList.toggle('hidden', category === 'All');
+				activeFilterName.textContent = category;
+			}
+		}
+
+		filtersWrap?.addEventListener('click', (event) => {
+			const btn = (event.target as HTMLElement).closest<HTMLButtonElement>('.chip');
+			if (btn?.dataset.category) filterResources(btn.dataset.category);
+		});
+		clearFilterBtn?.addEventListener('click', () => filterResources('All'));
+
+		function renderEmpty() {
+			if (!grid || !emptyTemplate) return;
+			grid.replaceChildren(emptyTemplate.firstElementChild!.cloneNode(true));
+			grid.setAttribute('aria-busy', 'false');
+			filterBar?.classList.replace('flex', 'hidden');
+		}
+
+		function renderResources(resources: Resource[]) {
+			if (!grid || !cardTemplate) return;
+			if (resources.length === 0) return renderEmpty();
+			const resourceCats = Array.from(new Set(resources.map((r) => r.category).filter(Boolean))) as string[];
+			const categories = ['All', ...DEFAULT_CATEGORIES.filter((c) => resourceCats.includes(c)), ...resourceCats.filter((c) => !DEFAULT_CATEGORIES.includes(c))];
+			renderFilters(categories);
+			grid.replaceChildren(...resources.map(resourceCard));
+			grid.setAttribute('aria-busy', 'false');
+			filterResources('All');
 		}
 
 		async function loadResources() {
-			renderSkeleton();
 			const cachedResources = cacheGet('resources:index');
-			if (cachedResources && Array.isArray(cachedResources)) {
-				const uniqueCategories = new Set(cachedResources.map((r) => r.category).filter(Boolean));
-				const defaultCats = ['Certification', 'Compliance', 'Sustainability', 'Strategy', 'Coffee', 'Finance'];
-				const resourceCats = Array.from(uniqueCategories);
-				const categories = ['All', ...defaultCats.filter((c) => resourceCats.includes(c)), ...resourceCats.filter((c) => !defaultCats.includes(c))];
-				renderFilters(categories);
-				if (grid) grid.innerHTML = cachedResources.map(resourceCard).join('');
-				setupFiltering();
-			}
+			if (cachedResources && Array.isArray(cachedResources)) renderResources(cachedResources);
 			try {
 				const url = `${CMS_BASE}/wp-json/mekan/v1/resources?per_page=100`;
 				const res = await fetch(url, { headers: { Accept: 'application/json' } });
@@ -256,59 +285,15 @@ import Layout from '../../layouts/Layout.astro';
 				const resources = await res.json();
 				if (!Array.isArray(resources)) throw new Error('Invalid resources response.');
 				cacheSet('resources:index', resources);
-
-				const uniqueCategories = new Set(resources.map((r) => r.category).filter(Boolean));
-				const defaultCats = ['Certification', 'Compliance', 'Sustainability', 'Strategy', 'Coffee', 'Finance'];
-				const resourceCats = Array.from(uniqueCategories);
-				const categories = ['All', ...defaultCats.filter((c) => resourceCats.includes(c)), ...resourceCats.filter((c) => !defaultCats.includes(c))];
-
-				renderFilters(categories);
-				if (grid) grid.innerHTML = resources.map(resourceCard).join('');
-				setupFiltering();
-			} catch (e) {
+				renderResources(resources);
+			} catch {
 				if (!cachedResources) {
-					const EMPTY_STATE_HTML = `
-					<div class="col-span-full text-center py-16 px-4">
-						<div class="w-20 h-20 mx-auto mb-6 rounded-full bg-[hsl(var(--muted))] flex items-center justify-center">
-							<svg class="w-10 h-10 text-[hsl(var(--muted-foreground))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-							</svg>
-						</div>
-						<h3 class="text-xl font-semibold text-[hsl(var(--foreground))] mb-2">Resources Coming Soon</h3>
-						<p class="text-[hsl(var(--muted-foreground))] mb-6 max-w-md mx-auto">
-							We're curating valuable resources for you. Check back soon for guides, templates, and industry insights!
-						</p>
-						<a href="/#contact" class="inline-flex items-center gap-2 px-6 py-3 bg-[hsl(var(--brand))] text-[hsl(var(--brand-foreground))] rounded-xl font-medium hover:opacity-90 transition-opacity">
-							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-							</svg>
-							Contact Us
-						</a>
-					</div>
-				`;
-
-					if (grid) grid.innerHTML = EMPTY_STATE_HTML;
-					if (errorEl) errorEl.classList.add('hidden');
-					// Hide filters when no resources
-					if (filtersWrap) filtersWrap.parentElement.classList.add('hidden');
+					renderEmpty();
+					errorEl?.classList.add('hidden');
 				}
 			}
 		}
 
 		loadResources();
 	</script>
-
-	<style>
-		@keyframes fadeIn {
-			from { opacity: 0; transform: translateY(10px); }
-			to { opacity: 1; transform: translateY(0); }
-		}
-		
-		/* Force cards to be visible - override any AOS styles */
-		.resource-card {
-			opacity: 1 !important;
-			transform: none !important;
-			visibility: visible !important;
-		}
-	</style>
 </Layout>

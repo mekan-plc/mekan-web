@@ -229,6 +229,15 @@
     @apply bg-tint-brand text-brand ring-brand/20;
   }
 
+  /* Filter chip: a fully rounded toggle button. Set aria-pressed="true" on the active one. */
+  .chip {
+    @apply inline-flex h-9 items-center rounded-full border border-line bg-surface px-4 text-small font-medium text-ink/75 transition-colors duration-fast ease-out hover:bg-tint-brand hover:text-brand;
+  }
+
+  .chip[aria-pressed='true'] {
+    @apply border-brand-surface bg-brand-surface text-on-brand hover:bg-brand-surface hover:text-on-brand;
+  }
+
   /* Brand band: header, footer, hero, call to action. Always Navy, in both modes.
    * .on-navy is the same context without the fill, for things that sit on navy
    * but paint their own background (the overlay header, image heroes).
