@@ -5,43 +5,6 @@
 @tailwind utilities;
 
 @layer base {
-  /* LEGACY BRIDGE (workflow 1.1 / 5.1). Old HSL variables still read by pages as
-   * hsl(var(--x)). The neutrals mirror the brand values in tokens.css so un-migrated
-   * pages already sit on the brand palette. Delete this whole block in step 5.1. */
-  :root {
-    --background: 60 16.7% 97.6%;      /* = Paper #FAFAF8 */
-    --foreground: 0 0% 6.7%;           /* = Black #111111 */
-    --card: 0 0% 100%;                 /* = White */
-    --muted: 60 5% 92%;                /* Subtle warm gray */
-    --muted-foreground: 0 0% 36.9%;    /* = Grey #5E5E5E */
-    --border: 60 9.1% 89.2%;           /* = Line #E6E6E1 */
-    --ring: 216 71% 20%;               /* Brand focus ring - Deep Navy #0F2C59 */
-    --primary: 216 71% 20%;            /* Deep Navy #0F2C59 */
-    --primary-foreground: 0 0% 100%;   /* White on primary */
-    
-    /* Brand Colors - The Hero - Deep Premium Navy */
-    --brand: 216 71% 20%;              /* Deep Navy #0F2C59 */
-    --brand-foreground: 0 0% 100%;   /* White on brand */
-    --brand-border: 216 50% 30%;       /* Muted navy border */
-  }
-
-  .dark {
-    --background: 0 0% 4.3%;           /* = Dark page #0B0B0B */
-    --foreground: 60 13% 95.5%;        /* = Light text #F5F5F2 */
-    --card: 0 0% 8.6%;                 /* = Dark card #161616 */
-    --muted: 0 0% 11.8%;               /* neutral surface between card and line */
-    --muted-foreground: 0 0% 63.9%;    /* = Soft text #A3A3A3 */
-    --border: 0 0% 14.9%;              /* = Dark line #262626 */
-    --ring: 216 71% 20%;               /* Brand focus ring - Deep Navy */
-    --primary: 216 71% 20%;            /* Deep Navy #0F2C59 - same as light */
-    --primary-foreground: 0 0% 100%;   /* White on primary */
-    
-    /* Brand Colors - Dark Mode - SAME as light for consistency */
-    --brand: 216 71% 20%;              /* Deep Navy #0F2C59 */
-    --brand-foreground: 0 0% 100%;     /* White */
-    --brand-border: 216 50% 30%;       /* Navy border */
-  }
-
   html {
     text-rendering: geometricPrecision;
     -webkit-font-smoothing: antialiased;

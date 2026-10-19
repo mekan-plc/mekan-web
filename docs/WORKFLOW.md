@@ -5,7 +5,7 @@
 
 ## Current status
 
-**Next step:** 5.1 · **Last updated:** 2026-10-19 · **Phase:** 5 · Clean-up
+**Next step:** 5.2 · **Last updated:** 2026-10-19 · **Phase:** 5 · Clean-up
 
 ---
 
@@ -86,7 +86,7 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 - [x] **4.7** `404.astro` + `500.astro` *(2026-10-19: done; new shared `ErrorPage.astro`, Layout `showCta` prop)*
 
 ### Phase 5 · Clean-up
-- [ ] **5.1** Delete the old HSL bridge variables from `global.css`. Search `src/` for leftover hex codes, `#7EA2CE`/`#0F2C59`, `slate-`/`gray-` colours and hand-written `dark:` colour classes. Target: **zero** outside `tokens.css`.
+- [x] **5.1** Delete the old HSL bridge variables from `global.css`. Search `src/` for leftover hex codes, `#7EA2CE`/`#0F2C59`, `slate-`/`gray-` colours and hand-written `dark:` colour classes. Target: **zero** outside `tokens.css`. *(2026-10-19: done; zero reached, build output identical apart from the removed variables)*
 - [ ] **5.2** Remove dead CSS (duplicate reveal styles in `Layout.astro` and `global.css`, unused Lenis styles, unused classes). Delete the temporary `src/pages/kit-preview.astro`.
 - [ ] **5.3** Naming per guide §4 and §12: consistent company name and service names across nav, footer, titles and meta tags. Footer: the "Mekan PLC" label and "© Mekan Consultancy" should use the full legal name (§4).
 
@@ -103,6 +103,8 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 ## Log
 
 Add one line per finished step, newest first: `YYYY-MM-DD · step · what changed · files`.
+
+- 2026-10-19 · 5.1 · Old HSL bridge deleted. Before removing it, `src/` was searched for every bridge name (`--background`, `--foreground`, `--card`, `--muted(-foreground)`, `--border`, `--ring`, `--primary(-foreground)`, `--brand(-foreground|-border)`), `hsl(`, old shadcn-style classes (`bg-background`, `text-muted-foreground`, `border-border`…), `dark:` classes, `slate-`/`gray-`/`zinc-` and other Tailwind palette colours, `rgb()`/`rgba()` literals and named CSS colours: **zero** uses left, so the `:root`/`.dark` bridge block in `global.css` was dead. Removed it, plus the two Astro starter files `src/assets/astro.svg` and `background.svg` (referenced nowhere; they held the only other hex values in `src/`). `#…` left in `src/lib/wp.ts` are HTML entity codes (`&#8217;`), not colours. **Hex outside `tokens.css`: zero.** Proof of no visual change: built before and after, then compared `dist/`. Every HTML page is identical once asset hashes are normalised, the JS bundles keep the same hashes, and the only CSS difference is the two removed variable blocks (in `global` and `PageHero` CSS). Spot-checked the homepage and About in the browser at 1280/375 px, light and dark · `src/styles/global.css`, `src/assets/` (deleted)
 
 - 2026-10-19 · 4.7 · Error pages on tokens. **New shared `ErrorPage.astro`** and a **`showCta` prop on `Layout.astro`** (default `true`, so every other page is unchanged). The error pages are now a calm Paper page under the solid navbar (`overlayNav` off: the sticky Paper bar kept since 2.2, used here for the first time and checked in both modes), centred: a large Source Serif status code in `text-brand/15` (decorative, `aria-hidden`), an `Error 404`/`Error 500` `.eyebrow`, `text-h1` heading, `.lead` message and 48px `.btn-primary`/`.btn-secondary` actions; the closing CTA band is turned off, because the page's own actions already say where to go and a navy hero over the navy CTA over the navy footer read as one block. Gone: the navy gradient, `logo.png` tiled as wallpaper at 5% (404) or as a background (500) (guide §5), the Sky blur blobs, the frosted icon tiles and the `hover:-translate-y-0.5` lift. 500: the Refresh button's inline `onclick` moved to a script, and **“Call Us Now” is now a real `tel:` link** (it pointed to `/#contact` despite its phone icon; a phone call still works when the site is failing). Copy unchanged; flag for the user: “Oops!” and “Don't worry” are casual and use an exclamation mark (§11), and headings are Title Case (§7). Build passes; checked at 1440/375 px, light and dark · `src/pages/404.astro`, `src/pages/500.astro`, `src/components/ErrorPage.astro`, `src/layouts/Layout.astro`
 
