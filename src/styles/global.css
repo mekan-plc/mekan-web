@@ -251,6 +251,44 @@
     mask-image: radial-gradient(ellipse 75% 85% at 50% 50%, black 30%, transparent 100%);
   }
 
+  /* The offset frame (guide §8): a thin outline set behind and offset from its child,
+   * echoing the two overlapping frames of the logo. Put it on a wrapper around a card or
+   * image that paints its own background. Once or twice per page at most. */
+  .frame-offset {
+    @apply relative isolate;
+  }
+
+  .frame-offset::before {
+    content: '';
+    @apply pointer-events-none absolute inset-0 -z-10 rounded-card;
+    border: var(--mk-frame-line) solid rgb(var(--color-accent));
+    transform: translate(var(--mk-frame-offset), var(--mk-frame-offset));
+  }
+
+  /* Corner marks (guide §8): short L-shaped lines at the four corners, just outside the
+   * element, suggesting a frame without drawing all of it. For a key number or a quote. */
+  .corner-marks {
+    @apply relative;
+    --mark-color: rgb(var(--color-brand));
+    --mark-h: linear-gradient(var(--mark-color), var(--mark-color));
+  }
+
+  .corner-marks::before {
+    content: '';
+    @apply pointer-events-none absolute;
+    inset: calc(var(--mk-frame-mark-gap) * -1);
+    background:
+      var(--mark-h) top left / var(--mk-frame-mark) var(--mk-frame-mark-line),
+      var(--mark-h) top left / var(--mk-frame-mark-line) var(--mk-frame-mark),
+      var(--mark-h) top right / var(--mk-frame-mark) var(--mk-frame-mark-line),
+      var(--mark-h) top right / var(--mk-frame-mark-line) var(--mk-frame-mark),
+      var(--mark-h) bottom left / var(--mk-frame-mark) var(--mk-frame-mark-line),
+      var(--mark-h) bottom left / var(--mk-frame-mark-line) var(--mk-frame-mark),
+      var(--mark-h) bottom right / var(--mk-frame-mark) var(--mk-frame-mark-line),
+      var(--mark-h) bottom right / var(--mk-frame-mark-line) var(--mk-frame-mark);
+    background-repeat: no-repeat;
+  }
+
   /* Logo marquee: a steady, slow loop that pauses on hover or keyboard focus.
    * Edges fade through a mask, so it works on any surface. The track repeats its
    * items an even number of times and slides by half its width. */

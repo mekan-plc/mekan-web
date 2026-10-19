@@ -256,7 +256,7 @@ function stripHtml(html: string) {
 				<div class="lg:col-span-7">
 					<p class="eyebrow">About Us</p>
 					<h2 class="section-title mt-4">Your Technical Partner for World-Class Agribusiness</h2>
-					<div class="mt-6 max-w-prose space-y-4 text-ink/85">
+					<div class="mt-6 max-w-prose space-y-4 text-copy">
 						<p>
 							Based in Addis Ababa, Mekan Quality Management &amp; Training PLC is a leading consultancy committed to connecting Ethiopian agribusinesses with global markets. The firm focuses on strengthening agricultural value chains through technical expertise, regulatory insight, and forward-looking strategy.
 						</p>
@@ -264,7 +264,7 @@ function stripHtml(html: string) {
 							As an integrated technical partner, Mekan supports enterprises in meeting complex international requirements—ranging from EU market access and Global G.A.P. certification to ESG (Environmental, Social, and Governance) standards. By combining agronomic expertise with data-driven business strategy, the company enables clients to enhance value chain performance and achieve long-term, sustainable growth.
 						</p>
 					</div>
-					<a href="/about" class="link mt-8 inline-flex items-center gap-2 text-button font-semibold">
+					<a href="/about" class="btn btn-secondary mt-8">
 						Explore more about us
 						<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -272,8 +272,9 @@ function stripHtml(html: string) {
 					</a>
 				</div>
 
-				<!-- Key numbers: Source Serif 4 in brand colour (guide §7), split by thin rules -->
-				<div class="lg:col-span-5">
+				<!-- Key numbers: Source Serif 4 in brand colour (guide §7), split by thin rules.
+				     The offset frame (guide §8) sits behind the card, like the two frames of the logo. -->
+				<div class="frame-offset mr-3 mb-3 lg:col-span-5">
 					<dl class="card divide-y divide-line px-8 py-2">
 						{[
 							{ value: '8+', label: 'Years of excellence (established 2018 GC)' },

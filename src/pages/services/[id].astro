@@ -293,7 +293,7 @@ const contactActions = [
 		<div class="container">
 			<div class="max-w-prose">
 				<h2 class="section-title">About The Service</h2>
-				<div class="mt-6 space-y-4 text-ink/85">
+				<div class="mt-6 space-y-4 text-copy">
 					{(service.about ?? []).map((para) => <p>{para}</p>)}
 				</div>
 			</div>
@@ -325,7 +325,7 @@ const contactActions = [
 						<h3 class="text-h3 text-heading">Key Benefits</h3>
 						<ul class="mt-5 space-y-3">
 							{service.benefits.map((benefit) => (
-								<li class="flex items-start gap-3 text-small text-ink/85">
+								<li class="flex items-start gap-3 text-small text-copy">
 									<svg class="mt-0.5 h-4 w-4 shrink-0 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d={checkIcon} />
 									</svg>

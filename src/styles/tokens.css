@@ -76,6 +76,13 @@
   --mk-radius-card: 16px;
   --mk-radius-control: 10px;
 
+  /* ── The frame (guide §8: thin outlines, used quietly) ──── */
+  --mk-frame-line: 1px;          /* offset frame outline */
+  --mk-frame-offset: 0.75rem;    /* how far the offset frame sits behind */
+  --mk-frame-mark-line: 2px;     /* corner mark weight */
+  --mk-frame-mark: 1.25rem;      /* corner mark arm length */
+  --mk-frame-mark-gap: 0.5rem;   /* corner marks sit just outside the element */
+
   /* ── Elevation (guide §9: soft and rare, mainly on hover) ─ */
   --mk-shadow-soft: 0 1px 2px rgb(var(--mk-black) / 0.04), 0 2px 8px -2px rgb(var(--mk-black) / 0.06);
   --mk-shadow-lift: 0 2px 4px rgb(var(--mk-black) / 0.04), 0 12px 28px -8px rgb(var(--mk-black) / 0.14);
@@ -91,6 +98,7 @@
   --color-border: var(--mk-line);
   --color-text: var(--mk-black);
   --color-muted: var(--mk-grey);
+  --color-copy-alpha: 1;                    /* body paragraphs: full Black on light pages */
   --color-heading: var(--mk-navy);
   --color-brand: var(--mk-navy);           /* brand-coloured text and icons */
   --color-accent: var(--mk-green);         /* links, eyebrows, key numbers */
@@ -118,6 +126,7 @@
   --color-border: var(--mk-dark-line);
   --color-text: var(--mk-dark-text);
   --color-muted: var(--mk-dark-soft);
+  --color-copy-alpha: 0.85;                 /* light text softened to 85% so long reads don't glare */
   --color-heading: var(--mk-dark-text);
   --color-brand: var(--mk-sky);
   --color-accent: var(--mk-sprout);

@@ -18,6 +18,7 @@ export default {
         surface: role('card'),            // bg-surface
         line: role('border'),             // border-line
         ink: role('text'),                // text-ink
+        copy: 'rgb(var(--color-text) / var(--color-copy-alpha))', // text-copy: body paragraphs (full in light, 85% in dark)
         muted: role('muted'),             // text-muted
         heading: role('heading'),         // text-heading
         brand: {
@@ -72,7 +73,7 @@ export default {
       typography: {
         DEFAULT: {
           css: {
-            '--tw-prose-body': rgb('text', 0.85),
+            '--tw-prose-body': 'rgb(var(--color-text) / var(--color-copy-alpha))',
             '--tw-prose-headings': rgb('heading'),
             '--tw-prose-lead': rgb('muted'),
             '--tw-prose-links': rgb('accent'),

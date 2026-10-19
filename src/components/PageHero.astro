@@ -26,7 +26,8 @@ const centered = align === 'center';
 	<div class="frame-grid" aria-hidden="true"></div>
 
 	<div class="container relative pb-16 pt-28 md:pb-20 md:pt-36">
-		<nav aria-label="Breadcrumb" class:list={['mb-8', centered && 'flex justify-center']}>
+		<!-- The breadcrumb always sits top-left, in the same place on every page; align only moves the title block. -->
+		<nav aria-label="Breadcrumb" class="mb-8">
 			<ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-small">
 				{trail.map((crumb, i) => (
 					<li class="flex items-center gap-2">
