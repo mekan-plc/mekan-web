@@ -426,6 +426,13 @@ function stripHtml(html: string) {
 							</div>
 
 							<div id="formFields" class="space-y-6">
+								{/* Bot trap: off-screen and out of the tab order, so people never fill it; bots that fill every field do.
+								    The name avoids words browsers autofill (website, company, url). Checked in /api/contact. */}
+								<div class="absolute -left-[9999px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+									<label for="mkCheck">Leave this field empty</label>
+									<input id="mkCheck" name="mk-check" type="text" tabindex="-1" autocomplete="off" />
+								</div>
+
 								<div class="grid gap-5 md:grid-cols-2">
 									<div>
 										<label class="label" for="name">Full name</label>
@@ -695,7 +702,11 @@ function stripHtml(html: string) {
 	const countryCodeSelect = document.getElementById('countryCode') as HTMLSelectElement;
 	const serviceInput = document.getElementById('service') as HTMLSelectElement;
 	const messageInput = document.getElementById('message') as HTMLTextAreaElement;
-	
+	const botTrapInput = document.getElementById('mkCheck') as HTMLInputElement | null;
+
+	// Time on page, measured on this device (no clock skew); /api/contact drops forms sent faster than a person can type.
+	const pageOpenedAt = performance.now();
+
 	const nameError = document.getElementById('nameError');
 	const emailError = document.getElementById('emailError');
 	const phoneError = document.getElementById('phoneError');
@@ -1005,7 +1016,10 @@ function stripHtml(html: string) {
 			email: emailInput?.value?.trim() || '',
 			phone: fullPhone,
 			service: serviceInput?.value || 'General Inquiry',
-			message: messageInput?.value?.trim() || ''
+			message: messageInput?.value?.trim() || '',
+			// Bot checks, read and removed by /api/contact before the message goes to WordPress.
+			check: botTrapInput?.value || '',
+			elapsedMs: Math.round(performance.now() - pageOpenedAt)
 		};
 
 		try {
