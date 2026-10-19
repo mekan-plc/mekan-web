@@ -203,7 +203,7 @@ function stripHtml(html: string) {
 		{/* Height-aware spacing: on short screens (a 1366×768 laptop shows ~630px) the space above and below
 		    the content shrinks, so the headline, buttons and partner strip share the first screen. Never less
 		    than the navbar needs; on tall screens the original 7rem / 8rem tops are kept. */}
-		<div class="container relative flex flex-1 items-center pb-[clamp(1.5rem,4vh,2.5rem)] pt-[clamp(5.5rem,13vh,7rem)] lg:pb-[clamp(1.5rem,5vh,4rem)] lg:pt-[clamp(6rem,15vh,8rem)]">
+		<div class="hero-inner container relative flex flex-1 items-center pb-[clamp(1.5rem,4vh,2.5rem)] pt-[clamp(5.5rem,13vh,7rem)] lg:pb-[clamp(1.5rem,5vh,4rem)] lg:pt-[clamp(6rem,15vh,8rem)]">
 			<div class="max-w-xl lg:max-w-[36rem]">
 				<h1 class="text-hero hero-title font-medium">
 					Empowering Sustainable Growth in Agribusiness
@@ -253,12 +253,13 @@ function stripHtml(html: string) {
 				font-size: min(var(--mk-text-hero), 9vh);
 			}
 
-			/* Short windows (laptops with browser toolbars, about 640–740px tall) have room for a 3-line headline
-			 * only. Above about 57px, "Empowering Sustainable Growth" no longer fits the 36rem column and the
-			 * headline wraps to 4 lines, pushing the partner strip to the bottom edge or below it. */
-			@media (max-height: 739px) {
-				.hero-title {
-					font-size: min(var(--mk-text-hero), 9vh, 3.55rem);
+			/* Short desktop windows (laptops with browser toolbars, about 600–740px tall): the 4-line headline
+			 * leaves the partner tiles touching the bottom edge, so the space above the headline and above the
+			 * partner label shrinks a little (16px in all), enough for the tiles' bottom edge to show. */
+			@media (min-width: 1024px) and (max-height: 739px) {
+				.hero-inner {
+					padding-top: 5.5rem;
+					padding-bottom: 1.5rem;
 				}
 			}
 
