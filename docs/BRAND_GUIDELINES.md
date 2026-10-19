@@ -195,6 +195,17 @@ The website also has a dark mode. It uses neutral blacks, not navy, so that our 
 
 In dark mode, **Sky** takes over the job Navy does for coloured text and **Sprout** takes over from Mekan Green. Navy itself is used only as a filled surface: a band, a hero or a button.
 
+### Error colour (website only)
+
+*Added October 2026, approved for the website build; awaiting brand owner sign-off.*
+
+Forms need one clear way to say "something is wrong". This colour is used **only** for form errors and failed-send messages, never as decoration, and always together with an icon and a written message, never colour alone.
+
+| Colour | HEX | RGB | Contrast |
+|---|---|---|---|
+| **Error** (light mode) | `#B42318` | 180, 35, 24 | 6.6 : 1 on White |
+| **Error** (dark mode) | `#F97066` | 249, 112, 102 | 7.1 : 1 on Dark page, 6.5 : 1 on Dark card |
+
 ### Balance
 
 Most of what we make should feel light and open. As a guide for screens and documents:

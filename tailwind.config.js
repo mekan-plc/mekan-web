@@ -33,6 +33,7 @@ export default {
         'btn-secondary': role('btn-secondary-text'),
         'btn-primary': role('btn-primary-ring'),
         'logo-panel': role('logo-panel'),
+        danger: role('danger'),           // text-danger, border-danger (form errors only)
         tint: {
           brand: role('tint-brand'),      // bg-tint-brand
           accent: role('tint-accent'),    // bg-tint-accent

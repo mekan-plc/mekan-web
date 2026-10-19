@@ -29,6 +29,12 @@
   --mk-green-tint: 235 242 234;  /* #EBF2EA */
   --mk-navy-tint: 231 234 238;   /* #E7EAEE */
 
+  /* ── Feedback (guide addition, approved 2026-10-19) ───────
+   * One danger colour, for form errors and failed-send messages only.
+   * Always paired with an icon and a message, never colour alone. */
+  --mk-danger: 180 35 24;        /* #B42318  6.6:1 on White */
+  --mk-danger-dark: 249 112 102; /* #F97066  7.1:1 on Dark page, 6.5:1 on Dark card */
+
   /* ── Dark mode surfaces ────────────────────────────────── */
   --mk-dark-page: 11 11 11;      /* #0B0B0B */
   --mk-dark-card: 22 22 22;      /* #161616 */
@@ -98,6 +104,7 @@
   --color-logo-panel: var(--mk-white);      /* guide §5: logo always sits on white */
   --color-tint-brand: var(--mk-navy-tint);
   --color-tint-accent: var(--mk-green-tint);
+  --color-danger: var(--mk-danger);
 
   color-scheme: light; /* native scrollbars and form controls follow the theme */
 }
@@ -125,6 +132,7 @@
   /* The guide defines tints for light mode only; on dark pages they fall back to the card surface. */
   --color-tint-brand: var(--mk-dark-card);
   --color-tint-accent: var(--mk-dark-card);
+  --color-danger: var(--mk-danger-dark);
 
   color-scheme: dark;
 }

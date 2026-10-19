@@ -5,7 +5,7 @@
 
 ## Current status
 
-**Next step:** 3.7 · **Last updated:** 2026-10-19 · **Phase:** 3 · Homepage
+**Next step:** 4.1 · **Last updated:** 2026-10-19 · **Phase:** 4 · Inner pages
 
 ---
 
@@ -74,7 +74,7 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 - [x] **3.4** Projects cards *(2026-10-19: done)*
 - [x] **3.5** Testimonials (`Testimonials.astro`, `TestimonialMedia.astro`): replace gold accent and Fraunces with brand tokens, then delete `--accent`/`--accent-foreground` from `global.css` and Fraunces from the font link in `Layout.astro` *(2026-10-19: done)*
 - [x] **3.6** Blog cards *(2026-10-19: done)*
-- [ ] **3.7** Contact section and form (inputs, country picker, errors, success state)
+- [x] **3.7** Contact section and form (inputs, country picker, errors, success state) *(2026-10-19: done)*
 
 ### Phase 4 · Inner pages
 - [ ] **4.1** `about.astro`
@@ -103,6 +103,8 @@ Changing a value in `tokens.css` must change it everywhere. If a page needs a st
 ## Log
 
 Add one line per finished step, newest first: `YYYY-MM-DD · step · what changed · files`.
+
+- 2026-10-19 · 3.7 · Contact section on tokens. **New token (user-approved guide addition):** one danger colour, `--mk-danger` #B42318 (6.6:1 on White) / `--mk-danger-dark` #F97066 (7.1:1 on Dark page), as role `--color-danger` → `text-danger`/`border-danger`; recorded in BRAND_GUIDELINES.md §6 “Error colour” (the Word copy is not updated yet). New components: `.label`, `.field-error`, `.alert-danger`, `select.input`, and `.input[aria-invalid='true']` (danger border and ring). Form: `.card` without the gradient strip or shadow; label icons removed (decoration, guide §9); every field is `.input` (44px, 10px radius); the country picker button and search use `.input`; the dropdown is a `.card shadow-lift` with tint hover rows, a `badge-brand` “Default”, `role=listbox/option` with `aria-selected`, `aria-expanded` on the button, and focus returns to the button on pick or Escape; native `<option>` dark-mode classes dropped (`color-scheme` handles them); submit is `.btn-primary` (no gradient or lift). Script: one `setFieldError` helper sets `aria-invalid` and fills the error's `<span>`. This fixes a bug where `textContent` wiped each error's icon. Errors link to fields through `aria-describedby`; server errors map through one table; the button only swaps its label text (`#submitLabel`) while sending; on success, focus moves to the “Message Sent!” heading (`role=status`); the near-limit counter and bar turn danger. Validation rules, messages and the API call are unchanged. The `checkWordPressConnection` localStorage writes are now guarded. Success icon on the green tint with an accent ring (visible in dark). Info column: `.eyebrow` (no pulsing dot, guide §9), `.section-title`, `.lead`; contact people and social links come from arrays, as cards with 1.75px icons in `text-brand`; the address card is static (no hover lift on a non-link); social buttons are `.btn-icon`; business hours is a `bg-tint-brand` callout. AOS fade-left/right became fade-up. Copy unchanged; flag for the user: “Message Sent!” uses an exclamation mark (guide §11). Build passes; checked with headless shots at 1280/375 px, light and dark, for error states, the near-limit counter, the open country dropdown and the success panel, plus a real submit against the offline local CMS that showed the failed-send banner · `src/pages/index.astro`, `src/styles/tokens.css`, `src/styles/global.css`, `tailwind.config.js`, `docs/BRAND_GUIDELINES.md`
 
 - 2026-10-19 · 3.6 · Blog section on tokens, matching Projects: `.eyebrow` + `.section-title` header with the existing `.btn-secondary`. CMS posts and the offline fallback share one card template: the three hand-copied fallback cards became a `fallbackBlogs` array and `blogCards` picks CMS or fallback (about 60 fewer lines; the tablet rule hiding the 3rd card now applies to both). Each card is a `.card .card-interactive` with a 16:10 image above a `border-line` rule; the hover glow, `scale-110` zoom and `-translate-y-2` jump are gone. The category is a `.badge` (green on green tint; Sprout in dark) instead of a navy/90 pill, the date `text-small text-muted`, the title `text-h3 text-heading` (`text-brand` on hover), the excerpt clamped to 3 lines, and “Read more” green/Sprout with an underline on hover. The 📝🌱🌍📊 emoji placeholders are now a 1.75px document line icon on the green tint, so blog cards read as a different kind of content from project cards (navy tint) when there is no photo. Fixes dark mode, where the bridge `--brand` link was navy on black. Copy unchanged. Build passes; checked at 1280/375 px, light and dark (CMS offline, so placeholders showed) · `src/pages/index.astro`
 

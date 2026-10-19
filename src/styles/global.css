@@ -185,6 +185,30 @@
     @apply h-auto min-h-32 py-3;
   }
 
+  select.input {
+    @apply cursor-pointer appearance-none pr-10;
+  }
+
+  /* Invalid field: set aria-invalid="true" from script; the border and ring turn danger. */
+  .input[aria-invalid='true'] {
+    @apply border-danger focus:border-danger focus:ring-danger/20;
+  }
+
+  /* Form label: Inter Medium 14px. */
+  .label {
+    @apply mb-2 block text-small font-medium text-ink;
+  }
+
+  /* Inline field error: icon + message in the danger colour. Toggle with .hidden. */
+  .field-error {
+    @apply mt-1.5 flex items-center gap-1.5 text-small text-danger;
+  }
+
+  /* Form-level error banner (failed send). */
+  .alert-danger {
+    @apply flex items-start gap-2 rounded-control border border-danger/30 bg-danger/10 p-4 text-small text-danger;
+  }
+
   /* Square icon button (theme toggle, menu). */
   .btn-icon {
     @apply inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-control border border-line bg-surface text-ink transition-colors duration-fast ease-out hover:bg-tint-brand hover:text-brand;
